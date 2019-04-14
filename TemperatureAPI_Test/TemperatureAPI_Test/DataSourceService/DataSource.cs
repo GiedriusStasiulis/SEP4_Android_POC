@@ -4,28 +4,26 @@ namespace TemperatureAPI_Test.DataSourceService
 {
     public class DataSource : IDataSource
     {
-        private readonly string TempSourceOne = "{\"temperature\":\"25.6\",\"timestamp\":\"2019-04-14T12:00:00\"}";
-        private readonly string TempSourceTwo = "{\"temperature\":\"28.2\",\"timestamp\":\"2019-04-14T12:00:30\"}";
+        private readonly string TempJsonOne = "{\"temperature\":\"25.6\",\"timestamp\":\"2019-04-14T12:00:00\"}";
+        private readonly string TempJsonTwo = "{\"temperature\":\"28.2\",\"timestamp\":\"2019-04-14T12:00:30\"}";
 
         private string JsonStr;
 
         public void InitDataSource()
         {
-            JsonStr = TempSourceOne;
+            JsonStr = TempJsonOne;
         }
 
         public async Task DoWorkAsync()
         {
-            JsonStr = GetJson();
-
-            if (JsonStr == TempSourceOne)
+            if (JsonStr == TempJsonOne)
             {
-                JsonStr = TempSourceTwo;
+                JsonStr = TempJsonTwo;
             }
 
-            else if (JsonStr == TempSourceTwo)
+            else if (JsonStr == TempJsonTwo)
             {
-                JsonStr = TempSourceOne;
+                JsonStr = TempJsonOne;
             }
 
             await Task.CompletedTask;
