@@ -9,6 +9,6 @@ namespace TemperatureAPI_Test.DataSourceService
     {
         void InitDataSource();
         Task DoWorkAsync();
-        string GetData();
+        string GetJson();
     }
 }

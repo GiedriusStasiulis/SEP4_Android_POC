@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace TemperatureAPI_Test.DataSourceService
 {
@@ -8,33 +7,33 @@ namespace TemperatureAPI_Test.DataSourceService
         private readonly string TempSourceOne = "{\"temperature\":\"25.6\",\"timestamp\":\"2019-04-14T12:00:00\"}";
         private readonly string TempSourceTwo = "{\"temperature\":\"28.2\",\"timestamp\":\"2019-04-14T12:00:30\"}";
 
-        private string DataSourceStr;
+        private string JsonStr;
 
         public void InitDataSource()
         {
-            DataSourceStr = TempSourceOne;
+            JsonStr = TempSourceOne;
         }
 
         public async Task DoWorkAsync()
         {
-            DataSourceStr = GetData();
+            JsonStr = GetJson();
 
-            if (DataSourceStr == TempSourceOne)
+            if (JsonStr == TempSourceOne)
             {
-                DataSourceStr = TempSourceTwo;
+                JsonStr = TempSourceTwo;
             }
 
-            else if (DataSourceStr == TempSourceTwo)
+            else if (JsonStr == TempSourceTwo)
             {
-                DataSourceStr = TempSourceOne;
+                JsonStr = TempSourceOne;
             }
 
             await Task.CompletedTask;
         }
 
-        public string GetData()
+        public string GetJson()
         {
-            return DataSourceStr;
+            return JsonStr;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace TemperatureAPI_Test.BackgroundServices
 
             while (!stoppingToken.IsCancellationRequested)
             {                
-                Debug.WriteLine("Switching temperature source");
+                Debug.WriteLine("Switching temperature json");
                 await _iDataSource.DoWorkAsync();
                 await Task.Delay(10000, stoppingToken);
             }

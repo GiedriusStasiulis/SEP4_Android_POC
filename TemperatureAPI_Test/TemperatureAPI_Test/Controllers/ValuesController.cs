@@ -17,7 +17,7 @@ namespace TemperatureAPI_Test.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return _iDataSource.GetData();
+            return _iDataSource.GetJson();
         }
     }
 }
