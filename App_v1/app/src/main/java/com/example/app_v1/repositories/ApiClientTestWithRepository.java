@@ -1,55 +1,13 @@
 package com.example.app_v1.repositories;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
-import android.nfc.Tag;
-import android.os.Debug;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.app_v1.MainActivity;
-import com.example.app_v1.R;
-import com.example.app_v1.apiclients.AndroidWebApiClient;
 import com.example.app_v1.apiclients.IAndroidWebApiClient;
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.utils.Utils;
 
-import org.bouncycastle.asn1.iana.IANAObjectIdentifiers;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
