@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using TemperatureAPI_Test.DataSourceService;
 
 namespace TemperatureAPI_Test.Controllers
 {
-    [Route("api/[controller]")]
+    [EnableCors("MyCorsPolicy")]
+    [Route("api/[controller]")]    
     [ApiController]
     public class ValuesController : ControllerBase
     {
@@ -13,8 +15,9 @@ namespace TemperatureAPI_Test.Controllers
         {
             _iDataSource = iDataSource;
         }
-
+                
         [HttpGet]
+        [EnableCors("MyCorsPolicy")]
         public ActionResult<string> Get()
         {
             return _iDataSource.GetJson();

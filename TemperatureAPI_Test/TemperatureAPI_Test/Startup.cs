@@ -20,6 +20,19 @@ namespace TemperatureAPI_Test
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCorsPolicy",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
+
             services.AddHostedService<BService_AlternateTemp>();
             services.AddSingleton<IDataSource, DataSource>();
 
@@ -41,6 +54,7 @@ namespace TemperatureAPI_Test
                 app.UseHsts();
             }
 
+            app.UseCors("MyCorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
         }
