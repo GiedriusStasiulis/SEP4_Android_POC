@@ -20,13 +20,13 @@ namespace TemperatureAPI_Test.BackgroundServices
         {
             Debug.WriteLine("Background service started!");
 
-            await Task.Delay(10000);
+            await Task.Delay(30000);
 
             while (!stoppingToken.IsCancellationRequested)
             {                
                 Debug.WriteLine("Switching temperature json");
                 await _iDataSource.DoWorkAsync();
-                await Task.Delay(10000, stoppingToken);
+                await Task.Delay(30000, stoppingToken);
             }
         }       
     }

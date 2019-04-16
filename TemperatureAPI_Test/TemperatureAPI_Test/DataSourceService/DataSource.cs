@@ -5,7 +5,7 @@ namespace TemperatureAPI_Test.DataSourceService
     public class DataSource : IDataSource
     {
         private readonly string TempJsonOne = "{\"temperature\":\"25.6\",\"timestamp\":\"2019-04-14T12:00:00\"}";
-        private readonly string TempJsonTwo = "{\"temperature\":\"28.2\",\"timestamp\":\"2019-04-14T12:00:30\"}";
+        private readonly string TempJsonTwo = "{\"temperature\":\"28.2\",\"timestamp\":\"2019-04-14T12:10:00\"}";
 
         private string JsonStr;
 
