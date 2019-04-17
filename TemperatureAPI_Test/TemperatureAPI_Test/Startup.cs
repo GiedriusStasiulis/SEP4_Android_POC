@@ -55,7 +55,6 @@ namespace TemperatureAPI_Test
             }
 
             app.UseCors("MyCorsPolicy");
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

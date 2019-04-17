@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(@Nullable Temperature temperature)
             {
-                tempTextView.setText(tempTextView.getText() + " " + Float.toString(temperature.getTemperature()));
+                tempTextView.setText(tempTextView.getText() + " " + temperature.getTemperature());
+                updatedTextView.setText(updatedTextView.getText() + " " + temperature.getDateTime());
             }
         });
     }

@@ -2,25 +2,31 @@ package com.example.app_v1.repositories;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
-
+import com.example.app_v1.apiclients.AndroidWebApiClient;
 import com.example.app_v1.apiclients.IAndroidWebApiClient;
 import com.example.app_v1.models.Temperature;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.sql.Timestamp;
+
+import javax.xml.transform.Result;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClientTestWithRepository
 {
     private static ApiClientTestWithRepository instance;
 
     private Temperature tempObj;
-
-    private static final String BASE_URL = "https://192.168.1.98:44398/";
 
     final MutableLiveData<Temperature> data = new MutableLiveData<>();
 
@@ -35,30 +41,43 @@ public class ApiClientTestWithRepository
 
     public MutableLiveData<Temperature> getLastTemperature()
     {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        IAndroidWebApiClient apiClient = retrofit.create(IAndroidWebApiClient.class);
-        Call<Temperature> call = apiClient.getData();
+        IAndroidWebApiClient apiClient = AndroidWebApiClient.getRetrofitClient().create(IAndroidWebApiClient.class);
+        Call<Temperature> call = apiClient.values();
 
         call.enqueue(new Callback<Temperature>() {
             @Override
             public void onResponse(Call<Temperature> call, Response<Temperature> response) {
-                Log.d("OnSuccess", "onResponse: Server response: " + response.toString());
+
+                response.body();
+/*
+                Log.d("OnSuccess", "onResponse: " + response.toString());
                 Log.d("OnSuccess", "onResponse: Received information: " + response.body().toString());
 
-                Float temp = response.body().getTemperature();
-                Timestamp lUpdated = response.body().getDateTime();
+                Log.d("OnSuccess", "onResponse: Code: " + response.code());
+*/
+                if(response != null && response.isSuccessful())
+                {
+                    Log.d("OnSuccess", "onResponse: " + response.toString());
 
-                tempObj = new Temperature(temp,lUpdated);
-                data.setValue(tempObj);
+                    String temp = response.body().getTemperature();
+                    String dTime = response.body().getDateTime();
+
+                    tempObj = new Temperature(temp,dTime);
+
+                    Log.d("OnSuccess", "onResponse: " + tempObj.toString());
+
+                    data.setValue(tempObj);
+                }
+
+                if(response == null)
+                {
+                    Log.d("OnFail", "Response json is empty");
+                }
             }
 
             @Override
             public void onFailure(Call<Temperature> call, Throwable t) {
-                Log.e("OnFailure", "Failure: Sum ting wong: "  +  t.getMessage());
+                Log.e("OnFailure", "Failure: Sum ting wong: "  +  t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
             }
         });
 

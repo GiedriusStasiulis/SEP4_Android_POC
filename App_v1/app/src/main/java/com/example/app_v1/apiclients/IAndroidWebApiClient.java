@@ -7,9 +7,10 @@ import retrofit2.http.Headers;
 
 public interface IAndroidWebApiClient
 {
-    String BASE_URL = "https://192.168.1.98:44398/";
-
-    @Headers("Content-Type: application/json")
-    @GET("api/values")
-    Call<Temperature> getData();
+    @GET("values/")
+    @Headers({
+            "Content-Type: text/plain;charset=utf-8",
+            "Accept: text/plain;charset=utf-8",
+    })
+    Call<Temperature> values();
 }
