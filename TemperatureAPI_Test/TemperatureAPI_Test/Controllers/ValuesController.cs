@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using TemperatureAPI_Test.DataSourceService;
 
 namespace TemperatureAPI_Test.Controllers

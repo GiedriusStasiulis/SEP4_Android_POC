@@ -17,17 +17,19 @@ import android.widget.TextView;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.viewmodels.ApiClientTestViewModel;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
 
     TextView tempTextView;
+    TextView tStampTextView;
     TextView updatedTextView;
 
     private ApiClientTestViewModel apiClientViewModel;
@@ -52,44 +54,54 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        tempTextView = (TextView) findViewById(R.id.textView);
-        updatedTextView = (TextView) findViewById(R.id.textView2);
+        tempTextView = findViewById(R.id.temperature);
+        tStampTextView = findViewById(R.id.timestamp);
+        updatedTextView = findViewById(R.id.updated);
 
         apiClientViewModel = ViewModelProviders.of(this).get(ApiClientTestViewModel.class);
 
         apiClientViewModel.init();
 
         apiClientViewModel.getTemp().observe(this, new Observer<Temperature>() {
+
             @Override
             public void onChanged(@Nullable Temperature temperature)
             {
-                tempTextView.setText(tempTextView.getText() + " " + temperature.getTemperature());
-                updatedTextView.setText(updatedTextView.getText() + " " + temperature.getDateTime());
+                assert temperature != null;
+
+                tempTextView.setText(String.format("Temperature: %s", temperature.getTemperature()));
+                tStampTextView.setText(String.format("Timestamp: %s", temperature.getDateTime()));
+                updatedTextView.setText(String.format("Updated: %s", getCurrentTimeDate()));
             }
         });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-}
 
-// test commit
+    public String getCurrentTimeDate()
+    {
+        DateFormat df = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+        Date currentDateTime = Calendar.getInstance().getTime();
+
+        String dateTimeNowStr = df.format(currentDateTime);
+
+        return dateTimeNowStr;
+    }
+}

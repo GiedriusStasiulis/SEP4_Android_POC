@@ -2,21 +2,14 @@ package com.example.app_v1.repositories;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
+
 import com.example.app_v1.apiclients.AndroidWebApiClient;
 import com.example.app_v1.apiclients.IAndroidWebApiClient;
 import com.example.app_v1.models.Temperature;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.sql.Timestamp;
-
-import javax.xml.transform.Result;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,75 +23,57 @@ public class ApiClientTestWithRepository
 
     final MutableLiveData<Temperature> data = new MutableLiveData<>();
 
+    static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
     public static ApiClientTestWithRepository getInstance()
     {
         if(instance == null)
         {
             instance = new ApiClientTestWithRepository();
         }
+
         return instance;
     }
 
     public MutableLiveData<Temperature> getLastTemperature()
     {
-        IAndroidWebApiClient apiClient = AndroidWebApiClient.getRetrofitClient().create(IAndroidWebApiClient.class);
-        Call<Temperature> call = apiClient.values();
+        final IAndroidWebApiClient apiClient = AndroidWebApiClient.getRetrofitClient().create(IAndroidWebApiClient.class);
 
-        call.enqueue(new Callback<Temperature>() {
+        scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
-            public void onResponse(Call<Temperature> call, Response<Temperature> response) {
+            public void run()
+            {
+                Call<Temperature> call = apiClient.values();
 
-                response.body();
-/*
-                Log.d("OnSuccess", "onResponse: " + response.toString());
-                Log.d("OnSuccess", "onResponse: Received information: " + response.body().toString());
+                call.enqueue(new Callback<Temperature>() {
+                    @Override
+                    public void onResponse(Call<Temperature> call, Response<Temperature> response) {
 
-                Log.d("OnSuccess", "onResponse: Code: " + response.code());
-*/
-                if(response != null && response.isSuccessful())
-                {
-                    Log.d("OnSuccess", "onResponse: " + response.toString());
+                        response.body();
 
-                    String temp = response.body().getTemperature();
-                    String dTime = response.body().getDateTime();
+                        if(response.isSuccessful())
+                        {
+                            Log.d("OnSuccess", "onResponse: " + response.toString());
 
-                    tempObj = new Temperature(temp,dTime);
+                            assert response.body() != null;
+                            String temp = response.body().getTemperature();
+                            String dTime = response.body().getDateTime();
 
-                    Log.d("OnSuccess", "onResponse: " + tempObj.toString());
+                            tempObj = new Temperature(temp,dTime);
 
-                    data.setValue(tempObj);
-                }
+                            Log.d("OnSuccess", "onResponse: " + tempObj.toString());
 
-                if(response == null)
-                {
-                    Log.d("OnFail", "Response json is empty");
-                }
+                            data.setValue(tempObj);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Temperature> call, Throwable t) {
+                        Log.e("OnFailure", "Failure: Sum ting wong: "  +  t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                    }
+                });
             }
-
-            @Override
-            public void onFailure(Call<Temperature> call, Throwable t) {
-                Log.e("OnFailure", "Failure: Sum ting wong: "  +  t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
-            }
-        });
-
-        //Hard coded values that work fine
-        /*
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ss");
-        String time = "2019-04-14T12:00:00";
-        Timestamp tDate = null;
-
-        try {
-            Date date = format.parse(time);
-            tDate = new Timestamp(date.getTime());
-        } catch (ParseException e1) {
-            e1.printStackTrace();
-        }
-
-        Temperature testTemp = new Temperature(25.6F, tDate);
-
-        MutableLiveData<Temperature> data = new MutableLiveData<>();
-        data.setValue(testTemp);
-        */
+        },0,5, TimeUnit.SECONDS);
 
         return data;
     }
