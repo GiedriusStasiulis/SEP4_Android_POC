@@ -7,10 +7,10 @@ import retrofit2.http.Headers;
 
 public interface IAndroidWebApiClient
 {
-    @GET("values/")
+    @GET("measurements/")
     @Headers({
             "Content-Type: text/plain;charset=utf-8",
             "Accept: text/plain;charset=utf-8",
     })
-    Call<Temperature> values();
+    Call<Temperature> measurements();
 }

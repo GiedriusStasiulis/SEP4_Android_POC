@@ -43,7 +43,7 @@ public class ApiClientTestWithRepository
             @Override
             public void run()
             {
-                Call<Temperature> call = apiClient.values();
+                Call<Temperature> call = apiClient.measurements();
 
                 call.enqueue(new Callback<Temperature>() {
                     @Override

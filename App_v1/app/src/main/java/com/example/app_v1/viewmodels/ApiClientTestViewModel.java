@@ -10,7 +10,6 @@ public class ApiClientTestViewModel extends ViewModel
 {
     private LiveData<Temperature> ldTemp;
     private ApiClientTestWithRepository apiRepo;
-    private Boolean isTaskActive = true;
 
     public void init()
     {
