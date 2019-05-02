@@ -5,7 +5,6 @@ import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Greenhouse;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -30,34 +29,32 @@ public class Repository
         return instance;
     }
 
-    //
-
-    public LiveData<ArrayList<Greenhouse>> getGreenhouses(String userId)
+    public LiveData<ArrayList<Greenhouse>> getGreenhouses()
     {
         return this.greenhouses;
     }
 
-    public LiveData<Temperature> getLatestTemperature(String greenhouseId)
+    public LiveData<Temperature> getLatestTemperature()
     {
         return this.latestTemperature;
     }
 
-    public LiveData<Humidity> getLatestHumidity(String greenhouseId)
+    public LiveData<Humidity> getLatestHumidity()
     {
         return this.latestHumidity;
     }
 
-    public LiveData<Co2> getLatestCo2(String greenhouseId)
+    public LiveData<Co2> getLatestCo2()
     {
         return this.latestCo2;
     }
 
-    public LiveData<ArrayList<Temperature>> getTemperatureDataInRange(String greenhouseId, Timestamp dateTimeFrom, Timestamp dateTimeTo)
+    public LiveData<ArrayList<Temperature>> getTemperatureDataInRange()
     {
         return this.temperatureDataInRange;
     }
 
-    public LiveData<ArrayList<Humidity>> getHumidityDataInRange(String greenhouseId, Timestamp dateTimeFrom, Timestamp dateTimeTo)
+    public LiveData<ArrayList<Humidity>> getHumidityDataInRange()
     {
         return this.humidityDataInRange;
     }

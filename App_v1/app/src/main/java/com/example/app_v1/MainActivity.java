@@ -15,9 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.viewmodels.ApiClientTestViewModel;
-
-import org.w3c.dom.Text;
+import com.example.app_v1.old.ApiClientTestViewModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

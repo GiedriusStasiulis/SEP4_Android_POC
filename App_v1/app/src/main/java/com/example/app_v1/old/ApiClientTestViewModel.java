@@ -1,10 +1,9 @@
-package com.example.app_v1.viewmodels;
+package com.example.app_v1.old;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.repositories.ApiClientTestWithRepository;
 
 public class ApiClientTestViewModel extends ViewModel
 {
