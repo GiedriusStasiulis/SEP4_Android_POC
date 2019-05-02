@@ -35,6 +35,8 @@ public class ApiClientTestWithRepository
         return instance;
     }
 
+    //Test commit
+
     public MutableLiveData<Temperature> getLastTemperature()
     {
         final IAndroidWebApiClient apiClient = AndroidWebApiClient.getRetrofitClient().create(IAndroidWebApiClient.class);
