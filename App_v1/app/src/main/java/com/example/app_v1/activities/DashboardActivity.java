@@ -1,8 +1,9 @@
 package com.example.app_v1.activities;
 
-import android.graphics.drawable.Drawable;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +13,9 @@ import android.view.MenuItem;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
-import com.example.app_v1.fragments.Co2Fragment;
-import com.example.app_v1.fragments.HumidityFragment;
-import com.example.app_v1.fragments.TemperatureFragment;
+import com.example.app_v1.fragments.MeasurementDetailsFragment;
+import com.example.app_v1.old.ApiClientTestViewModel;
+import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
 
 import java.util.Objects;
 
@@ -23,9 +24,11 @@ public class DashboardActivity extends AppCompatActivity
     private static final String TAG = "DashboardActivity";
 
     public Toolbar toolbar;
-    private TabLayout tabLayout;
+    public TabLayout tabLayout;
     private SectionsPageAdapter sectionsPageAdapter;
-    private ViewPager viewPager;
+    public ViewPager viewPager;
+
+    private MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
     final int[] tabIcons = new int[]{R.drawable.tab_icon_temperature,R.drawable.tab_icon_humidity,R.drawable.tab_icon_co2};
 
@@ -39,6 +42,7 @@ public class DashboardActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
+        getSupportActionBar().setSubtitle("Greenhouse: GH01");
         /* set settings icon
         Drawable settingsIcon = ContextCompat.getDrawable(getApplicationContext(), R.drawable.icon_settings);
         toolbar.setOverflowIcon(settingsIcon);
@@ -49,24 +53,52 @@ public class DashboardActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Init sections page adapter and setup with page viewer
-        sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.viewPager);
+        sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sectionsPageAdapter);
         setupViewPager(viewPager);
 
         //Set up tab layout with view pager and add icons to tabs
         tabLayout = findViewById(R.id.measurementDetailsTabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(tabIcons[0]);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
+
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("25\u2103");
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("35%");
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650(ppm)");
+
+        measurementDetailsActivityViewModel = ViewModelProviders.of(this).get(MeasurementDetailsActivityViewModel.class);
+        measurementDetailsActivityViewModel.initViewModel();
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
+        {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab)
+            {
+                measurementDetailsActivityViewModel.setSelectedTabIndex(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager)
     {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TemperatureFragment(), "25\u2103");
-        adapter.addFragment(new HumidityFragment(), "35%");
-        adapter.addFragment(new Co2Fragment(), "650 ppm");
+        adapter.addFragment(new MeasurementDetailsFragment());
+        adapter.addFragment(new MeasurementDetailsFragment());
+        adapter.addFragment(new MeasurementDetailsFragment());
 
         viewPager.setAdapter(adapter);
     }
