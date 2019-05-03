@@ -25,10 +25,14 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView title_measurement;
     protected TextView value_measurement;
     protected TextView title_timestamp;
-    protected TextView symbol_measurement;
     protected TextView value_timestamp;
     protected TextView title_last_updated;
     protected TextView value_last_updated;
+    protected TextView title_alarm_thresholds;
+    protected TextView title_min_alarm_threshold;
+    protected TextView value_min_alarm_threshold;
+    protected TextView title_max_alarm_threshold;
+    protected TextView value_max_alarm_threshold;
     protected ConstraintLayout measurementDisplay;
     protected ImageButton openGraphBtn;
 
@@ -50,21 +54,25 @@ public class MeasurementDetailsFragment extends Fragment
                     case 0:
                         title_measurement.setText(getResources().getString(R.string.title_temperature));
                         value_measurement.setText(getResources().getString(R.string.value_temperature));
-                        symbol_measurement.setText(getResources().getString(R.string.symbol_temperature_celsius));
+                        value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
+                        value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
+
 
                         break;
 
                     case 1:
                         title_measurement.setText(getResources().getString(R.string.title_humidity));
                         value_measurement.setText(getResources().getString(R.string.value_humidity));
-                        symbol_measurement.setText(getResources().getString(R.string.symbol_humidity_percentage));
+                        value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
+                        value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
 
                         break;
 
                     case 2:
                         title_measurement.setText(getResources().getString(R.string.title_co2));
                         value_measurement.setText(getResources().getString(R.string.value_co2));
-                        symbol_measurement.setText(getResources().getString(R.string.symbol_co2_ppm));
+                        value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
+                        value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
 
                         break;
 
@@ -85,11 +93,15 @@ public class MeasurementDetailsFragment extends Fragment
 
         title_measurement = view.findViewById(R.id.title_measurement);
         value_measurement = view.findViewById(R.id.value_measurement);
-        symbol_measurement = view.findViewById(R.id.symbol_measurement);
         title_timestamp = view.findViewById(R.id.title_timestamp);
         value_timestamp = view.findViewById(R.id.value_timestamp);
         title_last_updated = view.findViewById(R.id.title_last_updated);
         value_last_updated = view.findViewById(R.id.value_last_updated);
+        title_alarm_thresholds = view.findViewById(R.id.title_alarm_thresholds);
+        title_min_alarm_threshold = view.findViewById(R.id.title_min_alarm_threshold);
+        value_min_alarm_threshold = view.findViewById(R.id.value_min_alarm_threshold);
+        title_max_alarm_threshold = view.findViewById(R.id.title_max_alarm_threshold);
+        value_max_alarm_threshold = view.findViewById(R.id.value_max_alarm_threshold);
 
         measurementDisplay = view.findViewById(R.id.measurementDisplay);
 
