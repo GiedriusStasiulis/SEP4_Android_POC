@@ -14,7 +14,7 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
 {
     private Repository repo;
 
-    private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<Integer>();
+    private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
 
     private LiveData<Temperature> latestTemperature;
     private LiveData<Humidity> latestHumidity;

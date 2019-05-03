@@ -61,12 +61,12 @@ public class DashboardActivity extends AppCompatActivity
         //Set up tab layout with view pager and add icons to tabs
         tabLayout = findViewById(R.id.measurementDetailsTabs);
         tabLayout.setupWithViewPager(viewPager);
-
         Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(tabIcons[0]);
         Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
 
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("25\u2103");
+        //Dummy tab titles
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("25.5\u2103");
         Objects.requireNonNull(tabLayout.getTabAt(1)).setText("35%");
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650(ppm)");
 

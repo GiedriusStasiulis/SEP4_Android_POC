@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">App_v1</string>
     <string name="action_settings">Settings</string>
+    <string name="title_temperature">Temperature:</string>
+    <string name="title_humidity">Humidity:</string>
+    <string name="title_co2">CO2:</string>
+    <string name="value_temperature">25.5</string>
+    <string name="value_humidity">35</string>
+    <string name="value_co2">650</string>
+    <string name="symbol_temperature_celsius">\u2103</string>
+    <string name="symbol_humidity_percentage">%</string>
+    <string name="symbol_co2_ppm">ppm</string>
+    <string name="title_timestamp">Timestamp:</string>
+    <string name="value_timestamp">12:35 / 03-May-2019</string>
+    <string name="title_last_updated">Last updated:</string>
+    <string name="value_last_updated">12:40 / 03-May-2019</string>
 </resources>
