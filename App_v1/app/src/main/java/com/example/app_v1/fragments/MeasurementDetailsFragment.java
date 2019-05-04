@@ -33,8 +33,12 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView value_min_alarm_threshold;
     protected TextView title_max_alarm_threshold;
     protected TextView value_max_alarm_threshold;
+    protected TextView symbol_measurement_value;
+    protected TextView symbol_min_alarm_threshold;
+    protected TextView symbol_max_alarm_threshold;
     protected ConstraintLayout measurementDisplay;
     protected ImageButton openGraphBtn;
+    protected ImageButton openSettingsBtn;
 
     protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
@@ -56,7 +60,9 @@ public class MeasurementDetailsFragment extends Fragment
                         value_measurement.setText(getResources().getString(R.string.value_temperature));
                         value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
                         value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
-
+                        symbol_measurement_value.setText(getResources().getString(R.string.symbol_temperature));
+                        symbol_min_alarm_threshold.setText(getResources().getString(R.string.symbol_temperature));
+                        symbol_max_alarm_threshold.setText(getResources().getString(R.string.symbol_temperature));
 
                         break;
 
@@ -65,6 +71,9 @@ public class MeasurementDetailsFragment extends Fragment
                         value_measurement.setText(getResources().getString(R.string.value_humidity));
                         value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
                         value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
+                        symbol_measurement_value.setText(getResources().getString(R.string.symbol_humidity));
+                        symbol_min_alarm_threshold.setText(getResources().getString(R.string.symbol_humidity));
+                        symbol_max_alarm_threshold.setText(getResources().getString(R.string.symbol_humidity));
 
                         break;
 
@@ -73,6 +82,9 @@ public class MeasurementDetailsFragment extends Fragment
                         value_measurement.setText(getResources().getString(R.string.value_co2));
                         value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
                         value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
+                        symbol_measurement_value.setText(getResources().getString(R.string.symbol_co2));
+                        symbol_min_alarm_threshold.setText(getResources().getString(R.string.symbol_co2));
+                        symbol_max_alarm_threshold.setText(getResources().getString(R.string.symbol_co2));
 
                         break;
 
@@ -102,10 +114,14 @@ public class MeasurementDetailsFragment extends Fragment
         value_min_alarm_threshold = view.findViewById(R.id.value_min_alarm_threshold);
         title_max_alarm_threshold = view.findViewById(R.id.title_max_alarm_threshold);
         value_max_alarm_threshold = view.findViewById(R.id.value_max_alarm_threshold);
+        symbol_measurement_value = view.findViewById(R.id.symbol_measurement_value);
+        symbol_min_alarm_threshold = view.findViewById(R.id.symbol_min_alarm_threshold);
+        symbol_max_alarm_threshold = view.findViewById(R.id.symbol_max_alarm_threshold);
 
         measurementDisplay = view.findViewById(R.id.measurementDisplay);
 
         openGraphBtn = view.findViewById(R.id.open_graph_btn);
+        openSettingsBtn = view.findViewById(R.id.open_settings_btn);
 
 
         openGraphBtn.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +133,14 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
+        openSettingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(getActivity(), "Clicked on settings button",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
         return view;
     }
 }
