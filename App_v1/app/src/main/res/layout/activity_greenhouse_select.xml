@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="GMS"
+        app:titleTextColor="#fff"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize"
+        android:paddingLeft="48dp"
+        android:paddingRight="48dp"
+        >
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/img_herb"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:padding="24dp"
+            app:srcCompat="@drawable/image_herb"
+            android:layout_marginTop="48dp"/>
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_herb"
+            android:layout_marginTop="24dp"
+            android:text="@string/gs_text_title"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <TextView
+            android:id="@+id/text_explainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_title"
+            android:layout_marginTop="24dp"
+            android:text="@string/gs_text_explainer"
+            android:textAlignment="center"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_select_greenhouse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:layout_below="@id/text_explainer"
+            android:layout_marginTop="36dp"
+            />
+
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner_select_greenhouse"
+            android:layout_marginTop="36dp"
+            android:id="@+id/button_go"
+            android:text="@string/gs_button_go" />
+
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">App_v1</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Greenhouse Select -->
+    <string name="gs_text_title">Select Your Greenhouse</string>
+    <string name="gs_text_explainer">Select the greenhouse you want to manage from the dropdown below:</string>
+    <string name="gs_button_go">Go</string>
+
+
 </resources>
