@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">App_v1</string>
     <string name="action_settings">Settings</string>
-    <string name="title_temperature">Temperature:</string>
-    <string name="title_humidity">Humidity:</string>
-    <string name="title_co2">CO2 levels:</string>
+    <string name="title_temperature_display">Temperature Overview</string>
+    <string name="title_humidity_display">Humidity Overview</string>
+    <string name="title_co2_display">CO2 Overview</string>
+    <string name="title_temperature_history">Temperature History</string>
+    <string name="title_humidity_history">Humidity History</string>
+    <string name="title_co2_history">CO2 History</string>
+    <string name="title_latest_value">Latest value:</string>
     <string name="value_temperature">25.5</string>
     <string name="value_humidity">35</string>
     <string name="value_co2">650</string>
@@ -23,4 +27,9 @@
     <string name="symbol_temperature">\u2103</string>
     <string name="symbol_humidity">%</string>
     <string name="symbol_co2">ppm</string>
+    <string name="title_select_datetime_from">Select from:</string>
+    <string name="title_select_datetime_to">Select to:</string>
+    <string name="value_select_datetime_from">02-May-19 12:00</string>
+    <string name="value_select_datetime_to">04-May-19 12:00</string>
+    <string name="title_button_filter">Show</string>
 </resources>

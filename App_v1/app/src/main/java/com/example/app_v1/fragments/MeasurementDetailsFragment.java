@@ -2,7 +2,9 @@ package com.example.app_v1.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -11,9 +13,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.app_v1.R;
 import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
@@ -22,23 +27,35 @@ public class MeasurementDetailsFragment extends Fragment
 {
     private static final String TAG = "MeasurementDetailsFragment";
 
-    protected TextView title_measurement;
-    protected TextView value_measurement;
-    protected TextView title_timestamp;
-    protected TextView value_timestamp;
-    protected TextView title_last_updated;
-    protected TextView value_last_updated;
-    protected TextView title_alarm_thresholds;
-    protected TextView title_min_alarm_threshold;
-    protected TextView value_min_alarm_threshold;
-    protected TextView title_max_alarm_threshold;
-    protected TextView value_max_alarm_threshold;
-    protected TextView symbol_measurement_value;
-    protected TextView symbol_min_alarm_threshold;
-    protected TextView symbol_max_alarm_threshold;
-    protected ConstraintLayout measurementDisplay;
+    protected TextView titleMeasurementOverview;
+    protected TextView titleMeasurementHistory;
+    protected TextView titleLatestMeasurementValue;
+    protected TextView valueLatestMeasurement;
+    protected TextView titleTimestamp;
+    protected TextView valueTimestamp;
+    protected TextView titleLastUpdated;
+    protected TextView valueLastUpdated;
+    protected TextView titleAlarmThresholds;
+    protected TextView titleMinAlarmThreshold;
+    protected TextView valueMinAlarmThreshold;
+    protected TextView titleMaxAlarmThreshold;
+    protected TextView valueMaxAlarmThreshold;
+    protected TextView symbolMeasurementValue;
+    protected TextView symbolMinAlarmThreshold;
+    protected TextView symbolMaxAlarmThreshold;
+
+    protected ConstraintLayout measurementOverviewDisplay;
+    protected ConstraintLayout measurementHistoryDisplay;
+
     protected ImageButton openGraphBtn;
     protected ImageButton openSettingsBtn;
+
+    protected Button btnOpenDialogDateTimeFrom;
+    protected Button btnOpenDialogDateTimeTo;
+    protected Button btnShowHistory;
+
+    protected ToggleButton toggleBtnMeasurementDisplay;
+    protected ToggleButton toggleBtnMeasurementHistoryBtn;
 
     protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
@@ -56,35 +73,38 @@ public class MeasurementDetailsFragment extends Fragment
                 switch(integer)
                 {
                     case 0:
-                        title_measurement.setText(getResources().getString(R.string.title_temperature));
-                        value_measurement.setText(getResources().getString(R.string.value_temperature));
-                        value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
-                        value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
-                        symbol_measurement_value.setText(getResources().getString(R.string.symbol_temperature));
-                        symbol_min_alarm_threshold.setText(getResources().getString(R.string.symbol_temperature));
-                        symbol_max_alarm_threshold.setText(getResources().getString(R.string.symbol_temperature));
+                        titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
+                        titleMeasurementHistory.setText(getResources().getString(R.string.title_temperature_history));
+                        valueLatestMeasurement.setText(getResources().getString(R.string.value_temperature));
+                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
+                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
+                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
+                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
+                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
 
                         break;
 
                     case 1:
-                        title_measurement.setText(getResources().getString(R.string.title_humidity));
-                        value_measurement.setText(getResources().getString(R.string.value_humidity));
-                        value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
-                        value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
-                        symbol_measurement_value.setText(getResources().getString(R.string.symbol_humidity));
-                        symbol_min_alarm_threshold.setText(getResources().getString(R.string.symbol_humidity));
-                        symbol_max_alarm_threshold.setText(getResources().getString(R.string.symbol_humidity));
+                        titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
+                        titleMeasurementHistory.setText(getResources().getString(R.string.title_humidity_history));
+                        valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
+                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
+                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
+                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
+                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
+                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
 
                         break;
 
                     case 2:
-                        title_measurement.setText(getResources().getString(R.string.title_co2));
-                        value_measurement.setText(getResources().getString(R.string.value_co2));
-                        value_min_alarm_threshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
-                        value_max_alarm_threshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
-                        symbol_measurement_value.setText(getResources().getString(R.string.symbol_co2));
-                        symbol_min_alarm_threshold.setText(getResources().getString(R.string.symbol_co2));
-                        symbol_max_alarm_threshold.setText(getResources().getString(R.string.symbol_co2));
+                        titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
+                        titleMeasurementHistory.setText(getResources().getString(R.string.title_co2_history));
+                        valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
+                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
+                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
+                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
+                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
+                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
 
                         break;
 
@@ -93,8 +113,6 @@ public class MeasurementDetailsFragment extends Fragment
                 }
             }
         });
-
-
     }
 
     @Nullable
@@ -103,26 +121,38 @@ public class MeasurementDetailsFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.measurement_details_fragment,container,false);
 
-        title_measurement = view.findViewById(R.id.title_measurement);
-        value_measurement = view.findViewById(R.id.value_measurement);
-        title_timestamp = view.findViewById(R.id.title_timestamp);
-        value_timestamp = view.findViewById(R.id.value_timestamp);
-        title_last_updated = view.findViewById(R.id.title_last_updated);
-        value_last_updated = view.findViewById(R.id.value_last_updated);
-        title_alarm_thresholds = view.findViewById(R.id.title_alarm_thresholds);
-        title_min_alarm_threshold = view.findViewById(R.id.title_min_alarm_threshold);
-        value_min_alarm_threshold = view.findViewById(R.id.value_min_alarm_threshold);
-        title_max_alarm_threshold = view.findViewById(R.id.title_max_alarm_threshold);
-        value_max_alarm_threshold = view.findViewById(R.id.value_max_alarm_threshold);
-        symbol_measurement_value = view.findViewById(R.id.symbol_measurement_value);
-        symbol_min_alarm_threshold = view.findViewById(R.id.symbol_min_alarm_threshold);
-        symbol_max_alarm_threshold = view.findViewById(R.id.symbol_max_alarm_threshold);
+        titleMeasurementOverview = view.findViewById(R.id.titleMeasurementOverview);
+        titleMeasurementHistory = view.findViewById(R.id.titleMeasurementHistory);
+        titleLatestMeasurementValue = view.findViewById(R.id.titleLatestMeasurementValue);
+        valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
+        titleTimestamp = view.findViewById(R.id.titleTimestamp);
+        valueTimestamp = view.findViewById(R.id.valueTimestamp);
+        titleLastUpdated = view.findViewById(R.id.titleLastUpdated);
+        valueLastUpdated = view.findViewById(R.id.valueLastUpdated);
+        titleAlarmThresholds = view.findViewById(R.id.titleAlarmThresholds);
+        titleMinAlarmThreshold = view.findViewById(R.id.titleMinAlarmThreshold);
+        valueMinAlarmThreshold = view.findViewById(R.id.valueMinAlarmThreshold);
+        titleMaxAlarmThreshold = view.findViewById(R.id.titleMaxAlarmThreshold);
+        valueMaxAlarmThreshold = view.findViewById(R.id.valueMaxAlarmThreshold);
+        symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
+        symbolMinAlarmThreshold = view.findViewById(R.id.symbolMinAlarmThreshold);
+        symbolMaxAlarmThreshold = view.findViewById(R.id.symbolMaxAlarmThreshold);
 
-        measurementDisplay = view.findViewById(R.id.measurementDisplay);
+        measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
+        measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
 
         openGraphBtn = view.findViewById(R.id.open_graph_btn);
         openSettingsBtn = view.findViewById(R.id.open_settings_btn);
 
+        btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
+        btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
+        btnShowHistory = view.findViewById(R.id.btnShowHistory);
+
+        toggleBtnMeasurementDisplay = view.findViewById(R.id.toggleBtnMeasurementDisplay);
+        toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+
+        toggleBtnMeasurementHistoryBtn = view.findViewById(R.id.toggleMeasurementHistoryBtn);
+        toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
 
         openGraphBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +171,90 @@ public class MeasurementDetailsFragment extends Fragment
                         Toast.LENGTH_LONG).show();
             }
         });
+
+        toggleBtnMeasurementDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    measurementOverviewDisplay.setVisibility(View.GONE);
+                    toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_down);
+                }
+
+                else
+                {
+                    measurementOverviewDisplay.setVisibility(View.VISIBLE);
+                    toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+                }
+            }
+        });
+
+        toggleBtnMeasurementHistoryBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    measurementHistoryDisplay.setVisibility(View.GONE);
+                    toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_down);
+                }
+
+                else
+                {
+                    measurementHistoryDisplay.setVisibility(View.VISIBLE);
+                    toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
+                }
+            }
+        });
+
+        btnOpenDialogDateTimeFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(getActivity(), "Clicked on set datetime from button",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnOpenDialogDateTimeTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(getActivity(), "Clicked on set datetime to button",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnShowHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(getActivity(), "Clicked on show history button",
+                        Toast.LENGTH_LONG).show();
+
+                toggleBtnMeasurementDisplay.setChecked(true);
+            }
+        });
+
+
+        //Return stored toggle button states after phone orientation has been changed
+        if(savedInstanceState != null)
+        {
+            toggleBtnMeasurementDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementDisplayBtn_state"));
+            toggleBtnMeasurementHistoryBtn.setChecked(savedInstanceState.getBoolean("toggleMeasurementHistoryBtn_state"));
+        }
+
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState)
+    {
+        //Save toggle button states when changing phone orientation
+        outState.putBoolean("toggleMeasurementDisplayBtn_state",toggleBtnMeasurementDisplay.isChecked());
+        outState.putBoolean("toggleMeasurementHistoryBtn_state",toggleBtnMeasurementHistoryBtn.isChecked());
+
+        super.onSaveInstanceState(outState);
     }
 }

@@ -2,6 +2,8 @@ package com.example.app_v1.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -66,9 +68,9 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
 
         //Dummy tab titles
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("25.5\u2103");
-        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("35%");
-        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650(ppm)");
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: 25.5 \u2103");
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: 35 %");
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650 ppm");
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this).get(MeasurementDetailsActivityViewModel.class);
         measurementDetailsActivityViewModel.initViewModel();
@@ -133,5 +135,33 @@ public class DashboardActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(tabIcons[0]);
+            Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
+
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: 25.5 \u2103");
+            Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: 35 %");
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650 ppm");
+        }
+
+        else if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            tabLayout.getTabAt(0).setIcon(null);
+            tabLayout.getTabAt(1).setIcon(null);
+            tabLayout.getTabAt(2).setIcon(null);
+
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setText("Temperature: 25.5 \u2103");
+            Objects.requireNonNull(tabLayout.getTabAt(1)).setText("Humidity: 35 %");
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setText("CO2: 650 ppm");
+        }
     }
 }
