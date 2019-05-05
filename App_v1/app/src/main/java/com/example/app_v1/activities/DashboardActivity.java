@@ -1,5 +1,6 @@
 package com.example.app_v1.activities;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Configuration;
@@ -12,6 +13,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ScrollView;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
@@ -29,22 +33,26 @@ public class DashboardActivity extends AppCompatActivity
     public TabLayout tabLayout;
     private SectionsPageAdapter sectionsPageAdapter;
     public ViewPager viewPager;
+    public ScrollView scrollView;
 
     private MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
     final int[] tabIcons = new int[]{R.drawable.tab_icon_temperature,R.drawable.tab_icon_humidity,R.drawable.tab_icon_co2};
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        scrollView = findViewById(R.id.scrollView);
+
         //Toolbar settings
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
-        getSupportActionBar().setSubtitle("Greenhouse: GH01");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard - GH01");
+        getSupportActionBar().setSubtitle("Last updated: " + getResources().getString(R.string.value_last_updated));
         /* set settings icon
         Drawable settingsIcon = ContextCompat.getDrawable(getApplicationContext(), R.drawable.icon_settings);
         toolbar.setOverflowIcon(settingsIcon);

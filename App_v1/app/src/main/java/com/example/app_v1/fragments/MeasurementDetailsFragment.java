@@ -33,8 +33,6 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView valueLatestMeasurement;
     protected TextView titleTimestamp;
     protected TextView valueTimestamp;
-    protected TextView titleLastUpdated;
-    protected TextView valueLastUpdated;
     protected TextView titleAlarmThresholds;
     protected TextView titleMinAlarmThreshold;
     protected TextView valueMinAlarmThreshold;
@@ -127,8 +125,6 @@ public class MeasurementDetailsFragment extends Fragment
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
         titleTimestamp = view.findViewById(R.id.titleTimestamp);
         valueTimestamp = view.findViewById(R.id.valueTimestamp);
-        titleLastUpdated = view.findViewById(R.id.titleLastUpdated);
-        valueLastUpdated = view.findViewById(R.id.valueLastUpdated);
         titleAlarmThresholds = view.findViewById(R.id.titleAlarmThresholds);
         titleMinAlarmThreshold = view.findViewById(R.id.titleMinAlarmThreshold);
         valueMinAlarmThreshold = view.findViewById(R.id.valueMinAlarmThreshold);
