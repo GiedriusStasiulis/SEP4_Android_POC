@@ -190,12 +190,12 @@ public class MeasurementDetailsFragment extends Fragment
                 int scrollY = scrollView.getScrollY(); // For ScrollView
                 // DO SOMETHING WITH THE SCROLL COORDINATES
 
-                if(scrollY > 390)
+                if(scrollY >= 400)
                 {
                     Toast.makeText(getActivity(), "Scroll position: " + scrollY,
                             Toast.LENGTH_LONG).show();
 
-                    scrollView.setEnabled(false);
+                   scrollView.scrollTo(0, 400);
                 }
             }
         });
