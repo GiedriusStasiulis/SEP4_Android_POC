@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -50,85 +52,21 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView symbolMaxAlarmThreshold;
     protected ConstraintLayout measurementOverviewDisplay;
     protected ConstraintLayout measurementHistoryDisplay;
-    protected ImageButton openGraphBtn;
-    protected ImageButton openSettingsBtn;
+    protected ImageButton openHistoryDialogBtn;
     protected Button btnOpenDialogDateTimeFrom;
     protected Button btnOpenDialogDateTimeTo;
     protected Button btnShowHistory;
     protected ToggleButton toggleBtnMeasurementDisplay;
     protected ToggleButton toggleBtnMeasurementHistoryBtn;
-
     public ScrollView scrollView;
-
     private RecyclerView measurementHistoryRecyclerView;
 
     protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
-    TemperatureRVAdapter temperatureRVAdapter;
+    private TemperatureRVAdapter temperatureRVAdapter;
+    private ArrayList<Temperature> temperatureHistory;
 
-    private ArrayList<Temperature> temperatureHistory = new ArrayList<>();
-
-    @Override
-    public void onCreate (@Nullable Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
-
-        measurementDetailsActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
-        {
-            @Override
-            public void onChanged(@Nullable Integer integer)
-            {
-                switch(integer)
-                {
-                    case 0:
-
-                        titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
-                        titleMeasurementHistory.setText(getResources().getString(R.string.title_temperature_history));
-                        valueLatestMeasurement.setText(getResources().getString(R.string.value_temperature));
-                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
-                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
-                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
-                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
-                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
-
-                        initTemperatureRecyclerView();
-
-                        break;
-
-                    case 1:
-
-                        titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
-                        titleMeasurementHistory.setText(getResources().getString(R.string.title_humidity_history));
-                        valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
-                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
-                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
-                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
-                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
-                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
-
-                        break;
-
-                    case 2:
-
-                        titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
-                        titleMeasurementHistory.setText(getResources().getString(R.string.title_co2_history));
-                        valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
-                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
-                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
-                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
-                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
-                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
-
-                        break;
-
-                        default:
-                            break;
-                }
-            }
-        });
-    }
+    private Parcelable rvState;
 
     private void initTemperatureRecyclerView()
     {
@@ -172,8 +110,7 @@ public class MeasurementDetailsFragment extends Fragment
         symbolMaxAlarmThreshold = view.findViewById(R.id.symbolMaxAlarmThreshold);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
-        openGraphBtn = view.findViewById(R.id.open_graph_btn);
-        openSettingsBtn = view.findViewById(R.id.open_settings_btn);
+        openHistoryDialogBtn = view.findViewById(R.id.openHistoryDialogBtn);
         btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
         btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
         btnShowHistory = view.findViewById(R.id.btnShowHistory);
@@ -181,53 +118,135 @@ public class MeasurementDetailsFragment extends Fragment
         toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
         toggleBtnMeasurementHistoryBtn = view.findViewById(R.id.toggleMeasurementHistoryBtn);
         toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
-
         scrollView = view.findViewById(R.id.scrollView);
-
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                int scrollY = scrollView.getScrollY(); // For ScrollView
-                // DO SOMETHING WITH THE SCROLL COORDINATES
-
-                if(scrollY >= 400)
-                {
-                    Toast.makeText(getActivity(), "Scroll position: " + scrollY,
-                            Toast.LENGTH_LONG).show();
-
-                   scrollView.scrollTo(0, 400);
-                }
-            }
-        });
 
         measurementHistoryRecyclerView = view.findViewById(R.id.measurementHistoryRecyclerView);
 
         initTemperatureRecyclerView();
 
+        measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
+
         measurementDetailsActivityViewModel.getTemperatureDataInRange().observe(this, new Observer<ArrayList<Temperature>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Temperature> temperatures)
             {
-                temperatureRVAdapter.clearItems();
-                temperatureRVAdapter.setItems(temperatures);
+                temperatureHistory = new ArrayList<>();
+                temperatureHistory.addAll(temperatures);
             }
         });
 
-        openGraphBtn.setOnClickListener(new View.OnClickListener() {
+        measurementDetailsActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
+        {
             @Override
-            public void onClick(View view)
+            public void onChanged(@Nullable Integer integer)
             {
-                Toast.makeText(getActivity(), "Clicked on graph button",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+                switch(integer)
+                {
+                    case 0:
 
-        openSettingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Toast.makeText(getActivity(), "Clicked on settings button",
-                        Toast.LENGTH_LONG).show();
+                        titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
+                        titleMeasurementHistory.setText(getResources().getString(R.string.title_temperature_history));
+                        valueLatestMeasurement.setText(getResources().getString(R.string.value_temperature));
+                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
+                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
+                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
+                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
+                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
+
+                        initTemperatureRecyclerView();
+
+                        btnShowHistory.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Toast.makeText(getActivity(), "Clicked on show temperature history button",
+                                        Toast.LENGTH_LONG).show();
+
+                                temperatureRVAdapter.clearItems();
+                                temperatureRVAdapter.setItems(temperatureHistory);
+                            }
+                        });
+
+                        openHistoryDialogBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Toast.makeText(getActivity(), "Clicked on open temperature history button",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        break;
+
+                    case 1:
+
+                        titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
+                        titleMeasurementHistory.setText(getResources().getString(R.string.title_humidity_history));
+                        valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
+                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
+                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
+                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
+                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
+                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
+
+                        btnShowHistory.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Toast.makeText(getActivity(), "Clicked on show humidity history button",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        openHistoryDialogBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Toast.makeText(getActivity(), "Clicked on open humidity history button",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        break;
+
+                    case 2:
+
+                        titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
+                        titleMeasurementHistory.setText(getResources().getString(R.string.title_co2_history));
+                        valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
+                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
+                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
+                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
+                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
+                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
+
+                        btnShowHistory.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Toast.makeText(getActivity(), "Clicked on show CO2 history button",
+                                        Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+
+                        openHistoryDialogBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Toast.makeText(getActivity(), "Clicked on open CO2 history button",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        break;
+
+                    default:
+                        break;
+                }
             }
         });
 
@@ -256,12 +275,14 @@ public class MeasurementDetailsFragment extends Fragment
                 if(isChecked)
                 {
                     measurementHistoryDisplay.setVisibility(View.GONE);
+                    measurementHistoryRecyclerView.setVisibility(View.GONE);
                     toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_down);
                 }
 
                 else
                 {
                     measurementHistoryDisplay.setVisibility(View.VISIBLE);
+                    measurementHistoryRecyclerView.setVisibility(View.VISIBLE);
                     toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
                 }
             }
@@ -284,19 +305,6 @@ public class MeasurementDetailsFragment extends Fragment
                         Toast.LENGTH_LONG).show();
             }
         });
-
-        btnShowHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Toast.makeText(getActivity(), "Clicked on show history button",
-                        Toast.LENGTH_LONG).show();
-
-                //toggleBtnMeasurementDisplay.setChecked(true);
-                scrollView.scrollTo(0,390);
-            }
-        });
-
 
         //Return stored toggle button states after phone orientation has been changed
         if(savedInstanceState != null)
