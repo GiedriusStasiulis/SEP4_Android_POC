@@ -33,7 +33,6 @@ public class DashboardActivity extends AppCompatActivity
     public TabLayout tabLayout;
     private SectionsPageAdapter sectionsPageAdapter;
     public ViewPager viewPager;
-    public ScrollView scrollView;
 
     private MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
@@ -45,8 +44,6 @@ public class DashboardActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        scrollView = findViewById(R.id.scrollView);
 
         //Toolbar settings
         toolbar = findViewById(R.id.toolbar);

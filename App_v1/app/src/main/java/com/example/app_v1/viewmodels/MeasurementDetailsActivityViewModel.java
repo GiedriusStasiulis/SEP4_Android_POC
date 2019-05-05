@@ -27,6 +27,7 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
     {
         repo = Repository.getInstance();
         selectedTabIndex.setValue(0);
+        repo.addDummyTemps();
     }
 
     public void setSelectedTabIndex(Integer index)
@@ -37,5 +38,10 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
     public MutableLiveData<Integer> getSelectedTabIndex()
     {
         return selectedTabIndex;
+    }
+
+    public LiveData<ArrayList<Temperature>> getTemperatureDataInRange()
+    {
+        return repo.getTemperatureDataInRange();
     }
 }

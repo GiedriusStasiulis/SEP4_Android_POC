@@ -1,6 +1,8 @@
 package com.example.app_v1.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Greenhouse;
 import com.example.app_v1.models.Humidity;
@@ -13,12 +15,14 @@ public class Repository
     private static Repository instance;
 
     private LiveData<ArrayList<Greenhouse>> greenhouses;
-    private LiveData<Temperature> latestTemperature;
+    private MutableLiveData<Temperature> latestTemperature = new MutableLiveData<>();
     private LiveData<Humidity> latestHumidity;
     private LiveData<Co2> latestCo2;
-    private LiveData<ArrayList<Temperature>> temperatureDataInRange;
+    private MutableLiveData<ArrayList<Temperature>> temperatureDataInRange = new MutableLiveData<>();
     private LiveData<ArrayList<Humidity>> humidityDataInRange;
     private LiveData<ArrayList<Co2>> co2DataInRange;
+
+    ArrayList<Temperature> temperatures = new ArrayList<>();
 
     public static Repository getInstance()
     {
@@ -26,6 +30,7 @@ public class Repository
         {
             instance = new Repository();
         }
+
         return instance;
     }
 
@@ -62,5 +67,53 @@ public class Repository
     public LiveData<ArrayList<Co2>> getCo2DataInRange(String greenhouseId, Timestamp dateTimeFrom, Timestamp dateTimeTo)
     {
         return this.co2DataInRange;
+    }
+
+    public void addDummyTemps()
+    {
+        Temperature temp = new Temperature("25.7","12:00 / 05-May-19");
+        Temperature temp2 = new Temperature("24.7","11:50 / 05-May-19");
+        Temperature temp3 = new Temperature("25.2","11:40 / 05-May-19");
+        Temperature temp4 = new Temperature("26.4","11:30 / 05-May-19");
+        Temperature temp5 = new Temperature("26.6","11:20 / 05-May-19");
+        Temperature temp6 = new Temperature("28.7","11:10 / 05-May-19");
+        Temperature temp7 = new Temperature("24.3","11:00 / 05-May-19");
+        Temperature temp8 = new Temperature("26.9","10:50 / 05-May-19");
+        Temperature temp9 = new Temperature("25.5","10:40 / 05-May-19");
+        Temperature temp10 = new Temperature("25.7","10:30 / 05-May-19");
+        Temperature temp11 = new Temperature("24.7","10:20 / 05-May-19");
+        Temperature temp12 = new Temperature("25.2","10:10 / 05-May-19");
+        Temperature temp13 = new Temperature("26.4","10:00 / 05-May-19");
+        Temperature temp14 = new Temperature("26.6","09:50 / 05-May-19");
+        Temperature temp15 = new Temperature("28.7","09:40 / 05-May-19");
+        Temperature temp16 = new Temperature("24.3","09:30 / 05-May-19");
+        Temperature temp17 = new Temperature("26.9","09:20 / 05-May-19");
+        Temperature temp18 = new Temperature("25.5","09:10 / 05-May-19");
+        Temperature temp19 = new Temperature("26.5","09:00 / 05-May-19");
+        Temperature temp20 = new Temperature("27.5","08:50 / 05-May-19");
+
+        temperatures.add(temp);
+        temperatures.add(temp2);
+        temperatures.add(temp3);
+        temperatures.add(temp4);
+        temperatures.add(temp5);
+        temperatures.add(temp6);
+        temperatures.add(temp7);
+        temperatures.add(temp8);
+        temperatures.add(temp9);
+        temperatures.add(temp10);
+        temperatures.add(temp11);
+        temperatures.add(temp12);
+        temperatures.add(temp13);
+        temperatures.add(temp14);
+        temperatures.add(temp15);
+        temperatures.add(temp16);
+        temperatures.add(temp17);
+        temperatures.add(temp18);
+        temperatures.add(temp19);
+        temperatures.add(temp20);
+
+        temperatureDataInRange.setValue(temperatures);
+        latestTemperature.setValue(temperatures.get(0));
     }
 }

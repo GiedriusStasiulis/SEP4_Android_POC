@@ -1,27 +1,34 @@
 package com.example.app_v1.fragments;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.app_v1.R;
+import com.example.app_v1.adapters.TemperatureRVAdapter;
+import com.example.app_v1.models.Temperature;
 import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
+
+import java.util.ArrayList;
 
 public class MeasurementDetailsFragment extends Fragment
 {
@@ -41,21 +48,25 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView symbolMeasurementValue;
     protected TextView symbolMinAlarmThreshold;
     protected TextView symbolMaxAlarmThreshold;
-
     protected ConstraintLayout measurementOverviewDisplay;
     protected ConstraintLayout measurementHistoryDisplay;
-
     protected ImageButton openGraphBtn;
     protected ImageButton openSettingsBtn;
-
     protected Button btnOpenDialogDateTimeFrom;
     protected Button btnOpenDialogDateTimeTo;
     protected Button btnShowHistory;
-
     protected ToggleButton toggleBtnMeasurementDisplay;
     protected ToggleButton toggleBtnMeasurementHistoryBtn;
 
+    public ScrollView scrollView;
+
+    private RecyclerView measurementHistoryRecyclerView;
+
     protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
+
+    TemperatureRVAdapter temperatureRVAdapter;
+
+    private ArrayList<Temperature> temperatureHistory = new ArrayList<>();
 
     @Override
     public void onCreate (@Nullable Bundle savedInstanceState)
@@ -63,6 +74,7 @@ public class MeasurementDetailsFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
+
         measurementDetailsActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override
@@ -71,6 +83,7 @@ public class MeasurementDetailsFragment extends Fragment
                 switch(integer)
                 {
                     case 0:
+
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
                         titleMeasurementHistory.setText(getResources().getString(R.string.title_temperature_history));
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_temperature));
@@ -80,9 +93,12 @@ public class MeasurementDetailsFragment extends Fragment
                         symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
                         symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
 
+                        initTemperatureRecyclerView();
+
                         break;
 
                     case 1:
+
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
                         titleMeasurementHistory.setText(getResources().getString(R.string.title_humidity_history));
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
@@ -95,6 +111,7 @@ public class MeasurementDetailsFragment extends Fragment
                         break;
 
                     case 2:
+
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
                         titleMeasurementHistory.setText(getResources().getString(R.string.title_co2_history));
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
@@ -113,6 +130,26 @@ public class MeasurementDetailsFragment extends Fragment
         });
     }
 
+    private void initTemperatureRecyclerView()
+    {
+        temperatureRVAdapter = new TemperatureRVAdapter(getActivity());
+
+        measurementHistoryRecyclerView.hasFixedSize();
+        measurementHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        measurementHistoryRecyclerView.setAdapter(temperatureRVAdapter);
+    }
+
+    private void initHumidityRecyclerView()
+    {
+
+    }
+
+    private void initCO2RecyclerView()
+    {
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -133,22 +170,48 @@ public class MeasurementDetailsFragment extends Fragment
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         symbolMinAlarmThreshold = view.findViewById(R.id.symbolMinAlarmThreshold);
         symbolMaxAlarmThreshold = view.findViewById(R.id.symbolMaxAlarmThreshold);
-
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
-
         openGraphBtn = view.findViewById(R.id.open_graph_btn);
         openSettingsBtn = view.findViewById(R.id.open_settings_btn);
-
         btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
         btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
         btnShowHistory = view.findViewById(R.id.btnShowHistory);
-
         toggleBtnMeasurementDisplay = view.findViewById(R.id.toggleBtnMeasurementDisplay);
         toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
-
         toggleBtnMeasurementHistoryBtn = view.findViewById(R.id.toggleMeasurementHistoryBtn);
         toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
+
+        scrollView = view.findViewById(R.id.scrollView);
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollY = scrollView.getScrollY(); // For ScrollView
+                // DO SOMETHING WITH THE SCROLL COORDINATES
+
+                if(scrollY > 390)
+                {
+                    Toast.makeText(getActivity(), "Scroll position: " + scrollY,
+                            Toast.LENGTH_LONG).show();
+
+                    scrollView.setEnabled(false);
+                }
+            }
+        });
+
+        measurementHistoryRecyclerView = view.findViewById(R.id.measurementHistoryRecyclerView);
+
+        initTemperatureRecyclerView();
+
+        measurementDetailsActivityViewModel.getTemperatureDataInRange().observe(this, new Observer<ArrayList<Temperature>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Temperature> temperatures)
+            {
+                temperatureRVAdapter.clearItems();
+                temperatureRVAdapter.setItems(temperatures);
+            }
+        });
 
         openGraphBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +292,8 @@ public class MeasurementDetailsFragment extends Fragment
                 Toast.makeText(getActivity(), "Clicked on show history button",
                         Toast.LENGTH_LONG).show();
 
-                toggleBtnMeasurementDisplay.setChecked(true);
+                //toggleBtnMeasurementDisplay.setChecked(true);
+                scrollView.scrollTo(0,390);
             }
         });
 
