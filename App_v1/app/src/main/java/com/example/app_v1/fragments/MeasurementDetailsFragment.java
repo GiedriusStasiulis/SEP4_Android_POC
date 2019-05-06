@@ -41,8 +41,10 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView titleMeasurementHistory;
     protected TextView titleLatestMeasurementValue;
     protected TextView valueLatestMeasurement;
-    protected TextView titleTimestamp;
-    protected TextView valueTimestamp;
+    protected TextView titleMeasurementTime;
+    protected TextView titleMeasurementDate;
+    protected TextView valueMeasurementTime;
+    protected TextView valueMeasurementDate;
     protected TextView titleAlarmThresholds;
     protected TextView titleMinAlarmThreshold;
     protected TextView valueMinAlarmThreshold;
@@ -99,8 +101,10 @@ public class MeasurementDetailsFragment extends Fragment
         titleMeasurementHistory = view.findViewById(R.id.titleMeasurementHistory);
         titleLatestMeasurementValue = view.findViewById(R.id.titleLatestMeasurementValue);
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
-        titleTimestamp = view.findViewById(R.id.titleTimestamp);
-        valueTimestamp = view.findViewById(R.id.valueTimestamp);
+        titleMeasurementTime = view.findViewById(R.id.titleMeasurementTime);
+        titleMeasurementDate = view.findViewById(R.id.titleMeasurementDate);
+        valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
+        valueMeasurementDate = view.findViewById(R.id.valueMeasurementDate);
         titleAlarmThresholds = view.findViewById(R.id.titleAlarmThresholds);
         titleMinAlarmThreshold = view.findViewById(R.id.titleMinAlarmThreshold);
         valueMinAlarmThreshold = view.findViewById(R.id.valueMinAlarmThreshold);
@@ -128,7 +132,8 @@ public class MeasurementDetailsFragment extends Fragment
         measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
 
         try {
-            measurementDetailsActivityViewModel.getLatestTemperatures().observe(this, new Observer<ArrayList<Temperature>>() {
+            measurementDetailsActivityViewModel.getLatestTemperatures().observe(this, new Observer<ArrayList<Temperature>>()
+            {
                 @Override
                 public void onChanged(@Nullable ArrayList<Temperature> temperatures)
                 {
@@ -149,9 +154,19 @@ public class MeasurementDetailsFragment extends Fragment
                 {
                     case 0:
 
+                        measurementDetailsActivityViewModel.getLatestTemperature().observe(getActivity(), new Observer<Temperature>()
+                        {
+                            @Override
+                            public void onChanged(@Nullable Temperature temperature)
+                            {
+                                valueLatestMeasurement.setText(temperature.getTemperature());
+                                valueMeasurementTime.setText(temperature.getTime());
+                                valueMeasurementDate.setText(temperature.getDate());
+                            }
+                        });
+
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
                         titleMeasurementHistory.setText(getResources().getString(R.string.title_temperature_history));
-                        valueLatestMeasurement.setText(getResources().getString(R.string.value_temperature));
                         valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
                         valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));

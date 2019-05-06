@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public class DTimeFormatHelper
 {
-    public static String getTimeFromTimestamp(final String timestampISO8601) throws ParseException
+    public static String getTimeFromISO8601Timestamp(final String timestampISO8601) throws ParseException
     {
         String s = timestampISO8601.replace("Z","+00:00");
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
@@ -17,7 +17,7 @@ public class DTimeFormatHelper
         return df.format(date);
     }
 
-    public static String getDateFromTimestamp(final String timestampISO8601) throws ParseException
+    public static String getDateFromISO8601Timestamp(final String timestampISO8601) throws ParseException
     {
         String s = timestampISO8601.replace("Z","+00:00");
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);

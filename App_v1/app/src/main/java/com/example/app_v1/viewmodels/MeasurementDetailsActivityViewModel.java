@@ -7,15 +7,8 @@ import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.Repository;
 import com.example.app_v1.utils.DTimeFormatHelper;
-
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class MeasurementDetailsActivityViewModel extends ViewModel
 {
@@ -24,8 +17,10 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
 
     private ArrayList<Measurement> latestMeasurements = new ArrayList<>();
-    private ArrayList<Temperature> latestTemperatures = new ArrayList<>();
-    private MutableLiveData<ArrayList<Temperature>> latestTemperaturesLd = new MutableLiveData<>();
+
+    private ArrayList<Temperature> latestTemperaturesArrList = new ArrayList<>();
+    private MutableLiveData<ArrayList<Temperature>> latestTemperatures = new MutableLiveData<>();
+    private MutableLiveData<Temperature> latestTemperature = new MutableLiveData<>();
 
     public void initViewModel()
     {
@@ -44,6 +39,12 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         return selectedTabIndex;
     }
 
+    public LiveData<Temperature> getLatestTemperature()
+    {
+        latestTemperature.setValue(latestTemperatures.getValue().get(0));
+        return latestTemperature;
+    }
+
     public LiveData<ArrayList<Temperature>> getLatestTemperatures() throws ParseException
     {
         latestMeasurements.clear();
@@ -52,14 +53,14 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         for(int i = 0; i < latestMeasurements.size(); i++)
         {
             Temperature temperature = new Temperature(latestMeasurements.get(i).getTemperature());
-            String time = DTimeFormatHelper.getTimeFromTimestamp(latestMeasurements.get(i).getTimeStamp());
-            String date = DTimeFormatHelper.getDateFromTimestamp(latestMeasurements.get(i).getTimeStamp());
+            String time = DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurements.get(i).getTimeStamp());
+            String date = DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurements.get(i).getTimeStamp());
             temperature.setTime(time);
             temperature.setDate(date);
 
-            latestTemperatures.add(temperature);
+            latestTemperaturesArrList.add(temperature);
         }
-        latestTemperaturesLd.setValue(latestTemperatures);
-        return latestTemperaturesLd;
+        latestTemperatures.setValue(latestTemperaturesArrList);
+        return latestTemperatures;
     }
 }

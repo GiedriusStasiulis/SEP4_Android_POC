@@ -1,11 +1,9 @@
 package com.example.app_v1.models;
 
 import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 public class Measurement implements Serializable
 {

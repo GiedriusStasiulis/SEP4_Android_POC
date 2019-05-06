@@ -100,12 +100,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/titleLatestMeasurementValue" />
 
                     <TextView
-                        android:id="@+id/titleTimestamp"
+                        android:id="@+id/titleMeasurementTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="72dp"
-                        android:text="@string/title_timestamp"
+                        android:text="@string/title_measurement_time"
                         android:includeFontPadding="false"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -113,17 +113,44 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/valueTimestamp"
+                        android:id="@+id/valueMeasurementTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="4dp"
                         android:layout_marginTop="72dp"
-                        android:text="@string/value_timestamp"
+                        android:text="@string/value_measurement_time"
                         android:includeFontPadding="false"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/titleTimestamp"
+                        app:layout_constraintStart_toEndOf="@+id/titleMeasurementTime"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/titleMeasurementDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="72dp"
+                        android:includeFontPadding="false"
+                        android:text="@string/title_measurement_date"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/valueMeasurementTime"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/valueMeasurementDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="72dp"
+                        android:includeFontPadding="false"
+                        android:text="@string/value_measurement_date"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/titleMeasurementDate"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -238,6 +265,9 @@
                         android:src="@drawable/icon_measurement_history"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
                 </android.support.constraint.ConstraintLayout>
 
