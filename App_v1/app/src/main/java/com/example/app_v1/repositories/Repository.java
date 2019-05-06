@@ -42,7 +42,6 @@ public class Repository
         return this.latestMeasurements;
     }
 
-
     public void addDummyMeasurements()
     {
         Measurement mes1 = new Measurement("25.6", "56", "643", "2019-05-05T09:45:00Z");

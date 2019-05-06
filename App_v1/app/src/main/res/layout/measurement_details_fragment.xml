@@ -335,6 +335,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
                 app:layout_constraintVertical_bias="0.0">
 
+<<<<<<< Updated upstream
                 <com.jjoe64.graphview.GraphView
                     android:id="@+id/graphView"
                     android:layout_width="match_parent"
@@ -345,6 +346,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@color/lightGray"/>
 
+=======
+>>>>>>> Stashed changes
 
             </android.support.constraint.ConstraintLayout>
 

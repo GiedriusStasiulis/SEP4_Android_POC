@@ -18,7 +18,7 @@
     <string name="value_measurement_time">12:05:00"</string>
     <string name="value_measurement_date">03-May-19</string>
     <string name="title_last_updated">Last updated:</string>
-    <string name="value_last_updated">12:42 / 03-May-2019</string>
+    <string name="value_last_updated">12:42/03-May-19</string>
     <string name="title_alarm_thresholds">Alarm thresholds:</string>
     <string name="title_min_alarm_threshold">Min:</string>
     <string name="title_max_alarm_threshold">Max:</string>
