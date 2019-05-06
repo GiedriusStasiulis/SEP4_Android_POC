@@ -16,7 +16,8 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
 
-    private ArrayList<Measurement> latestMeasurements = new ArrayList<>();
+    private ArrayList<Measurement> latestMeasurementsArrList = new ArrayList<>();
+    private MutableLiveData<Measurement> latestMeasurement = new MutableLiveData<>();
 
     private ArrayList<Temperature> latestTemperaturesArrList = new ArrayList<>();
     private MutableLiveData<ArrayList<Temperature>> latestTemperatures = new MutableLiveData<>();
@@ -39,6 +40,11 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         return selectedTabIndex;
     }
 
+    public LiveData<Measurement> getLatestMeasurement()
+    {
+        return repo.getLatestMeasurement();
+    }
+
     public LiveData<Temperature> getLatestTemperature()
     {
         latestTemperature.setValue(latestTemperatures.getValue().get(0));
@@ -47,14 +53,14 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
 
     public LiveData<ArrayList<Temperature>> getLatestTemperatures() throws ParseException
     {
-        latestMeasurements.clear();
-        latestMeasurements = repo.getLatestMeasurements().getValue();
+        latestMeasurementsArrList.clear();
+        latestMeasurementsArrList = repo.getLatestMeasurements().getValue();
 
-        for(int i = 0; i < latestMeasurements.size(); i++)
+        for(int i = 0; i < latestMeasurementsArrList.size(); i++)
         {
-            Temperature temperature = new Temperature(latestMeasurements.get(i).getTemperature());
-            String time = DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurements.get(i).getTimeStamp());
-            String date = DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurements.get(i).getTimeStamp());
+            Temperature temperature = new Temperature(latestMeasurementsArrList.get(i).getTemperature());
+            String time = DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp());
+            String date = DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp());
             temperature.setTime(time);
             temperature.setDate(date);
 

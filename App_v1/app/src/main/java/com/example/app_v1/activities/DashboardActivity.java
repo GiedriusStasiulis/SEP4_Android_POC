@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
 import com.example.app_v1.fragments.MeasurementDetailsFragment;
+import com.example.app_v1.models.Measurement;
 import com.example.app_v1.old.ApiClientTestViewModel;
 import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
 
@@ -73,12 +74,26 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
 
         //Dummy tab titles
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: 25.5 \u2103");
-        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: 35 %");
-        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650 ppm");
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: -.- \u2103");
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: -.- %");
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("--- ppm");
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this).get(MeasurementDetailsActivityViewModel.class);
         measurementDetailsActivityViewModel.initViewModel();
+
+        measurementDetailsActivityViewModel.getLatestMeasurement().observe(this, new Observer<Measurement>() {
+            @Override
+            public void onChanged(@Nullable Measurement measurement)
+            {
+                Objects.requireNonNull(tabLayout.getTabAt(0)).setText("");
+                Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
+                Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
+
+                Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurement.getTemperature()));
+                Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurement.getHumidity()));
+                Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurement.getcO2()));
+            }
+        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
         {
