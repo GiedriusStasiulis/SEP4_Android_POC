@@ -254,7 +254,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/valueMinAlarmThreshold" />
 
                     <ImageButton
-                        android:id="@+id/openHistoryDialogBtn"
+                        android:id="@+id/btnOpenHistoryDialog"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

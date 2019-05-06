@@ -33,8 +33,8 @@
     <string name="symbol_co2">ppm</string>
     <string name="title_select_datetime_from">Select from:</string>
     <string name="title_select_datetime_to">Select to:</string>
-    <string name="value_select_datetime_from">02-May-19 12:00</string>
-    <string name="value_select_datetime_to">04-May-19 12:00</string>
+    <string name="value_select_datetime_from">12:00 02-May-19 </string>
+    <string name="value_select_datetime_to">12:00 04-May-19</string>
     <string name="title_button_filter">Show</string>
 
     <!-- Greenhouse Select -->

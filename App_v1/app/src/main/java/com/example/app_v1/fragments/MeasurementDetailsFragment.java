@@ -39,23 +39,17 @@ public class MeasurementDetailsFragment extends Fragment
 
     protected TextView titleMeasurementOverview;
     protected TextView titleMeasurementHistory;
-    protected TextView titleLatestMeasurementValue;
     protected TextView valueLatestMeasurement;
-    protected TextView titleMeasurementTime;
-    protected TextView titleMeasurementDate;
     protected TextView valueMeasurementTime;
     protected TextView valueMeasurementDate;
-    protected TextView titleAlarmThresholds;
-    protected TextView titleMinAlarmThreshold;
     protected TextView valueMinAlarmThreshold;
-    protected TextView titleMaxAlarmThreshold;
     protected TextView valueMaxAlarmThreshold;
     protected TextView symbolMeasurementValue;
     protected TextView symbolMinAlarmThreshold;
     protected TextView symbolMaxAlarmThreshold;
     protected ConstraintLayout measurementOverviewDisplay;
     protected ConstraintLayout measurementHistoryDisplay;
-    protected ImageButton openHistoryDialogBtn;
+    protected ImageButton btnOpenHistoryDialog;
     protected Button btnOpenDialogDateTimeFrom;
     protected Button btnOpenDialogDateTimeTo;
     protected Button btnShowHistory;
@@ -99,23 +93,17 @@ public class MeasurementDetailsFragment extends Fragment
 
         titleMeasurementOverview = view.findViewById(R.id.titleMeasurementOverview);
         titleMeasurementHistory = view.findViewById(R.id.titleMeasurementHistory);
-        titleLatestMeasurementValue = view.findViewById(R.id.titleLatestMeasurementValue);
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
-        titleMeasurementTime = view.findViewById(R.id.titleMeasurementTime);
-        titleMeasurementDate = view.findViewById(R.id.titleMeasurementDate);
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
         valueMeasurementDate = view.findViewById(R.id.valueMeasurementDate);
-        titleAlarmThresholds = view.findViewById(R.id.titleAlarmThresholds);
-        titleMinAlarmThreshold = view.findViewById(R.id.titleMinAlarmThreshold);
         valueMinAlarmThreshold = view.findViewById(R.id.valueMinAlarmThreshold);
-        titleMaxAlarmThreshold = view.findViewById(R.id.titleMaxAlarmThreshold);
         valueMaxAlarmThreshold = view.findViewById(R.id.valueMaxAlarmThreshold);
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         symbolMinAlarmThreshold = view.findViewById(R.id.symbolMinAlarmThreshold);
         symbolMaxAlarmThreshold = view.findViewById(R.id.symbolMaxAlarmThreshold);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
-        openHistoryDialogBtn = view.findViewById(R.id.openHistoryDialogBtn);
+        btnOpenHistoryDialog = view.findViewById(R.id.btnOpenHistoryDialog);
         btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
         btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
         btnShowHistory = view.findViewById(R.id.btnShowHistory);
@@ -188,7 +176,7 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
-                        openHistoryDialogBtn.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
@@ -220,7 +208,7 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
-                        openHistoryDialogBtn.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
@@ -253,7 +241,7 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
-                        openHistoryDialogBtn.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
