@@ -16,11 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-<<<<<<< HEAD
+
         <activity android:name=".LogInActivity"></activity>
-=======
+
         <activity android:name=".activities.LogInActivity"></activity>
->>>>>>> 620da2d4f7ce9405d74f8028e1e72bec86129b15
+
         <activity
             android:name=".activities.DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

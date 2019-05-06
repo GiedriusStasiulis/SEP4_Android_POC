@@ -4,11 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
-    tools:context=".LogInActivity">
-=======
     tools:context=".activities.LogInActivity">
->>>>>>> 620da2d4f7ce9405d74f8028e1e72bec86129b15
+
 
     <Button
         android:id="@+id/log_in_button"

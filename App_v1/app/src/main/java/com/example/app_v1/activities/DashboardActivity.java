@@ -50,7 +50,7 @@ public class DashboardActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard - GH01");
-        getSupportActionBar().setSubtitle("Last updated: " + getResources().getString(R.string.value_last_updated));
+        getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
         /* set settings icon
         Drawable settingsIcon = ContextCompat.getDrawable(getApplicationContext(), R.drawable.icon_settings);
         toolbar.setOverflowIcon(settingsIcon);
