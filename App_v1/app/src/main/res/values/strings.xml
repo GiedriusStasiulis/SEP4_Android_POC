@@ -42,5 +42,10 @@
     <string name="gs_text_explainer">Select the greenhouse you want to manage from the dropdown below:</string>
     <string name="gs_button_go">Go</string>
 
+    <!--Log In-->
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in_button">Log In</string>
 
 </resources>
