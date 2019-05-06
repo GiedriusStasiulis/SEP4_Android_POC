@@ -30,10 +30,11 @@ public class Repository
         return this.greenhouses;
     }
 
-    public MutableLiveData<ArrayList<Measurement>> getMeasurements()
+    public LiveData<ArrayList<Measurement>> getLatestMeasurements()
     {
         return this.measurements;
     }
+
 
     public void addDummyMeasurements()
     {

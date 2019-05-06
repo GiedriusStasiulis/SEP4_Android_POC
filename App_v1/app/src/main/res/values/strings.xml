@@ -15,6 +15,8 @@
     <string name="value_co2">650</string>
     <string name="title_timestamp">Timestamp:</string>
     <string name="value_timestamp">12:35 / 03-May-2019</string>
+    <string name="value_measurement_time">12:35</string>
+    <string name="value_measurement_date">03-May-2019</string>
     <string name="title_last_updated">Last updated:</string>
     <string name="value_last_updated">12:42 / 03-May-2019</string>
     <string name="title_alarm_thresholds">Alarm thresholds:</string>

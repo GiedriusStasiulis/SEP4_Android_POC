@@ -9,35 +9,59 @@ import java.sql.Timestamp;
 
 public class Temperature implements Serializable
 {
-    private String tempValue;
-    private String dateTime;
+    private String temperature;
+    private String time;
+    private String date;
 
-    public Temperature(String tempValue, String dateTime) {
-        this.tempValue = tempValue;
-        this.dateTime = dateTime;
+    public Temperature(String temperature)
+    {
+        this.temperature = temperature;
     }
 
-    public String getTempValue() {
-        return tempValue;
+    public Temperature(String temperature, String time, String date)
+    {
+        this.temperature = temperature;
+        this.time = time;
+        this.date = date;
     }
 
-    public void setTempValue(String tempValue) {
-        this.tempValue = tempValue;
+    public String getTemperature()
+    {
+        return temperature;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public void setTemperature(String temperature)
+    {
+        this.temperature = temperature;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public String getTime()
+    {
+        return time;
+    }
+
+    public void setTime(String time)
+    {
+        this.time = time;
+    }
+
+    public String getDate()
+    {
+        return date;
+    }
+
+    public void setDate(String date)
+    {
+        this.date = date;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Temperature{" +
-                "tempValue='" + tempValue + '\'' +
-                ", dateTime='" + dateTime + '\'' +
+                "temperature='" + temperature + '\'' +
+                ", time='" + time + '\'' +
+                ", date='" + date + '\'' +
                 '}';
     }
 }

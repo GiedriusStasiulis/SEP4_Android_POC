@@ -34,11 +34,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/measurementRVItemTimestamp"
+        android:id="@+id/measurementRVItemTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/value_measurement_time"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/measurementRVItemDate"
+        app:layout_constraintStart_toEndOf="@+id/measurementRVItemSymbol"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/measurementRVItemDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="@string/value_timestamp"
+        android:text="@string/value_measurement_date"
         android:textColor="@color/black"
         android:textSize="23sp"
         android:fontFamily="sans-serif-light"

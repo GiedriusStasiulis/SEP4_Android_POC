@@ -37,6 +37,7 @@ public class ApiClientTestWithRepository
 
     public MutableLiveData<Temperature> getLastTemperature()
     {
+        /*
         final IAndroidWebApiClient apiClient = AndroidWebApiClient.getRetrofitClient().create(IAndroidWebApiClient.class);
 
         scheduler.scheduleAtFixedRate(new Runnable() {
@@ -56,8 +57,8 @@ public class ApiClientTestWithRepository
                             Log.d("OnSuccess", "onResponse: " + response.toString());
 
                             assert response.body() != null;
-                            String temp = response.body().getTempValue();
-                            String dTime = response.body().getDateTime();
+                            String temp = response.body().getTemperature();
+                            String dTime = response.body().getDate();
 
                             tempObj = new Temperature(temp,dTime);
 
@@ -74,7 +75,7 @@ public class ApiClientTestWithRepository
                 });
             }
         },0,5, TimeUnit.SECONDS);
-
+         */
         return data;
     }
 }

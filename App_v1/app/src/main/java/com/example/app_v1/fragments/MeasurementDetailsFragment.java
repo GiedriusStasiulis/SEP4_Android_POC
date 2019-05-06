@@ -30,6 +30,7 @@ import com.example.app_v1.adapters.TemperatureRVAdapter;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MeasurementDetailsFragment extends Fragment
@@ -126,14 +127,18 @@ public class MeasurementDetailsFragment extends Fragment
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
 
-        measurementDetailsActivityViewModel.getLatestTemperatures().observe(this, new Observer<ArrayList<Temperature>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<Temperature> temperatures)
-            {
-                temperatureHistory = new ArrayList<>();
-                temperatureHistory.addAll(temperatures);
-            }
-        });
+        try {
+            measurementDetailsActivityViewModel.getLatestTemperatures().observe(this, new Observer<ArrayList<Temperature>>() {
+                @Override
+                public void onChanged(@Nullable ArrayList<Temperature> temperatures)
+                {
+                    temperatureHistory = new ArrayList<>();
+                    temperatureHistory.addAll(temperatures);
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         measurementDetailsActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
