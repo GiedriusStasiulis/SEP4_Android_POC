@@ -3,6 +3,7 @@ package com.example.app_v1.fragments;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -29,6 +30,9 @@ import com.example.app_v1.R;
 import com.example.app_v1.adapters.TemperatureRVAdapter;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -57,6 +61,7 @@ public class MeasurementDetailsFragment extends Fragment
     protected ToggleButton toggleBtnMeasurementHistoryBtn;
     public ScrollView scrollView;
     private RecyclerView measurementHistoryRecyclerView;
+    private GraphView graph;
 
     protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
@@ -104,9 +109,9 @@ public class MeasurementDetailsFragment extends Fragment
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
         btnOpenHistoryDialog = view.findViewById(R.id.btnOpenHistoryDialog);
-        btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
-        btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
-        btnShowHistory = view.findViewById(R.id.btnShowHistory);
+        //btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
+        //btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
+        //btnShowHistory = view.findViewById(R.id.btnShowHistory);
         toggleBtnMeasurementDisplay = view.findViewById(R.id.toggleBtnMeasurementDisplay);
         toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
         toggleBtnMeasurementHistoryBtn = view.findViewById(R.id.toggleMeasurementHistoryBtn);
@@ -114,6 +119,19 @@ public class MeasurementDetailsFragment extends Fragment
         scrollView = view.findViewById(R.id.scrollView);
 
         measurementHistoryRecyclerView = view.findViewById(R.id.measurementHistoryRecyclerView);
+
+        graph = view.findViewById(R.id.graphView);
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 2),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6)
+        });
+        graph.addSeries(series);
+
+        series.setColor(Color.RED);
 
         initTemperatureRecyclerView();
 
@@ -150,6 +168,8 @@ public class MeasurementDetailsFragment extends Fragment
                                 valueLatestMeasurement.setText(temperature.getTemperature());
                                 valueMeasurementTime.setText(temperature.getTime());
                                 valueMeasurementDate.setText(temperature.getDate());
+
+
                             }
                         });
 
@@ -162,19 +182,6 @@ public class MeasurementDetailsFragment extends Fragment
                         symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
 
                         initTemperatureRecyclerView();
-
-                        btnShowHistory.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View view)
-                            {
-                                Toast.makeText(getActivity(), "Clicked on show temperature history button",
-                                        Toast.LENGTH_LONG).show();
-
-                                temperatureRVAdapter.clearItems();
-                                temperatureRVAdapter.setItems(temperatureHistory);
-                            }
-                        });
 
                         btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -198,16 +205,6 @@ public class MeasurementDetailsFragment extends Fragment
                         symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
                         symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
 
-                        btnShowHistory.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View view)
-                            {
-                                Toast.makeText(getActivity(), "Clicked on show humidity history button",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-
                         btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
@@ -229,17 +226,6 @@ public class MeasurementDetailsFragment extends Fragment
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
                         symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
                         symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
-
-                        btnShowHistory.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View view)
-                            {
-                                Toast.makeText(getActivity(), "Clicked on show CO2 history button",
-                                        Toast.LENGTH_LONG).show();
-
-                            }
-                        });
 
                         btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -293,24 +279,6 @@ public class MeasurementDetailsFragment extends Fragment
                     measurementHistoryRecyclerView.setVisibility(View.VISIBLE);
                     toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
                 }
-            }
-        });
-
-        btnOpenDialogDateTimeFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Toast.makeText(getActivity(), "Clicked on set datetime from button",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
-        btnOpenDialogDateTimeTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Toast.makeText(getActivity(), "Clicked on set datetime to button",
-                        Toast.LENGTH_LONG).show();
             }
         });
 
