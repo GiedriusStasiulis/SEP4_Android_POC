@@ -56,7 +56,7 @@ public class ApiClientTestWithRepository
                             Log.d("OnSuccess", "onResponse: " + response.toString());
 
                             assert response.body() != null;
-                            String temp = response.body().getTemperature();
+                            String temp = response.body().getTempValue();
                             String dTime = response.body().getDateTime();
 
                             tempObj = new Temperature(temp,dTime);

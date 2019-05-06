@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
             {
                 assert temperature != null;
 
-                tempTextView.setText(String.format("Temperature: %s \u2103", temperature.getTemperature()));
+                tempTextView.setText(String.format("Temperature: %s \u2103", temperature.getTempValue()));
                 tStampTextView.setText(String.format("Timestamp: %s", temperature.getDateTime()));
                 updatedTextView.setText(String.format("Updated: %s", getCurrentTimeDate()));
             }

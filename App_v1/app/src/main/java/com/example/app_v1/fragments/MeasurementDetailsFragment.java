@@ -126,7 +126,7 @@ public class MeasurementDetailsFragment extends Fragment
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
 
-        measurementDetailsActivityViewModel.getTemperatureDataInRange().observe(this, new Observer<ArrayList<Temperature>>() {
+        measurementDetailsActivityViewModel.getLatestTemperatures().observe(this, new Observer<ArrayList<Temperature>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Temperature> temperatures)
             {

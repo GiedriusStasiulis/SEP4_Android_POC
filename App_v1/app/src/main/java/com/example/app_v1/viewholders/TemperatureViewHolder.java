@@ -26,7 +26,7 @@ public class TemperatureViewHolder extends BaseViewHolder<Temperature>
     @Override
     public void onBind(Temperature item)
     {
-        measurementRVItemValue.setText(item.getTemperature());
+        measurementRVItemValue.setText(item.getTempValue());
         measurementRVItemTimestamp.setText(item.getDateTime());
     }
 }

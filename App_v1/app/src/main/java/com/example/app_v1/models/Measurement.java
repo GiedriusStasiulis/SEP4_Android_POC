@@ -9,21 +9,21 @@ public class Measurement implements Serializable
 {
     @SerializedName("temperature")
     @Expose
-    private Temperature temperature;
+    private String temperature;
 
     @SerializedName("humidity")
     @Expose
-    private Humidity humidity;
+    private String humidity;
 
     @SerializedName("cO2")
     @Expose
-    private Co2 cO2;
+    private String cO2;
 
     @SerializedName("timeStamp")
     @Expose
-    private Timestamp timeStamp;
+    private String timeStamp;
 
-    public Measurement(Temperature temperature, Humidity humidity, Co2 cO2, Timestamp timeStamp)
+    public Measurement(String temperature, String humidity, String cO2, String timeStamp)
     {
         this.temperature = temperature;
         this.humidity = humidity;
@@ -31,42 +31,42 @@ public class Measurement implements Serializable
         this.timeStamp = timeStamp;
     }
 
-    public Temperature getTemperature()
+    public String getTemperature()
     {
         return temperature;
     }
 
-    public void setTemperature(Temperature temperature)
+    public void setTemperature(String temperature)
     {
         this.temperature = temperature;
     }
 
-    public Humidity getHumidity()
+    public String getHumidity()
     {
         return humidity;
     }
 
-    public void setHumidity(Humidity humidity)
+    public void setHumidity(String humidity)
     {
         this.humidity = humidity;
     }
 
-    public Co2 getcO2()
+    public String getcO2()
     {
         return cO2;
     }
 
-    public void setcO2(Co2 cO2)
+    public void setcO2(String cO2)
     {
         this.cO2 = cO2;
     }
 
-    public Timestamp getTimeStamp()
+    public String getTimeStamp()
     {
         return timeStamp;
     }
 
-    public void setTimeStamp(Timestamp timeStamp)
+    public void setTimeStamp(String timeStamp)
     {
         this.timeStamp = timeStamp;
     }
@@ -75,10 +75,10 @@ public class Measurement implements Serializable
     public String toString()
     {
         return "Measurement{" +
-                "temperature=" + temperature +
-                ", humidity=" + humidity +
-                ", cO2=" + cO2 +
-                ", timeStamp=" + timeStamp +
+                "temperature='" + temperature + '\'' +
+                ", humidity='" + humidity + '\'' +
+                ", cO2='" + cO2 + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
                 '}';
     }
 }
