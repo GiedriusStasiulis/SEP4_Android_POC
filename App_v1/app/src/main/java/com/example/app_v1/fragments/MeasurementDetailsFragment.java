@@ -5,8 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -14,26 +12,27 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import com.example.app_v1.R;
+import com.example.app_v1.adapters.Co2RVAdapter;
+import com.example.app_v1.adapters.HumidityRVAdapter;
 import com.example.app_v1.adapters.TemperatureRVAdapter;
+import com.example.app_v1.models.Co2;
+import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -51,105 +50,93 @@ public class MeasurementDetailsFragment extends Fragment
     protected TextView symbolMeasurementValue;
     protected TextView symbolMinAlarmThreshold;
     protected TextView symbolMaxAlarmThreshold;
+
     protected ConstraintLayout measurementOverviewDisplay;
-    protected ConstraintLayout measurementHistoryDisplay;
+    protected ConstraintLayout recentMeasurementDisplay;
+
     protected ImageButton btnOpenHistoryDialog;
-    protected Button btnOpenDialogDateTimeFrom;
-    protected Button btnOpenDialogDateTimeTo;
-    protected Button btnShowHistory;
-    protected ToggleButton toggleBtnMeasurementDisplay;
-    protected ToggleButton toggleBtnMeasurementHistoryBtn;
+
+    protected ToggleButton toggleBtnMeasurementOverviewDisplay;
+    protected ToggleButton toggleBtnRecentMeasurementDisplay;
+    protected RadioButton radioBtnShowRecentList;
+    protected RadioButton radioBtnShowRecentGraph;
+
     public ScrollView scrollView;
-    private RecyclerView measurementHistoryRecyclerView;
-    private GraphView graph;
+
+    private GraphView graphView;
+    private LineGraphSeries<DataPoint> series;
 
     protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
+    private RecyclerView recentMeasurementRView;
     private TemperatureRVAdapter temperatureRVAdapter;
-    private ArrayList<Temperature> temperatureHistory;
+    private HumidityRVAdapter humidityRVAdapter;
+    private Co2RVAdapter co2RVAdapter;
 
-    private Parcelable rvState;
-
-    private void initTemperatureRecyclerView()
-    {
-        temperatureRVAdapter = new TemperatureRVAdapter(getActivity());
-
-        measurementHistoryRecyclerView.hasFixedSize();
-        measurementHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        measurementHistoryRecyclerView.setAdapter(temperatureRVAdapter);
-    }
-
-    private void initHumidityRecyclerView()
-    {
-
-    }
-
-    private void initCO2RecyclerView()
-    {
-
-    }
+    private ArrayList<Temperature> recentTemperatures;
+    private ArrayList<Humidity> recentHumiditys;
+    private ArrayList<Co2> recentCo2s;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.measurement_details_fragment,container,false);
+        return inflater.inflate(R.layout.measurement_details_fragment,container,false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
 
         titleMeasurementOverview = view.findViewById(R.id.titleMeasurementOverview);
         titleMeasurementHistory = view.findViewById(R.id.titleMeasurementHistory);
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
         valueMeasurementDate = view.findViewById(R.id.valueMeasurementDate);
-        valueMinAlarmThreshold = view.findViewById(R.id.valueMinAlarmThreshold);
-        valueMaxAlarmThreshold = view.findViewById(R.id.valueMaxAlarmThreshold);
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
-        symbolMinAlarmThreshold = view.findViewById(R.id.symbolMinAlarmThreshold);
-        symbolMaxAlarmThreshold = view.findViewById(R.id.symbolMaxAlarmThreshold);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
-        measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
+        recentMeasurementDisplay = view.findViewById(R.id.recentMeasurementDisplay);
         btnOpenHistoryDialog = view.findViewById(R.id.btnOpenHistoryDialog);
-        //btnOpenDialogDateTimeFrom = view.findViewById(R.id.btnOpenDialogDateTimeFrom);
-        //btnOpenDialogDateTimeTo = view.findViewById(R.id.btnOpenDialogDateTimeTo);
-        //btnShowHistory = view.findViewById(R.id.btnShowHistory);
-        toggleBtnMeasurementDisplay = view.findViewById(R.id.toggleBtnMeasurementDisplay);
-        toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
-        toggleBtnMeasurementHistoryBtn = view.findViewById(R.id.toggleMeasurementHistoryBtn);
-        toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
+        toggleBtnMeasurementOverviewDisplay = view.findViewById(R.id.toggleBtnMeasurementOverviewDisplay);
+        toggleBtnRecentMeasurementDisplay = view.findViewById(R.id.toggleBtnRecentMeasurementDisplay);
+        radioBtnShowRecentList = view.findViewById(R.id.radioBtnShowRecentList);
+        radioBtnShowRecentGraph = view.findViewById(R.id.radioBtnShowRecentGraph);
         scrollView = view.findViewById(R.id.scrollView);
+        recentMeasurementRView = view.findViewById(R.id.recentMeasurementRView);
+        graphView = view.findViewById(R.id.graphView);
 
-        measurementHistoryRecyclerView = view.findViewById(R.id.measurementHistoryRecyclerView);
+        toggleBtnMeasurementOverviewDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+        toggleBtnRecentMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
 
-        graph = view.findViewById(R.id.graphView);
+        radioBtnShowRecentList.setChecked(true);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 2),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        graph.addSeries(series);
+        graphView.setVisibility(View.GONE);
+        recentMeasurementRView.setVisibility(View.VISIBLE);
 
-        series.setColor(Color.RED);
+        View.OnClickListener radioBtnShowRecentList_listener = new View.OnClickListener(){
+            public void onClick(View v)
+            {
+                radioBtnShowRecentGraph.setChecked(false);
+                graphView.setVisibility(View.GONE);
+                recentMeasurementRView.setVisibility(View.VISIBLE);
+            }
+        };
 
-        initTemperatureRecyclerView();
+        View.OnClickListener radioBtnShowRecentGraph_listener = new View.OnClickListener(){
+            public void onClick(View v)
+            {
+                radioBtnShowRecentList.setChecked(false);
+                graphView.setVisibility(View.VISIBLE);
+                recentMeasurementRView.setVisibility(View.GONE);
+            }
+        };
+
+        radioBtnShowRecentList.setOnClickListener(radioBtnShowRecentList_listener);
+        radioBtnShowRecentGraph.setOnClickListener(radioBtnShowRecentGraph_listener);
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
-
-        try {
-            measurementDetailsActivityViewModel.getLatestTemperatures().observe(this, new Observer<ArrayList<Temperature>>()
-            {
-                @Override
-                public void onChanged(@Nullable ArrayList<Temperature> temperatures)
-                {
-                    temperatureHistory = new ArrayList<>();
-                    temperatureHistory.addAll(temperatures);
-                }
-            });
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         measurementDetailsActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
@@ -160,28 +147,34 @@ public class MeasurementDetailsFragment extends Fragment
                 {
                     case 0:
 
-                        measurementDetailsActivityViewModel.getLatestTemperature().observe(getActivity(), new Observer<Temperature>()
-                        {
-                            @Override
-                            public void onChanged(@Nullable Temperature temperature)
+                        initRecentTemperatureRView();
+                        graphView.removeAllSeries();
+
+                        try {
+                            measurementDetailsActivityViewModel.getLatestTemperatures().observe(getActivity(), new Observer<ArrayList<Temperature>>()
                             {
-                                valueLatestMeasurement.setText(temperature.getTemperature());
-                                valueMeasurementTime.setText(temperature.getTime());
-                                valueMeasurementDate.setText(temperature.getDate());
+                                @Override
+                                public void onChanged(@Nullable ArrayList<Temperature> temperatures)
+                                {
+                                    recentTemperatures = new ArrayList<>();
+                                    recentTemperatures.addAll(temperatures);
 
+                                    valueLatestMeasurement.setText(recentTemperatures.get(0).getTemperature());
+                                    valueMeasurementTime.setText(recentTemperatures.get(0).getTime());
+                                    valueMeasurementDate.setText(recentTemperatures.get(0).getDate());
 
-                            }
-                        });
+                                    initTemperatureGraphView(recentTemperatures);
+
+                                    temperatureRVAdapter.clearItems();
+                                    temperatureRVAdapter.setItems(recentTemperatures);
+                                }
+                            });
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
-                        titleMeasurementHistory.setText(getResources().getString(R.string.title_temperature_history));
-                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_temp_threshold));
-                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_temp_threshold));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
-                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
-                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_temperature));
-
-                        initTemperatureRecyclerView();
 
                         btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -196,14 +189,34 @@ public class MeasurementDetailsFragment extends Fragment
 
                     case 1:
 
+                        initRecentHumidityRView();
+                        graphView.removeAllSeries();
+
+                        try {
+                            measurementDetailsActivityViewModel.getLatestHumiditys().observe(getActivity(), new Observer<ArrayList<Humidity>>() {
+                                @Override
+                                public void onChanged(@Nullable ArrayList<Humidity> humidities)
+                                {
+                                    recentHumiditys = new ArrayList<>();
+                                    recentHumiditys.addAll(humidities);
+
+                                    valueLatestMeasurement.setText(recentHumiditys.get(0).getHumidity());
+                                    valueMeasurementTime.setText(recentHumiditys.get(0).getTime());
+                                    valueMeasurementDate.setText(recentHumiditys.get(0).getDate());
+
+                                    initHumidityGraphView(recentHumiditys);
+
+                                    humidityRVAdapter.clearItems();
+                                    humidityRVAdapter.setItems(recentHumiditys);
+                                }
+                            });
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
-                        titleMeasurementHistory.setText(getResources().getString(R.string.title_humidity_history));
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
-                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_hum_threshold));
-                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_hum_threshold));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
-                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
-                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_humidity));
 
                         btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -214,18 +227,41 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
+                        //graph.setVisibility(View.GONE);
+
                         break;
 
                     case 2:
 
+                        initRecentCO2RecyclerView();
+                        graphView.removeAllSeries();
+
+                        try {
+                            measurementDetailsActivityViewModel.getLatestCo2s().observe(getActivity(), new Observer<ArrayList<Co2>>()
+                            {
+                                @Override
+                                public void onChanged(@Nullable ArrayList<Co2> co2s)
+                                {
+                                    recentCo2s = new ArrayList<>();
+                                    recentCo2s.addAll(co2s);
+
+                                    valueLatestMeasurement.setText(recentCo2s.get(0).getCo2());
+                                    valueMeasurementTime.setText(recentCo2s.get(0).getTime());
+                                    valueMeasurementDate.setText(recentCo2s.get(0).getDate());
+
+                                    initCo2GraphView(recentCo2s);
+
+                                    co2RVAdapter.clearItems();
+                                    co2RVAdapter.setItems(recentCo2s);
+                                }
+                            });
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
-                        titleMeasurementHistory.setText(getResources().getString(R.string.title_co2_history));
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
-                        valueMinAlarmThreshold.setText(getResources().getString(R.string.value_min_alarm_co2_threshold));
-                        valueMaxAlarmThreshold.setText(getResources().getString(R.string.value_max_alarm_co2_threshold));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
-                        symbolMinAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
-                        symbolMaxAlarmThreshold.setText(getResources().getString(R.string.symbol_co2));
 
                         btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -244,40 +280,40 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
-        toggleBtnMeasurementDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggleBtnMeasurementOverviewDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 if(isChecked)
                 {
                     measurementOverviewDisplay.setVisibility(View.GONE);
-                    toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_down);
+                    toggleBtnMeasurementOverviewDisplay.setBackgroundResource(R.drawable.icon_arrow_down);
                 }
 
                 else
                 {
                     measurementOverviewDisplay.setVisibility(View.VISIBLE);
-                    toggleBtnMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+                    toggleBtnMeasurementOverviewDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
                 }
             }
         });
 
-        toggleBtnMeasurementHistoryBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggleBtnRecentMeasurementDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 if(isChecked)
                 {
-                    measurementHistoryDisplay.setVisibility(View.GONE);
-                    measurementHistoryRecyclerView.setVisibility(View.GONE);
-                    toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_down);
+                    recentMeasurementDisplay.setVisibility(View.GONE);
+                    toggleBtnRecentMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_down);
                 }
 
                 else
                 {
-                    measurementHistoryDisplay.setVisibility(View.VISIBLE);
-                    measurementHistoryRecyclerView.setVisibility(View.VISIBLE);
-                    toggleBtnMeasurementHistoryBtn.setBackgroundResource(R.drawable.icon_arrow_up);
+                    recentMeasurementDisplay.setVisibility(View.VISIBLE);
+                    toggleBtnRecentMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
                 }
             }
         });
@@ -285,19 +321,167 @@ public class MeasurementDetailsFragment extends Fragment
         //Return stored toggle button states after phone orientation has been changed
         if(savedInstanceState != null)
         {
-            toggleBtnMeasurementDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementDisplayBtn_state"));
-            toggleBtnMeasurementHistoryBtn.setChecked(savedInstanceState.getBoolean("toggleMeasurementHistoryBtn_state"));
-        }
+            toggleBtnMeasurementOverviewDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementDisplayBtn_state"));
+            toggleBtnRecentMeasurementDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementHistoryBtn_state"));
 
-        return view;
+            radioBtnShowRecentList.setChecked(savedInstanceState.getBoolean("radioBtnShowList_state"));
+            radioBtnShowRecentGraph.setChecked(savedInstanceState.getBoolean("radioBtnShowGraph_state"));
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+    }
+
+    private void initRecentTemperatureRView()
+    {
+        temperatureRVAdapter = new TemperatureRVAdapter(getActivity());
+
+        temperatureRVAdapter.clearItems();
+        recentMeasurementRView.hasFixedSize();
+        recentMeasurementRView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recentMeasurementRView.setAdapter(temperatureRVAdapter);
+    }
+
+    private void initRecentHumidityRView()
+    {
+        humidityRVAdapter = new HumidityRVAdapter(getActivity());
+
+        humidityRVAdapter.clearItems();
+        recentMeasurementRView.hasFixedSize();
+        recentMeasurementRView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recentMeasurementRView.setAdapter(humidityRVAdapter);
+    }
+
+    private void initRecentCO2RecyclerView()
+    {
+        co2RVAdapter = new Co2RVAdapter(getActivity());
+
+        co2RVAdapter.clearItems();
+        recentMeasurementRView.hasFixedSize();
+        recentMeasurementRView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recentMeasurementRView.setAdapter(co2RVAdapter);
+    }
+
+    private void initTemperatureGraphView(ArrayList<Temperature> temperatures)
+    {
+        if(temperatures != null)
+        {
+            graphView.removeAllSeries();
+
+            series = new LineGraphSeries<>(new DataPoint[]{
+                    new DataPoint(0, Double.valueOf(temperatures.get(4).getTemperature())),
+                    new DataPoint(1, Double.valueOf(temperatures.get(3).getTemperature())),
+                    new DataPoint(2, Double.valueOf(temperatures.get(2).getTemperature())),
+                    new DataPoint(3, Double.valueOf(temperatures.get(1).getTemperature())),
+                    new DataPoint(4, Double.valueOf(temperatures.get(0).getTemperature()))
+            });
+
+            graphView.addSeries(series);
+            series.setColor(Color.RED);
+            series.setDrawDataPoints(true);
+
+            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graphView);
+            staticLabelsFormatter.setHorizontalLabels(
+                    new String[]{temperatures.get(4).getTime(),
+                            temperatures.get(3).getTime(),
+                            temperatures.get(2).getTime(),
+                            temperatures.get(1).getTime(),
+                            temperatures.get(0).getTime()});
+
+            graphView.getViewport().setXAxisBoundsManual(true);
+            graphView.getGridLabelRenderer().setHumanRounding(true);
+            graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
+            graphView.getGridLabelRenderer().setVerticalAxisTitleTextSize(30f);
+            graphView.getGridLabelRenderer().setLabelVerticalWidth(50);
+            graphView.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+            graphView.getGridLabelRenderer().reloadStyles();
+        }
+    }
+
+    private void initHumidityGraphView(ArrayList<Humidity> humiditys)
+    {
+        if(humiditys != null)
+        {
+            graphView.removeAllSeries();
+
+            series = new LineGraphSeries<>(new DataPoint[]{
+                    new DataPoint(0, Double.valueOf(humiditys.get(4).getHumidity())),
+                    new DataPoint(1, Double.valueOf(humiditys.get(3).getHumidity())),
+                    new DataPoint(2, Double.valueOf(humiditys.get(2).getHumidity())),
+                    new DataPoint(3, Double.valueOf(humiditys.get(1).getHumidity())),
+                    new DataPoint(4, Double.valueOf(humiditys.get(0).getHumidity()))
+            });
+
+            graphView.addSeries(series);
+            series.setColor(Color.RED);
+            series.setDrawDataPoints(true);
+
+            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graphView);
+            staticLabelsFormatter.setHorizontalLabels(
+                    new String[]{humiditys.get(4).getTime(),
+                            humiditys.get(3).getTime(),
+                            humiditys.get(2).getTime(),
+                            humiditys.get(1).getTime(),
+                            humiditys.get(0).getTime()});
+
+            graphView.getViewport().setXAxisBoundsManual(true);
+            graphView.getGridLabelRenderer().setHumanRounding(true);
+            graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
+            graphView.getGridLabelRenderer().setVerticalAxisTitleTextSize(30f);
+            graphView.getGridLabelRenderer().setLabelVerticalWidth(50);
+            graphView.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+            graphView.getGridLabelRenderer().reloadStyles();
+        }
+    }
+
+    private void initCo2GraphView(ArrayList<Co2> co2s)
+    {
+        if(co2s != null)
+        {
+            graphView.removeAllSeries();
+
+            series = new LineGraphSeries<>(new DataPoint[]{
+                    new DataPoint(0, Double.valueOf(co2s.get(4).getCo2())),
+                    new DataPoint(1, Double.valueOf(co2s.get(3).getCo2())),
+                    new DataPoint(2, Double.valueOf(co2s.get(2).getCo2())),
+                    new DataPoint(3, Double.valueOf(co2s.get(1).getCo2())),
+                    new DataPoint(4, Double.valueOf(co2s.get(0).getCo2()))
+            });
+
+            graphView.addSeries(series);
+            series.setColor(Color.RED);
+            series.setDrawDataPoints(true);
+
+            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graphView);
+            staticLabelsFormatter.setHorizontalLabels(
+                    new String[]{co2s.get(4).getTime(),
+                            co2s.get(3).getTime(),
+                            co2s.get(2).getTime(),
+                            co2s.get(1).getTime(),
+                            co2s.get(0).getTime()});
+
+            graphView.getViewport().setXAxisBoundsManual(true);
+            graphView.getGridLabelRenderer().setHumanRounding(true);
+            graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
+            graphView.getGridLabelRenderer().setVerticalAxisTitleTextSize(30f);
+            graphView.getGridLabelRenderer().setLabelVerticalWidth(50);
+            graphView.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+            graphView.getGridLabelRenderer().reloadStyles();
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
         //Save toggle button states when changing phone orientation
-        outState.putBoolean("toggleMeasurementDisplayBtn_state",toggleBtnMeasurementDisplay.isChecked());
-        outState.putBoolean("toggleMeasurementHistoryBtn_state",toggleBtnMeasurementHistoryBtn.isChecked());
+        outState.putBoolean("toggleMeasurementDisplayBtn_state", toggleBtnMeasurementOverviewDisplay.isChecked());
+        outState.putBoolean("toggleMeasurementHistoryBtn_state", toggleBtnRecentMeasurementDisplay.isChecked());
+
+        outState.putBoolean("radioBtnShowList_state", radioBtnShowRecentList.isChecked());
+        outState.putBoolean("radioBtnShowGraph_state", radioBtnShowRecentGraph.isChecked());
 
         super.onSaveInstanceState(outState);
     }

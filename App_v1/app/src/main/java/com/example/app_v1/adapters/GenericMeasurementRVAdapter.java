@@ -67,6 +67,7 @@ public abstract class GenericMeasurementRVAdapter<T, VH extends BaseViewHolder<T
     {
         this.items.clear();
         notifyDataSetChanged();
+        notifyItemRangeChanged(0,items.size());
     }
 
     public boolean isEmpty()

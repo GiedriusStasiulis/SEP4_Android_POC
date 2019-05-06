@@ -3,6 +3,9 @@ package com.example.app_v1.viewmodels;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+
+import com.example.app_v1.models.Co2;
+import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.Repository;
@@ -17,11 +20,16 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
 
     private ArrayList<Measurement> latestMeasurementsArrList = new ArrayList<>();
-    private MutableLiveData<Measurement> latestMeasurement = new MutableLiveData<>();
+    private MutableLiveData<Measurement> latestMeasurementMld = new MutableLiveData<>();
 
     private ArrayList<Temperature> latestTemperaturesArrList = new ArrayList<>();
     private MutableLiveData<ArrayList<Temperature>> latestTemperatures = new MutableLiveData<>();
-    private MutableLiveData<Temperature> latestTemperature = new MutableLiveData<>();
+
+    private ArrayList<Humidity> latestHumidityArrList = new ArrayList<>();
+    private MutableLiveData<ArrayList<Humidity>> latestHumiditys = new MutableLiveData<>();
+
+    private ArrayList<Co2> latestCo2ArrList = new ArrayList<>();
+    private MutableLiveData<ArrayList<Co2>> latestCo2s = new MutableLiveData<>();
 
     public void initViewModel()
     {
@@ -40,33 +48,71 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         return selectedTabIndex;
     }
 
-    public LiveData<Measurement> getLatestMeasurement()
+    private ArrayList<Measurement> getLatestMeasurementsArrList()
     {
-        return repo.getLatestMeasurement();
+        latestMeasurementsArrList.clear();
+        latestMeasurementsArrList = repo.getLatestMeasurements().getValue();
+
+        return this.latestMeasurementsArrList;
     }
 
-    public LiveData<Temperature> getLatestTemperature()
+    public LiveData<Measurement> getLatestMeasurement()
     {
-        latestTemperature.setValue(latestTemperatures.getValue().get(0));
-        return latestTemperature;
+        latestMeasurementMld.setValue(getLatestMeasurementsArrList().get(0));
+
+        return latestMeasurementMld;
     }
 
     public LiveData<ArrayList<Temperature>> getLatestTemperatures() throws ParseException
     {
-        latestMeasurementsArrList.clear();
+        latestTemperaturesArrList.clear();
         latestMeasurementsArrList = repo.getLatestMeasurements().getValue();
 
         for(int i = 0; i < latestMeasurementsArrList.size(); i++)
         {
             Temperature temperature = new Temperature(latestMeasurementsArrList.get(i).getTemperature());
-            String time = DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp());
-            String date = DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp());
-            temperature.setTime(time);
-            temperature.setDate(date);
+            temperature.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            temperature.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
 
             latestTemperaturesArrList.add(temperature);
         }
         latestTemperatures.setValue(latestTemperaturesArrList);
         return latestTemperatures;
+    }
+
+    public LiveData<ArrayList<Humidity>> getLatestHumiditys() throws ParseException
+    {
+        latestHumidityArrList.clear();
+        latestMeasurementsArrList = repo.getLatestMeasurements().getValue();
+
+        for(int i = 0; i < latestMeasurementsArrList.size(); i++)
+        {
+            Humidity humidity = new Humidity(latestMeasurementsArrList.get(i).getHumidity());
+            humidity.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            humidity.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+
+            latestHumidityArrList.add(humidity);
+        }
+
+        latestHumiditys.setValue(latestHumidityArrList);
+        return latestHumiditys;
+    }
+
+    public LiveData<ArrayList<Co2>> getLatestCo2s() throws ParseException
+    {
+        latestCo2ArrList.clear();
+        latestMeasurementsArrList = repo.getLatestMeasurements().getValue();
+
+        for(int i = 0; i < latestMeasurementsArrList.size(); i++)
+        {
+            Co2 co2 = new Co2(latestMeasurementsArrList.get(i).getcO2());
+            co2.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            co2.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+
+            latestCo2ArrList.add(co2);
+        }
+
+        latestCo2s.setValue(latestCo2ArrList);
+        return latestCo2s;
     }
 }

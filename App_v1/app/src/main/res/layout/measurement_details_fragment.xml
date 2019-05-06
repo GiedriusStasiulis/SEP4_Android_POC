@@ -46,7 +46,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ToggleButton
-                        android:id="@+id/toggleBtnMeasurementDisplay"
+                        android:id="@+id/toggleBtnMeasurementOverviewDisplay"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_marginEnd="5dp"
@@ -62,7 +62,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/measurementOverviewDisplay"
                     android:layout_width="match_parent"
-                    android:layout_height="98dp"
+                    android:layout_height="75dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:background="@color/colorPrimary"
@@ -103,10 +103,10 @@
                         android:id="@+id/titleMeasurementTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="72dp"
-                        android:text="@string/title_measurement_time"
+                        android:layout_marginStart="148dp"
+                        android:layout_marginTop="4dp"
                         android:includeFontPadding="false"
+                        android:text="@string/title_measurement_time"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -116,10 +116,10 @@
                         android:id="@+id/valueMeasurementTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="72dp"
-                        android:text="@string/value_measurement_time"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="4dp"
                         android:includeFontPadding="false"
+                        android:text="@string/value_measurement_time"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -130,21 +130,21 @@
                         android:id="@+id/titleMeasurementDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="72dp"
+                        android:layout_marginStart="148dp"
+                        android:layout_marginTop="30dp"
                         android:includeFontPadding="false"
                         android:text="@string/title_measurement_date"
                         android:textColor="@color/white"
                         android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/valueMeasurementTime"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/valueMeasurementDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="72dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="30dp"
                         android:includeFontPadding="false"
                         android:text="@string/value_measurement_date"
                         android:textColor="@color/white"
@@ -152,69 +152,6 @@
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/titleMeasurementDate"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/titleAlarmThresholds"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="86dp"
-                        android:text="@string/title_alarm_thresholds"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/titleMinAlarmThreshold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/title_min_alarm_threshold"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toStartOf="@+id/valueMinAlarmThreshold"
-                        app:layout_constraintTop_toBottomOf="@+id/titleAlarmThresholds" />
-
-                    <TextView
-                        android:id="@+id/valueMinAlarmThreshold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        android:text="@string/value_min_alarm_temp_threshold"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/symbolMinAlarmThreshold"
-                        app:layout_constraintTop_toTopOf="@+id/titleMinAlarmThreshold" />
-
-                    <TextView
-                        android:id="@+id/titleMaxAlarmThreshold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/title_max_alarm_threshold"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toStartOf="@+id/valueMaxAlarmThreshold"
-                        app:layout_constraintTop_toBottomOf="@+id/titleMinAlarmThreshold" />
-
-                    <TextView
-                        android:id="@+id/valueMaxAlarmThreshold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        android:text="@string/value_max_alarm_temp_threshold"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/symbolMaxAlarmThreshold"
-                        app:layout_constraintTop_toBottomOf="@+id/valueMinAlarmThreshold" />
 
                     <TextView
                         android:id="@+id/symbolMeasurementValue"
@@ -228,30 +165,6 @@
                         android:textSize="23sp"
                         app:layout_constraintStart_toEndOf="@+id/valueLatestMeasurement"
                         app:layout_constraintTop_toBottomOf="@+id/titleLatestMeasurementValue" />
-
-                    <TextView
-                        android:id="@+id/symbolMinAlarmThreshold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="86dp"
-                        android:text="T"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/titleMinAlarmThreshold" />
-
-                    <TextView
-                        android:id="@+id/symbolMaxAlarmThreshold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="86dp"
-                        android:text="T"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/valueMinAlarmThreshold" />
 
                     <ImageButton
                         android:id="@+id/btnOpenHistoryDialog"
@@ -299,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/title_temperature_history"
+                    android:text="@string/title_recent_values"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -307,7 +220,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ToggleButton
-                    android:id="@+id/toggleMeasurementHistoryBtn"
+                    android:id="@+id/toggleBtnRecentMeasurementDisplay"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginEnd="5dp"
@@ -321,13 +234,14 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/measurementHistoryDisplay"
+                android:id="@+id/recentMeasurementDisplay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="16dp"
+                android:padding="4dp"
                 android:background="@color/colorPrimary"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.555"
@@ -335,32 +249,56 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
                 app:layout_constraintVertical_bias="0.0">
 
-<<<<<<< Updated upstream
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/radioBtnShowRecentList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="List"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+
+                    <RadioButton
+                        android:id="@+id/radioBtnShowRecentGraph"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Graph"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recentMeasurementRView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/graphView"
+                    tools:layout_editor_absoluteX="8dp" />
+
                 <com.jjoe64.graphview.GraphView
                     android:id="@+id/graphView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="230dp"
+                    android:background="@color/lightGray"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@color/lightGray"/>
-
-=======
->>>>>>> Stashed changes
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                    app:layout_constraintVertical_bias="1.0" />
 
             </android.support.constraint.ConstraintLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/measurementHistoryRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/measurementHistoryDisplay" />
-
 
         </android.support.constraint.ConstraintLayout>
 

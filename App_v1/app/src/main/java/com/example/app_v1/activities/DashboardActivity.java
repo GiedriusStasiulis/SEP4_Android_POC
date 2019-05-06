@@ -51,14 +51,7 @@ public class DashboardActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard - GH01");
         getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
-<<<<<<< Updated upstream
-        /* set settings icon
-        Drawable settingsIcon = ContextCompat.getDrawable(getApplicationContext(), R.drawable.icon_settings);
-        toolbar.setOverflowIcon(settingsIcon);
-        */
 
-=======
->>>>>>> Stashed changes
         //Enable back-arrow
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -68,6 +61,8 @@ public class DashboardActivity extends AppCompatActivity
         sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionsPageAdapter);
         setupViewPager(viewPager);
+
+        viewPager.setOffscreenPageLimit(2);
 
         //Set up tab layout with view pager and add icons to tabs
         tabLayout = findViewById(R.id.measurementDetailsTabs);

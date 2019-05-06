@@ -6,7 +6,7 @@
     <string name="title_temperature_display">Temperature Overview:</string>
     <string name="title_humidity_display">Humidity Overview:</string>
     <string name="title_co2_display">CO2 Overview:</string>
-    <string name="title_temperature_history">Temperature Chart:</string>
+    <string name="title_recent_values">Recent Values:</string>
     <string name="title_humidity_history">Humidity Chart:</string>
     <string name="title_co2_history">CO2 Chart:</string>
     <string name="title_latest_value">Latest value:</string>
