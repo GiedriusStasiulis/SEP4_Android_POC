@@ -16,11 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".LogInActivity"></activity>
-
-        <activity android:name=".activities.LogInActivity"></activity>
-
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.GreenhouseSelectActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.app_v1.activities.GreenhouseSelectActivity" />
+        </activity>
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".activities.LogInActivity" />
         <activity
             android:name=".activities.DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

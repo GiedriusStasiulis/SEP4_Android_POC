@@ -1,7 +1,7 @@
 package com.example.app_v1.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.ViewGroup;
 import com.example.app_v1.R;
 import com.example.app_v1.models.Co2;

@@ -1,6 +1,6 @@
 package com.example.app_v1.viewmodels;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 
 public class GreenhouseSelectActivityViewModel extends ViewModel {
 }

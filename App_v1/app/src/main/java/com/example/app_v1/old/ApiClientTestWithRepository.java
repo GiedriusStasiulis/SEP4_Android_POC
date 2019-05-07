@@ -1,19 +1,11 @@
 package com.example.app_v1.old;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
+import androidx.lifecycle.MutableLiveData;
 
-import com.example.app_v1.apiclients.AndroidWebApiClient;
-import com.example.app_v1.apiclients.IAndroidWebApiClient;
 import com.example.app_v1.models.Temperature;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ApiClientTestWithRepository
 {

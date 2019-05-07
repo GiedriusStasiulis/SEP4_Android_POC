@@ -1,6 +1,6 @@
 package com.example.app_v1.viewholders;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 import com.example.app_v1.R;

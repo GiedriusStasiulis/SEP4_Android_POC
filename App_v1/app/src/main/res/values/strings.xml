@@ -47,5 +47,14 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in_button">Log In</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="notifications">Notifications</string>
+    <string name="enable_notifications">Enable message notifications</string>
+    <string name="thresholds_notifications">Threshold range notifications</string>
+    <string name="temperature_range">Temperature thresholds</string>
+
+
 
 </resources>

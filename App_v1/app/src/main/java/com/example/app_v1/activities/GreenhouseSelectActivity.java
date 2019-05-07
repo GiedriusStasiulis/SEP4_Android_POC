@@ -1,8 +1,8 @@
 package com.example.app_v1.activities;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Spinner;
 

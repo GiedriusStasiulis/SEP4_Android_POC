@@ -1,6 +1,6 @@
 package com.example.app_v1.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class Co2
 {

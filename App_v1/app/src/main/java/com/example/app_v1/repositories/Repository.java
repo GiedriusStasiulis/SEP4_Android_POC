@@ -1,7 +1,7 @@
 package com.example.app_v1.repositories;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.example.app_v1.models.Greenhouse;
 import com.example.app_v1.models.Measurement;
 import java.util.ArrayList;
