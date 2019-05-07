@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +127,7 @@ public class MeasurementHistoryFragment extends Fragment
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
             {
-                dateFrom = (String.format(Locale.ENGLISH,"%d/%d/%d",month + 1,dayOfMonth,year));
+                dateFrom = DTimeFormatHelper.convertDatePickerValuesToString(year,month,dayOfMonth);
 
                 Calendar calendar = Calendar.getInstance();
                 int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -180,7 +181,7 @@ public class MeasurementHistoryFragment extends Fragment
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
             {
-                dateTo = (String.format(Locale.ENGLISH,"%d/%d/%d",month + 1,dayOfMonth,year));
+                dateTo = DTimeFormatHelper.convertDatePickerValuesToString(year,month,dayOfMonth);
 
                 Calendar calendar = Calendar.getInstance();
                 int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -301,6 +302,12 @@ public class MeasurementHistoryFragment extends Fragment
                 }
             }
         });
+
+        if(savedInstanceState != null)
+        {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable("rvHistory_state");
+            rvMeasurementHistory.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+        }
     }
 
     private void initTemperatureHistoryRView()
@@ -331,5 +338,12 @@ public class MeasurementHistoryFragment extends Fragment
         rvMeasurementHistory.hasFixedSize();
         rvMeasurementHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvMeasurementHistory.setAdapter(co2RVAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState)
+    {
+        outState.putParcelable("rvHistory_state", rvMeasurementHistory.getLayoutManager().onSaveInstanceState());
+        super.onSaveInstanceState(outState);
     }
 }
