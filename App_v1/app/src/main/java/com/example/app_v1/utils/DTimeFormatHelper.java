@@ -25,4 +25,11 @@ public class DTimeFormatHelper
 
         return df.format(date);
     }
+
+    public static Date convertISO8601stringToDate(final String timestampISO8601) throws ParseException
+    {
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.ENGLISH);
+
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
+    }
 }

@@ -28,6 +28,7 @@ import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MeasurementHistoryFragment extends Fragment
@@ -46,7 +47,7 @@ public class MeasurementHistoryFragment extends Fragment
     private HumidityRVAdapter humidityRVAdapter;
     private Co2RVAdapter co2RVAdapter;
 
-    private ArrayList<Temperature> recentTemperatures;
+    private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
     private ArrayList<Humidity> recentHumiditys;
     private ArrayList<Co2> recentCo2s;
 
@@ -89,15 +90,7 @@ public class MeasurementHistoryFragment extends Fragment
             }
         });
 
-        btnSearchHistory.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Toast.makeText(getActivity(), "Search!",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
 
@@ -113,6 +106,24 @@ public class MeasurementHistoryFragment extends Fragment
                         initTemperatureHistoryRView();
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_temperature));
+
+                        btnSearchHistory.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                temperaturesInDateRange.clear();
+
+                                try {
+                                    temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange("2019-05-05T09:10:00Z","2019-05-05T09:45:00Z");
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                temperatureRVAdapter.clearItems();
+                                temperatureRVAdapter.setItems(temperaturesInDateRange);
+                            }
+                        });
 
                         break;
 
