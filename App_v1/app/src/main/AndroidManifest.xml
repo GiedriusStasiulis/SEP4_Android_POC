@@ -26,17 +26,17 @@
                 android:value="com.example.app_v1.activities.GreenhouseSelectActivity" />
         </activity>
         <activity android:name=".activities.LogInActivity">
-
-        </activity>
-        <activity
-            android:name=".activities.DashboardActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.DashboardActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize">
+
         </activity>
         <activity android:name=".activities.GreenhouseSelectActivity"></activity>
     </application>
