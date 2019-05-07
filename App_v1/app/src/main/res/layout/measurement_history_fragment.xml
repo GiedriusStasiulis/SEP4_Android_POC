@@ -85,7 +85,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnSelectDateTimeFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -109,7 +109,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btnSelectDateTimeTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="165dp"
@@ -121,7 +121,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
             <ImageButton
-                android:id="@+id/btnOpenHistoryActivity"
+                android:id="@+id/btnSearchHistory"
                 android:layout_width="54dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -135,5 +135,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMeasurementHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"/>
 
 </LinearLayout>

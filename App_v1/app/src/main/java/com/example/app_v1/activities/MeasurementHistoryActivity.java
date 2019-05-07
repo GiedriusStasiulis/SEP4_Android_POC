@@ -129,7 +129,7 @@ public class MeasurementHistoryActivity extends AppCompatActivity
     private void setupViewPager(ViewPager viewPager)
     {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        //Add fragments here
+
         adapter.addFragment(new MeasurementHistoryFragment());
         adapter.addFragment(new MeasurementHistoryFragment());
         adapter.addFragment(new MeasurementHistoryFragment());

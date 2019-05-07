@@ -43,36 +43,34 @@ public class MeasurementDetailsFragment extends Fragment
 {
     private static final String TAG = "MeasurementDetailsFragment";
 
-    protected TextView titleMeasurementOverview;
-    protected TextView titleMeasurementHistory;
-    protected TextView valueLatestMeasurement;
-    protected TextView valueMeasurementTime;
-    protected TextView valueMeasurementDate;
-    protected TextView valueMinAlarmThreshold;
-    protected TextView valueMaxAlarmThreshold;
-    protected TextView symbolMeasurementValue;
-    protected TextView symbolMinAlarmThreshold;
-    protected TextView symbolMaxAlarmThreshold;
+    private TextView titleMeasurementOverview;
+    private TextView titleMeasurementHistory;
+    private TextView valueLatestMeasurement;
+    private TextView valueMeasurementTime;
+    private TextView valueMeasurementDate;
+    private TextView valueMinAlarmThreshold;
+    private TextView valueMaxAlarmThreshold;
+    private TextView symbolMeasurementValue;
+    private TextView symbolMinAlarmThreshold;
+    private TextView symbolMaxAlarmThreshold;
 
-    protected ConstraintLayout measurementOverviewDisplay;
-    protected ConstraintLayout recentMeasurementDisplay;
-    protected ConstraintLayout thresholdSettingsDisplay;
+    private ConstraintLayout measurementOverviewDisplay;
+    private ConstraintLayout recentMeasurementDisplay;
+    private ConstraintLayout thresholdSettingsDisplay;
 
-    protected ImageButton btnOpenHistoryActivity;
-    protected ImageButton btnOpenThresholdsSettings;
+    private ImageButton btnOpenHistoryActivity;
+    private ImageButton btnOpenThresholdsSettings;
 
-    protected ToggleButton toggleBtnMeasurementOverviewDisplay;
-    protected ToggleButton toggleBtnRecentMeasurementDisplay;
-    protected ToggleButton toggleBtnThresholdsDisplay;
-    protected RadioButton radioBtnShowRecentList;
-    protected RadioButton radioBtnShowRecentGraph;
+    private ToggleButton toggleBtnMeasurementOverviewDisplay;
+    private ToggleButton toggleBtnRecentMeasurementDisplay;
+    private ToggleButton toggleBtnThresholdsDisplay;
+    private RadioButton radioBtnShowRecentList;
+    private RadioButton radioBtnShowRecentGraph;
 
-    public ScrollView scrollView;
+    private ScrollView scrollView;
 
     private GraphView graphView;
     private LineGraphSeries<DataPoint> series;
-
-    protected MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
     private RecyclerView recentMeasurementRView;
     private TemperatureRVAdapter temperatureRVAdapter;
@@ -82,6 +80,8 @@ public class MeasurementDetailsFragment extends Fragment
     private ArrayList<Temperature> recentTemperatures;
     private ArrayList<Humidity> recentHumiditys;
     private ArrayList<Co2> recentCo2s;
+
+    private MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -199,9 +199,6 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onClick(View view)
                             {
-                                /*Toast.makeText(getActivity(), "Clicked on open temperature history button",
-                                        Toast.LENGTH_LONG).show();*/
-
                                 String measurementType = "Temperature";
                                 Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
                                 intent.putExtra("measurement_type",measurementType);
@@ -246,9 +243,6 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onClick(View view)
                             {
-                                Toast.makeText(getActivity(), "Clicked on open humidity history button",
-                                        Toast.LENGTH_LONG).show();
-
                                 String measurementType = "Humidity";
                                 Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
                                 intent.putExtra("measurement_type",measurementType);
@@ -294,9 +288,6 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onClick(View view)
                             {
-                                Toast.makeText(getActivity(), "Clicked on open CO2 history button",
-                                        Toast.LENGTH_LONG).show();
-
                                 String measurementType = "Co2";
                                 Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
                                 intent.putExtra("measurement_type",measurementType);
