@@ -20,4 +20,9 @@ public interface GemsApi {
     Call<List<Greenhouse>> getGreenhousesByUser(
             @Query("userId") int userId
     );
+
+    @GET("/api/greenhouses")
+    Call<List<Greenhouse>> getGreenhousesById(
+            @Query("id") int greenhouseId
+    );
 }
