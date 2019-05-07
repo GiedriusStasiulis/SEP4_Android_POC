@@ -39,6 +39,8 @@ public class Repository
 
     public void addDummyMeasurements()
     {
+        measurementsArrList.clear();
+
         Measurement mes1 = new Measurement("26.2", "56", "672", "2019-05-05T09:45:00Z");
         Measurement mes2 = new Measurement("24.1", "60", "655", "2019-05-05T09:35:00Z");
         Measurement mes3 = new Measurement("27.2", "57", "675", "2019-05-05T09:25:00Z");
