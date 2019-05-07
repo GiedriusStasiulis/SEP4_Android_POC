@@ -22,7 +22,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
-    private EditText mNameField;
     private EditText mEmailField;
     private EditText mPasswordField;
     private Button logIn;
@@ -35,7 +34,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
 
         // Views
-        mNameField = findViewById(R.id.name);
         mEmailField = findViewById(R.id.email);
         mPasswordField = findViewById(R.id.password);
 
