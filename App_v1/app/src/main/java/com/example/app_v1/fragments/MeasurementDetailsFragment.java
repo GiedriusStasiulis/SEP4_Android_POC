@@ -53,11 +53,14 @@ public class MeasurementDetailsFragment extends Fragment
 
     protected ConstraintLayout measurementOverviewDisplay;
     protected ConstraintLayout recentMeasurementDisplay;
+    protected ConstraintLayout thresholdSettingsDisplay;
 
     protected ImageButton btnOpenHistoryDialog;
+    protected ImageButton btnOpenThresholdsSettings;
 
     protected ToggleButton toggleBtnMeasurementOverviewDisplay;
     protected ToggleButton toggleBtnRecentMeasurementDisplay;
+    protected ToggleButton toggleBtnThresholdsDisplay;
     protected RadioButton radioBtnShowRecentList;
     protected RadioButton radioBtnShowRecentGraph;
 
@@ -98,9 +101,12 @@ public class MeasurementDetailsFragment extends Fragment
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         recentMeasurementDisplay = view.findViewById(R.id.recentMeasurementDisplay);
+        thresholdSettingsDisplay = view.findViewById(R.id.thresholdSettingsDisplay);
         btnOpenHistoryDialog = view.findViewById(R.id.btnOpenHistoryDialog);
+        btnOpenThresholdsSettings = view.findViewById(R.id.btnOpenThresholdsSettings);
         toggleBtnMeasurementOverviewDisplay = view.findViewById(R.id.toggleBtnMeasurementOverviewDisplay);
         toggleBtnRecentMeasurementDisplay = view.findViewById(R.id.toggleBtnRecentMeasurementDisplay);
+        toggleBtnThresholdsDisplay = view.findViewById(R.id.toggleBtnThresholdsDisplay);
         radioBtnShowRecentList = view.findViewById(R.id.radioBtnShowRecentList);
         radioBtnShowRecentGraph = view.findViewById(R.id.radioBtnShowRecentGraph);
         scrollView = view.findViewById(R.id.scrollView);
@@ -109,6 +115,7 @@ public class MeasurementDetailsFragment extends Fragment
 
         toggleBtnMeasurementOverviewDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
         toggleBtnRecentMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+        toggleBtnThresholdsDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
 
         radioBtnShowRecentList.setChecked(true);
 
@@ -135,6 +142,15 @@ public class MeasurementDetailsFragment extends Fragment
 
         radioBtnShowRecentList.setOnClickListener(radioBtnShowRecentList_listener);
         radioBtnShowRecentGraph.setOnClickListener(radioBtnShowRecentGraph_listener);
+
+        btnOpenThresholdsSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(getActivity(), "Clicked on open thresholds settings button",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
         measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
 
@@ -227,8 +243,6 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
-                        //graph.setVisibility(View.GONE);
-
                         break;
 
                     case 2:
@@ -318,11 +332,31 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
+        toggleBtnThresholdsDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    thresholdSettingsDisplay.setVisibility(View.GONE);
+                    toggleBtnThresholdsDisplay.setBackgroundResource(R.drawable.icon_arrow_down);
+                }
+
+                else
+                {
+                    thresholdSettingsDisplay.setVisibility(View.VISIBLE);
+                    toggleBtnThresholdsDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+                }
+            }
+        });
+
         //Return stored toggle button states after phone orientation has been changed
         if(savedInstanceState != null)
         {
             toggleBtnMeasurementOverviewDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementDisplayBtn_state"));
             toggleBtnRecentMeasurementDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementHistoryBtn_state"));
+            toggleBtnThresholdsDisplay.setChecked(savedInstanceState.getBoolean("toggleThresholdSettingsBtn_state"));
 
             radioBtnShowRecentList.setChecked(savedInstanceState.getBoolean("radioBtnShowList_state"));
             radioBtnShowRecentGraph.setChecked(savedInstanceState.getBoolean("radioBtnShowGraph_state"));
@@ -479,6 +513,7 @@ public class MeasurementDetailsFragment extends Fragment
         //Save toggle button states when changing phone orientation
         outState.putBoolean("toggleMeasurementDisplayBtn_state", toggleBtnMeasurementOverviewDisplay.isChecked());
         outState.putBoolean("toggleMeasurementHistoryBtn_state", toggleBtnRecentMeasurementDisplay.isChecked());
+        outState.putBoolean("toggleThresholdSettingsBtn_state", toggleBtnThresholdsDisplay.isChecked());
 
         outState.putBoolean("radioBtnShowList_state", radioBtnShowRecentList.isChecked());
         outState.putBoolean("radioBtnShowGraph_state", radioBtnShowRecentGraph.isChecked());
