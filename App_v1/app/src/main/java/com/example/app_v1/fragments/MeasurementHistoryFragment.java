@@ -1,12 +1,18 @@
 package com.example.app_v1.fragments;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,16 +30,28 @@ import com.example.app_v1.adapters.TemperatureRVAdapter;
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
+import com.example.app_v1.utils.DTimeFormatHelper;
 import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
 
 import org.w3c.dom.Text;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MeasurementHistoryFragment extends Fragment
 {
     private static final String TAG = "MeasurementHistoryFragment";
+
+    private String dateFrom;
+    private String timeFrom;
+    private String dateTimeFrom;
+
+    private String dateTo;
+    private String timeTo;
+    private String dateTimeTo;
 
     private TextView titleMeasurementType;
 
@@ -48,8 +66,13 @@ public class MeasurementHistoryFragment extends Fragment
     private Co2RVAdapter co2RVAdapter;
 
     private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
-    private ArrayList<Humidity> recentHumiditys;
-    private ArrayList<Co2> recentCo2s;
+    private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
+    private ArrayList<Co2> co2InDateRange = new ArrayList<>();
+
+    private DatePickerDialog.OnDateSetListener dateFromSetListener;
+    private TimePickerDialog.OnTimeSetListener timeFromSetListener;
+    private DatePickerDialog.OnDateSetListener dateToSetListener;
+    private TimePickerDialog.OnTimeSetListener timeToSetListener;
 
     private MeasurementHistoryViewModel measurementHistoryViewModel;
 
@@ -71,26 +94,120 @@ public class MeasurementHistoryFragment extends Fragment
         btnSearchHistory = view.findViewById(R.id.btnSearchHistory);
         rvMeasurementHistory = view.findViewById(R.id.rvMeasurementHistory);
 
-        btnSelectDateTimeFrom.setOnClickListener(new View.OnClickListener() {
+        dateTimeFrom = DTimeFormatHelper.getDayBeforeTodayAsString();
+        dateTimeTo = DTimeFormatHelper.getTodayDateAsString();
+
+        btnSelectDateTimeFrom.setText(dateTimeFrom);
+        btnSelectDateTimeTo.setText(dateTimeTo);
+
+        btnSelectDateTimeFrom.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(getActivity(), "Select datetime from",
-                        Toast.LENGTH_LONG).show();
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dateDialog = new DatePickerDialog(
+                        getActivity(),
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        dateFromSetListener,
+                        year,month,day);
+
+                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dateDialog.show();
             }
         });
+
+        dateFromSetListener = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+            {
+                dateFrom = (String.format(Locale.ENGLISH,"%d/%d/%d",month + 1,dayOfMonth,year));
+
+                Calendar calendar = Calendar.getInstance();
+                int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timeDialog = new TimePickerDialog(
+                                            getActivity(),
+                                            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                                            timeFromSetListener,
+                        hourOfDay,minute,true);
+
+                timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                timeDialog.show();
+            }
+        };
+
+        timeFromSetListener = new TimePickerDialog.OnTimeSetListener()
+        {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+            {
+                timeFrom = DTimeFormatHelper.convertTimePickerValuesToString(hourOfDay,minute);
+
+                dateTimeFrom = String.format("%s %s",dateFrom,timeFrom);
+                btnSelectDateTimeFrom.setText(dateTimeFrom);
+            }
+        };
 
         btnSelectDateTimeTo.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(getActivity(), "Select datetime to",
-                        Toast.LENGTH_LONG).show();
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dateDialog = new DatePickerDialog(
+                        getActivity(),
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        dateToSetListener,
+                        year,month,day);
+
+                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dateDialog.show();
             }
         });
 
+        dateToSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+            {
+                dateTo = (String.format(Locale.ENGLISH,"%d/%d/%d",month + 1,dayOfMonth,year));
 
+                Calendar calendar = Calendar.getInstance();
+                int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timeDialog = new TimePickerDialog(
+                        getActivity(),
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        timeToSetListener,
+                        hourOfDay,minute,true);
+
+                timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                timeDialog.show();
+            }
+        };
+
+        timeToSetListener = new TimePickerDialog.OnTimeSetListener()
+        {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+            {
+                timeTo = DTimeFormatHelper.convertTimePickerValuesToString(hourOfDay,minute);
+
+                dateTimeTo = String.format("%s %s",dateTo,timeTo);
+                btnSelectDateTimeTo.setText(dateTimeTo);
+            }
+        };
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
 
@@ -114,15 +231,15 @@ public class MeasurementHistoryFragment extends Fragment
                             {
                                 temperaturesInDateRange.clear();
 
-                                try {
-                                    temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange("2019-05-05T09:10:00Z","2019-05-05T09:45:00Z");
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                    try {
+                                        temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
 
-                                temperatureRVAdapter.clearItems();
-                                temperatureRVAdapter.setItems(temperaturesInDateRange);
-                            }
+                                    temperatureRVAdapter.clearItems();
+                                    temperatureRVAdapter.setItems(temperaturesInDateRange);
+                                }
                         });
 
                         break;
@@ -133,6 +250,24 @@ public class MeasurementHistoryFragment extends Fragment
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_humidity));
 
+                        btnSearchHistory.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                humidityInDateRange.clear();
+
+                                try {
+                                    humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                humidityRVAdapter.clearItems();
+                                humidityRVAdapter.setItems(humidityInDateRange);
+                            }
+                        });
+
                         break;
 
                     case 2:
@@ -140,6 +275,24 @@ public class MeasurementHistoryFragment extends Fragment
                         initCo2HistoryRView();
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_co2));
+
+                        btnSearchHistory.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                co2InDateRange.clear();
+
+                                try {
+                                    co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                co2RVAdapter.clearItems();
+                                co2RVAdapter.setItems(co2InDateRange);
+                            }
+                        });
 
                         break;
 

@@ -2,6 +2,9 @@ package com.example.app_v1.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.app_v1.models.Co2;
+import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.Repository;
 import java.text.ParseException;
@@ -13,6 +16,8 @@ public class MeasurementHistoryViewModel extends ViewModel
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
+    private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
+    private ArrayList<Co2> co2InDateRange = new ArrayList<>();
 
     public void initViewModel()
     {
@@ -30,11 +35,27 @@ public class MeasurementHistoryViewModel extends ViewModel
         return selectedTabIndex;
     }
 
-    public ArrayList<Temperature> getTemperaturesInDateRange(String timestampISO8601from, String timestampISO8601to) throws ParseException
+    public ArrayList<Temperature> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
     {
         temperaturesInDateRange.clear();
-        temperaturesInDateRange = repo.getTemperaturesInDateRange(timestampISO8601from,timestampISO8601to);
+        temperaturesInDateRange = repo.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo);
 
         return this.temperaturesInDateRange;
+    }
+
+    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    {
+        humidityInDateRange.clear();
+        humidityInDateRange = repo.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
+
+        return this.humidityInDateRange;
+    }
+
+    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    {
+        co2InDateRange.clear();
+        co2InDateRange = repo.getCo2InDateRange(dateTimeFrom,dateTimeTo);
+
+        return this.co2InDateRange;
     }
 }

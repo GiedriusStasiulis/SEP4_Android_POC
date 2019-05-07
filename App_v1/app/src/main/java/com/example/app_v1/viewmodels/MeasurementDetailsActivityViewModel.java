@@ -71,8 +71,8 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         for(int i = 0; i < latestMeasurementsArrList.size(); i++)
         {
             Temperature temperature = new Temperature(latestMeasurementsArrList.get(i).getTemperature());
-            temperature.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
-            temperature.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            temperature.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            temperature.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
 
             latestTemperaturesArrList.add(temperature);
         }
@@ -88,8 +88,8 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         for(int i = 0; i < latestMeasurementsArrList.size(); i++)
         {
             Humidity humidity = new Humidity(latestMeasurementsArrList.get(i).getHumidity());
-            humidity.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
-            humidity.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            humidity.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            humidity.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
 
             latestHumidityArrList.add(humidity);
         }
@@ -106,8 +106,8 @@ public class MeasurementDetailsActivityViewModel extends ViewModel
         for(int i = 0; i < latestMeasurementsArrList.size(); i++)
         {
             Co2 co2 = new Co2(latestMeasurementsArrList.get(i).getcO2());
-            co2.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
-            co2.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            co2.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
+            co2.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(latestMeasurementsArrList.get(i).getTimeStamp()));
 
             latestCo2ArrList.add(co2);
         }

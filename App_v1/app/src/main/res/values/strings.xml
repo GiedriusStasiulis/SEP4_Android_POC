@@ -38,8 +38,8 @@
 
     <!-- Measurement history activity -->
     <!-- Dummy data -->
-    <string name="value_select_datetime_from">12:00 03-May-19 </string>
-    <string name="value_select_datetime_to">12:00 04-May-19</string>
+    <string name="value_select_datetime_from">5/4/2019 12:00</string>
+    <string name="value_select_datetime_to">5/6/2019 12:00</string>
 
     <string name="title_temperature">Temperature</string>
     <string name="title_humidity">Humidity</string>

@@ -86,12 +86,12 @@
 
             <Button
                 android:id="@+id/btnSelectDateTimeFrom"
-                android:layout_width="wrap_content"
+                android:layout_width="162dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="@string/value_select_datetime_from"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
@@ -100,7 +100,7 @@
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="170dp"
+                android:layout_marginStart="173dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/title_select_datetime_to"
                 android:textColor="@color/white"
@@ -110,19 +110,19 @@
 
             <Button
                 android:id="@+id/btnSelectDateTimeTo"
-                android:layout_width="wrap_content"
+                android:layout_width="162dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="165dp"
+                android:layout_marginStart="169dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:text="@string/value_select_datetime_to"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
             <ImageButton
                 android:id="@+id/btnSearchHistory"
-                android:layout_width="54dp"
+                android:layout_width="53dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:adjustViewBounds="true"

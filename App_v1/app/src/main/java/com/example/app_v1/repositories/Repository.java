@@ -1,14 +1,13 @@
 package com.example.app_v1.repositories;
 
-import android.text.format.DateUtils;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Greenhouse;
+import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DTimeFormatHelper;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +23,8 @@ public class Repository
     private MutableLiveData<ArrayList<Measurement>> latestMeasurements = new MutableLiveData<>();
 
     private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
+    private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
+    private ArrayList<Co2> co2InDateRange = new ArrayList<>();
 
     public static Repository getInstance()
     {
@@ -45,12 +46,12 @@ public class Repository
         return this.latestMeasurements;
     }
 
-    public ArrayList<Temperature> getTemperaturesInDateRange(String timestampISO8601from, String timestampISO8601to) throws ParseException
+    public ArrayList<Temperature> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
     {
         temperaturesInDateRange.clear();
 
-        Date dateFrom = DTimeFormatHelper.convertISO8601stringToDate(timestampISO8601from);
-        Date dateTo = DTimeFormatHelper.convertISO8601stringToDate(timestampISO8601to);
+        Date dateFrom = DTimeFormatHelper.convertStringToDate(dateTimeFrom);
+        Date dateTo = DTimeFormatHelper.convertStringToDate(dateTimeTo);
 
         for(int i = 0; i < measurementsArrList.size(); i++)
         {
@@ -59,8 +60,8 @@ public class Repository
             if(measurementDate.compareTo(dateFrom) >= 0 && measurementDate.compareTo(dateTo) <= 0)
             {
                 Temperature temperature = new Temperature(measurementsArrList.get(i).getTemperature());
-                temperature.setTime(DTimeFormatHelper.getTimeFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
-                temperature.setDate(DTimeFormatHelper.getDateFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
+                temperature.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
+                temperature.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
 
                 temperaturesInDateRange.add(temperature);
             }
@@ -69,6 +70,53 @@ public class Repository
         return this.temperaturesInDateRange;
     }
 
+    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    {
+        humidityInDateRange.clear();
+
+        Date dateFrom = DTimeFormatHelper.convertStringToDate(dateTimeFrom);
+        Date dateTo = DTimeFormatHelper.convertStringToDate(dateTimeTo);
+
+        for(int i = 0; i < measurementsArrList.size(); i++)
+        {
+            Date measurementDate = DTimeFormatHelper.convertISO8601stringToDate(measurementsArrList.get(i).getTimeStamp());
+
+            if(measurementDate.compareTo(dateFrom) >= 0 && measurementDate.compareTo(dateTo) <= 0)
+            {
+                Humidity humidity = new Humidity(measurementsArrList.get(i).getHumidity());
+                humidity.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
+                humidity.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
+
+                humidityInDateRange.add(humidity);
+            }
+        }
+
+        return this.humidityInDateRange;
+    }
+
+    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    {
+        co2InDateRange.clear();
+
+        Date dateFrom = DTimeFormatHelper.convertStringToDate(dateTimeFrom);
+        Date dateTo = DTimeFormatHelper.convertStringToDate(dateTimeTo);
+
+        for(int i = 0; i < measurementsArrList.size(); i++)
+        {
+            Date measurementDate = DTimeFormatHelper.convertISO8601stringToDate(measurementsArrList.get(i).getTimeStamp());
+
+            if(measurementDate.compareTo(dateFrom) >= 0 && measurementDate.compareTo(dateTo) <= 0)
+            {
+                Co2 co2 = new Co2(measurementsArrList.get(i).getcO2());
+                co2.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
+                co2.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurementsArrList.get(i).getTimeStamp()));
+
+                co2InDateRange.add(co2);
+            }
+        }
+
+        return this.co2InDateRange;
+    }
 
     public void addDummyMeasurements()
     {
