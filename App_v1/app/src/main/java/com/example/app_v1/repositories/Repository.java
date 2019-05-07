@@ -10,7 +10,8 @@ public class Repository
 {
     private static Repository instance;
 
-    private LiveData<ArrayList<Greenhouse>> greenhouses;
+    private MutableLiveData<ArrayList<Greenhouse>> greenhouses = new MutableLiveData<>();
+    private ArrayList<Greenhouse> greenhouseArrayList = new ArrayList<>();
 
     private ArrayList<Measurement> measurementsArrList = new ArrayList<>();
     private MutableLiveData<ArrayList<Measurement>> latestMeasurements = new MutableLiveData<>();
@@ -51,5 +52,14 @@ public class Repository
         measurementsArrList.add(mes5);
 
         latestMeasurements.setValue(measurementsArrList);
+    }
+
+    public void addDummyGreenhouses() {
+        greenhouseArrayList.add(new Greenhouse(1, "Denmark", "Horsens", "8700", "Kattesund 12A"));
+        greenhouseArrayList.add(new Greenhouse(2, "Denmark", "Horsens", "8700", "Kattesund 12A"));
+        greenhouseArrayList.add(new Greenhouse(3, "Denmark", "Horsens", "8700", "Kattesund 12A"));
+        greenhouseArrayList.add(new Greenhouse(4, "Denmark", "Horsens", "8700", "Kattesund 12A"));
+
+        greenhouses.setValue(greenhouseArrayList);
     }
 }
