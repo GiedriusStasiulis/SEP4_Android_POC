@@ -18,13 +18,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:title="Measurement History"
         app:subtitleTextColor="#FFFFFF"
         app:titleTextColor="#FFFFFF"
         android:theme="@style/ToolbarTheme">
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/measurementDetailsTabs"
+        android:id="@+id/measurementSelectTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMaxWidth="0dp"
@@ -34,22 +35,22 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:text="@string/title_temperature" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:text="@string/title_humidity"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:text="@string/title_co2" />
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/measurementHistoryViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

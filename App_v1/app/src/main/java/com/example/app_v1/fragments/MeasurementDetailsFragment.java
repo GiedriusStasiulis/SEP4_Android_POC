@@ -3,6 +3,8 @@ package com.example.app_v1.fragments;
 import android.annotation.SuppressLint;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.example.app_v1.R;
+import com.example.app_v1.activities.MeasurementHistoryActivity;
 import com.example.app_v1.adapters.Co2RVAdapter;
 import com.example.app_v1.adapters.HumidityRVAdapter;
 import com.example.app_v1.adapters.TemperatureRVAdapter;
@@ -55,7 +58,7 @@ public class MeasurementDetailsFragment extends Fragment
     protected ConstraintLayout recentMeasurementDisplay;
     protected ConstraintLayout thresholdSettingsDisplay;
 
-    protected ImageButton btnOpenHistoryDialog;
+    protected ImageButton btnOpenHistoryActivity;
     protected ImageButton btnOpenThresholdsSettings;
 
     protected ToggleButton toggleBtnMeasurementOverviewDisplay;
@@ -102,7 +105,7 @@ public class MeasurementDetailsFragment extends Fragment
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         recentMeasurementDisplay = view.findViewById(R.id.recentMeasurementDisplay);
         thresholdSettingsDisplay = view.findViewById(R.id.thresholdSettingsDisplay);
-        btnOpenHistoryDialog = view.findViewById(R.id.btnOpenHistoryDialog);
+        btnOpenHistoryActivity = view.findViewById(R.id.btnOpenHistoryActivity);
         btnOpenThresholdsSettings = view.findViewById(R.id.btnOpenThresholdsSettings);
         toggleBtnMeasurementOverviewDisplay = view.findViewById(R.id.toggleBtnMeasurementOverviewDisplay);
         toggleBtnRecentMeasurementDisplay = view.findViewById(R.id.toggleBtnRecentMeasurementDisplay);
@@ -192,12 +195,17 @@ public class MeasurementDetailsFragment extends Fragment
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
 
-                        btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
-                                Toast.makeText(getActivity(), "Clicked on open temperature history button",
-                                        Toast.LENGTH_LONG).show();
+                                /*Toast.makeText(getActivity(), "Clicked on open temperature history button",
+                                        Toast.LENGTH_LONG).show();*/
+
+                                String measurementType = "Temperature";
+                                Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
+                                intent.putExtra("measurement_type",measurementType);
+                                startActivity(intent);
                             }
                         });
 
@@ -234,12 +242,17 @@ public class MeasurementDetailsFragment extends Fragment
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
 
-                        btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
                                 Toast.makeText(getActivity(), "Clicked on open humidity history button",
                                         Toast.LENGTH_LONG).show();
+
+                                String measurementType = "Humidity";
+                                Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
+                                intent.putExtra("measurement_type",measurementType);
+                                startActivity(intent);
                             }
                         });
 
@@ -277,12 +290,17 @@ public class MeasurementDetailsFragment extends Fragment
                         valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
 
-                        btnOpenHistoryDialog.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
                                 Toast.makeText(getActivity(), "Clicked on open CO2 history button",
                                         Toast.LENGTH_LONG).show();
+
+                                String measurementType = "Co2";
+                                Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
+                                intent.putExtra("measurement_type",measurementType);
+                                startActivity(intent);
                             }
                         });
 

@@ -165,7 +165,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/titleLatestMeasurementValue" />
 
                     <ImageButton
-                        android:id="@+id/btnOpenHistoryDialog"
+                        android:id="@+id/btnOpenHistoryActivity"
                         android:layout_width="55dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"

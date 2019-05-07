@@ -2,42 +2,53 @@
     <string name="app_name">App_v1</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Miscellaneous -->
+    <string name="symbol_temperature">\u2103</string>
+    <string name="symbol_humidity">%</string>
+    <string name="symbol_co2">ppm</string>
+
     <!-- Dashboard activity/fragment -->
-    <string name="title_temperature_display">Temperature Overview:</string>
-    <string name="title_humidity_display">Humidity Overview:</string>
-    <string name="title_co2_display">CO2 Overview:</string>
-    <string name="title_recent_values">Recent Values:</string>
-    <string name="title_humidity_history">Humidity Chart:</string>
-    <string name="title_co2_history">CO2 Chart:</string>
-    <string name="title_latest_value">Latest value:</string>
+    <!-- Dummy data -->
     <string name="value_temperature">25.5</string>
     <string name="value_humidity">35</string>
     <string name="value_co2">650</string>
-    <string name="title_measurement_time">Time:</string>
-    <string name="title_measurement_date">Date:"</string>
     <string name="value_measurement_time">12:05:00"</string>
     <string name="value_measurement_date">03-May-19</string>
-    <string name="title_last_updated">Last updated:</string>
-    <string name="value_last_updated">12:42/03-May-19</string>
-    <string name="title_device_alarm_thresholds">Alarm:</string>
-    <string name="title_notification_thresholds">Notification:</string>
-    <string name="title_min_threshold">Min:</string>
-    <string name="title_max_threshold">Max:</string>
     <string name="value_min_device_alarm_temp_threshold">15.8</string>
     <string name="value_max_device_alarm_temp_threshold">34.7</string>
     <string name="value_min_device_alarm_hum_threshold">10</string>
     <string name="value_max_device_alarm_hum_threshold">80</string>
     <string name="value_min_device_alarm_co2_threshold">200</string>
     <string name="value_max_device_alarm_co2_threshold">1400</string>
-    <string name="symbol_temperature">\u2103</string>
-    <string name="symbol_humidity">%</string>
-    <string name="symbol_co2">ppm</string>
+    <string name="value_last_updated">12:42/03-May-19</string>
+
+    <string name="title_temperature_display">Temperature Overview:</string>
+    <string name="title_humidity_display">Humidity Overview:</string>
+    <string name="title_co2_display">CO2 Overview:</string>
+    <string name="title_latest_value">Latest value:</string>
+    <string name="title_measurement_time">Time:</string>
+    <string name="title_measurement_date">Date:"</string>
+    <string name="title_last_updated">Last updated:</string>
+    <string name="title_recent_values">Recent Values:</string>
     <string name="title_thresholds">Threshold Settings:</string>
+    <string name="title_device_alarm_thresholds">Alarm:</string>
+    <string name="title_notification_thresholds">Notification:</string>
+    <string name="title_min_threshold">Min:</string>
+    <string name="title_max_threshold">Max:</string>
+
+    <!-- Measurement history activity -->
+    <!-- Dummy data -->
+    <string name="value_select_datetime_from">12:00 03-May-19 </string>
+    <string name="value_select_datetime_to">12:00 04-May-19</string>
+
+    <string name="title_temperature">Temperature</string>
+    <string name="title_humidity">Humidity</string>
+    <string name="title_co2">Co2</string>
+    <string name="title_measurement_type">type</string>
+    <string name="title_measurement_history">History:</string>
     <string name="title_select_datetime_from">Select from:</string>
     <string name="title_select_datetime_to">Select to:</string>
-    <string name="value_select_datetime_from">12:00 02-May-19 </string>
-    <string name="value_select_datetime_to">12:00 04-May-19</string>
-    <string name="title_button_filter">Show</string>
+    <string name="title_button_show_history">Go</string>
 
     <!-- Greenhouse Select -->
     <string name="gs_text_title">Select Your Greenhouse</string>
@@ -55,7 +66,6 @@
     <string name="enable_notifications">Enable message notifications</string>
     <string name="thresholds_notifications">Threshold range notifications</string>
     <string name="temperature_range">Temperature thresholds</string>
-
 
 
 </resources>
