@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.app_v1.MainActivity;
 import com.example.app_v1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -119,7 +118,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void goNextPage(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, GreenhouseSelectActivity.class);
         startActivity(intent);
     }
 }
