@@ -10,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -57,8 +60,12 @@ public class MeasurementHistoryFragment extends Fragment
 
     private TextView titleMeasurementType;
 
+    private ConstraintLayout measurementHistoryDisplay;
+
     private Button btnSelectDateTimeFrom;
     private Button btnSelectDateTimeTo;
+
+    private ToggleButton toggleBtnHistoryDisplay;
 
     private ImageButton btnSearchHistory;
 
@@ -95,6 +102,10 @@ public class MeasurementHistoryFragment extends Fragment
         btnSelectDateTimeTo = view.findViewById(R.id.btnSelectDateTimeTo);
         btnSearchHistory = view.findViewById(R.id.btnSearchHistory);
         rvMeasurementHistory = view.findViewById(R.id.rvMeasurementHistory);
+        toggleBtnHistoryDisplay = view.findViewById(R.id.toggleBtnHistoryDisplay);
+        measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
+
+        toggleBtnHistoryDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
 
         dateTimeFrom = DTimeFormatHelper.getYesterdayDateTimeAsString();
         dateTimeTo = DTimeFormatHelper.getCurrentDateTimeAsString();
@@ -121,8 +132,6 @@ public class MeasurementHistoryFragment extends Fragment
                 dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateAsLong());
                 dateDialog.getDatePicker().setMinDate(DTimeFormatHelper.getMinDateAsLong());
 
-                //Add min date a month back max
-
                 dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dateDialog.show();
             }
@@ -144,7 +153,6 @@ public class MeasurementHistoryFragment extends Fragment
                                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                                             timeFromSetListener,
                         hourOfDay,minute,true);
-
 
                 timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timeDialog.show();
@@ -219,6 +227,25 @@ public class MeasurementHistoryFragment extends Fragment
                 btnSelectDateTimeTo.setText(dateTimeTo);
             }
         };
+
+        toggleBtnHistoryDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    measurementHistoryDisplay.setVisibility(View.GONE);
+                    toggleBtnHistoryDisplay.setBackgroundResource(R.drawable.icon_arrow_down);
+                }
+
+                else
+                {
+                    measurementHistoryDisplay.setVisibility(View.VISIBLE);
+                    toggleBtnHistoryDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
+                }
+            }
+        });
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
 
@@ -345,6 +372,8 @@ public class MeasurementHistoryFragment extends Fragment
             dateTimeTo = savedInstanceState.getString("dateTimeTo_value");
             btnSelectDateTimeFrom.setText(dateTimeFrom);
             btnSelectDateTimeTo.setText(dateTimeTo);
+
+            toggleBtnHistoryDisplay.setChecked(savedInstanceState.getBoolean("toggleHistoryDisplayBtn_state"));
         }
     }
 
@@ -383,8 +412,7 @@ public class MeasurementHistoryFragment extends Fragment
     {
         outState.putString("dateTimeFrom_value",dateTimeFrom);
         outState.putString("dateTimeTo_value",dateTimeTo);
-        //outState.putParcelable("rvHistory_state", rvMeasurementHistory.getLayoutManager().onSaveInstanceState());
-        //outState.putInt("rvAdapter_state",rvMeasurementHistory.getScrollState());
+        outState.putBoolean("toggleHistoryDisplayBtn_state", toggleBtnHistoryDisplay.isChecked());
         super.onSaveInstanceState(outState);
     }
 
@@ -392,7 +420,5 @@ public class MeasurementHistoryFragment extends Fragment
     public void onResume()
     {
         super.onResume();
-
-
     }
 }
