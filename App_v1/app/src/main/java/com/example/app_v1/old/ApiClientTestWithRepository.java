@@ -30,7 +30,7 @@ public class ApiClientTestWithRepository
     public MutableLiveData<Temperature> getLastTemperature()
     {
         /*
-        final IAndroidWebApiClient apiClient = AndroidWebApiClient.getRetrofitClient().create(IAndroidWebApiClient.class);
+        final GemsApi apiClient = GemsApiClient.getRetrofitClient().create(GemsApi.class);
 
         scheduler.scheduleAtFixedRate(new Runnable() {
             @Override

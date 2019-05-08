@@ -14,7 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AndroidWebApiClient
+public class GemsApiClient
 {
     //private static final String BASE_URL = "https://10.0.2.2:44398/api/";    for internal API
     private static final String BASE_URL = "https://sep4gems.azurewebsites.net/api/";
