@@ -222,8 +222,6 @@ public class MeasurementHistoryFragment extends Fragment
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
 
-
-
         measurementHistoryViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override

@@ -25,11 +25,14 @@ import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.models.Measurement;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity
 {
     private static final String TAG = "DashboardActivity";
+
+    private int selectedGreenhouse;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -45,12 +48,19 @@ public class DashboardActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null)
+        {
+            selectedGreenhouse = bundle.getInt("greenhouseId");
+        }
+
         setContentView(R.layout.activity_dashboard);
 
         //Toolbar settings
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard - GH01");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(String.format(Locale.ENGLISH,"Dashboard - %d",selectedGreenhouse));
         //getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
 
         //Enable back-arrow
