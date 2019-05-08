@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 
 import androidx.annotation.Nullable;
+
+import com.example.app_v1.viewmodels.DashboardActivityViewModel;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +22,6 @@ import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
 import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.models.Measurement;
-import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
 
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class DashboardActivity extends AppCompatActivity
     private SectionsPageAdapter sectionsPageAdapter;
     public ViewPager viewPager;
 
-    private MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
+    private DashboardActivityViewModel dashboardActivityViewModel;
 
     final int[] tabIcons = new int[]{R.drawable.tab_icon_temperature,R.drawable.tab_icon_humidity,R.drawable.tab_icon_co2};
 
@@ -74,10 +75,10 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: -.- %");
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("--- ppm");
 
-        measurementDetailsActivityViewModel = ViewModelProviders.of(this).get(MeasurementDetailsActivityViewModel.class);
-        measurementDetailsActivityViewModel.initViewModel();
+        dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
+        dashboardActivityViewModel.initViewModel();
 
-        measurementDetailsActivityViewModel.getLatestMeasurement().observe(this, new Observer<Measurement>() {
+        dashboardActivityViewModel.getLatestMeasurement().observe(this, new Observer<Measurement>() {
             @Override
             public void onChanged(@Nullable Measurement measurement)
             {
@@ -96,7 +97,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onTabSelected(TabLayout.Tab tab)
             {
-                measurementDetailsActivityViewModel.setSelectedTabIndex(tab.getPosition());
+                dashboardActivityViewModel.setSelectedTabIndex(tab.getPosition());
             }
 
             @Override

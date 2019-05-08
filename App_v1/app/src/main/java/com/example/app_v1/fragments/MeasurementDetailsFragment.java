@@ -31,7 +31,7 @@ import com.example.app_v1.adapters.TemperatureRVAdapter;
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
+import com.example.app_v1.viewmodels.DashboardActivityViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -81,7 +81,7 @@ public class MeasurementDetailsFragment extends Fragment
     private ArrayList<Humidity> recentHumiditys;
     private ArrayList<Co2> recentCo2s;
 
-    private MeasurementDetailsActivityViewModel measurementDetailsActivityViewModel;
+    private DashboardActivityViewModel dashboardActivityViewModel;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -155,9 +155,9 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
-        measurementDetailsActivityViewModel = ViewModelProviders.of(this.getActivity()).get(MeasurementDetailsActivityViewModel.class);
+        dashboardActivityViewModel = ViewModelProviders.of(this.getActivity()).get(DashboardActivityViewModel.class);
 
-        measurementDetailsActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
+        dashboardActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override
             public void onChanged(@Nullable Integer integer)
@@ -170,7 +170,7 @@ public class MeasurementDetailsFragment extends Fragment
                         graphView.removeAllSeries();
 
                         try {
-                            measurementDetailsActivityViewModel.getLatestTemperatures().observe(getActivity(), new Observer<ArrayList<Temperature>>()
+                            dashboardActivityViewModel.getLatestTemperatures().observe(getActivity(), new Observer<ArrayList<Temperature>>()
                             {
                                 @Override
                                 public void onChanged(@Nullable ArrayList<Temperature> temperatures)
@@ -214,7 +214,7 @@ public class MeasurementDetailsFragment extends Fragment
                         graphView.removeAllSeries();
 
                         try {
-                            measurementDetailsActivityViewModel.getLatestHumiditys().observe(getActivity(), new Observer<ArrayList<Humidity>>() {
+                            dashboardActivityViewModel.getLatestHumiditys().observe(getActivity(), new Observer<ArrayList<Humidity>>() {
                                 @Override
                                 public void onChanged(@Nullable ArrayList<Humidity> humidities)
                                 {
@@ -258,7 +258,7 @@ public class MeasurementDetailsFragment extends Fragment
                         graphView.removeAllSeries();
 
                         try {
-                            measurementDetailsActivityViewModel.getLatestCo2s().observe(getActivity(), new Observer<ArrayList<Co2>>()
+                            dashboardActivityViewModel.getLatestCo2s().observe(getActivity(), new Observer<ArrayList<Co2>>()
                             {
                                 @Override
                                 public void onChanged(@Nullable ArrayList<Co2> co2s)

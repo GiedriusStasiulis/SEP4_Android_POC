@@ -5,17 +5,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
-import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.fragments.MeasurementHistoryFragment;
-import com.example.app_v1.viewmodels.MeasurementDetailsActivityViewModel;
 import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
 import com.google.android.material.tabs.TabLayout;
 

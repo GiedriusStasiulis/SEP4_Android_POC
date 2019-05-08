@@ -10,10 +10,11 @@ import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.Repository;
 import com.example.app_v1.utils.DTimeFormatHelper;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class MeasurementDetailsActivityViewModel extends ViewModel
+public class DashboardActivityViewModel extends ViewModel
 {
     private Repository repo;
 
