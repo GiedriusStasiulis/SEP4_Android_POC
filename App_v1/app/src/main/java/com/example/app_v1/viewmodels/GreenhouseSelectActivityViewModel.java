@@ -29,12 +29,16 @@ public class GreenhouseSelectActivityViewModel extends ViewModel {
         repo.addDummyGreenhouses();
 
         greenhouses = queryGreenhouses();
+
     }
 
     public List<Integer> queryGreenhouses() {
         Retrofit retrofit = GemsApiClient.getRetrofitClient();
         GemsApi api = retrofit.create(GemsApi.class);
         Call call = api.getAllGreenhouses();
+
+        // sync method with dummy data from repo
+        //returnedValues = repo.getGreenhouses().getValue();
 
 
         call.enqueue(new Callback() {
