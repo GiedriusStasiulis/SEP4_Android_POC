@@ -20,14 +20,13 @@ import retrofit2.Retrofit;
 public class GreenhouseSelectActivityViewModel extends ViewModel {
     private static final String TAG = "GhSelectViewModel";
 
-    private Repository repo;
     private List<Integer> greenhouses = new ArrayList<>();
     private List<Greenhouse> returnedValues;
+    private Repository repo;
 
     public void init() {
         repo = Repository.getInstance();
         repo.addDummyGreenhouses();
-
     }
 
     public List<Integer> getGreenhouses() {
