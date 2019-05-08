@@ -1,4 +1,4 @@
-package com.example.app_v1.repositories;
+package com.example.app_v1.room;
 
 import android.content.Context;
 import android.os.AsyncTask;
