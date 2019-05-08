@@ -9,12 +9,12 @@ import java.util.Locale;
 
 public class DTimeFormatHelper
 {
-    public static String getTodayDateAsString()
+    public static String getCurrentDateTimeAsString()
     {
         return new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH).format(new Date());
     }
 
-    public static String getDayBeforeTodayAsString()
+    public static String getYesterdayDateTimeAsString()
     {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);

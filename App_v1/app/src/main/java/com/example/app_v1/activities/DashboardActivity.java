@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 
 import androidx.annotation.Nullable;
 
+import com.example.app_v1.utils.DTimeFormatHelper;
 import com.example.app_v1.viewmodels.DashboardActivityViewModel;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -50,7 +51,7 @@ public class DashboardActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard - GH01");
-        getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
+        //getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
 
         //Enable back-arrow
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,6 +84,8 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onChanged(@Nullable Measurement measurement)
             {
+                getSupportActionBar().setSubtitle("Updated: " + DTimeFormatHelper.getCurrentDateTimeAsString());
+
                 Objects.requireNonNull(tabLayout.getTabAt(0)).setText("");
                 Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
                 Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");

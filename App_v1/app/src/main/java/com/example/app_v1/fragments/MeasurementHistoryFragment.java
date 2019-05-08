@@ -95,8 +95,8 @@ public class MeasurementHistoryFragment extends Fragment
         btnSearchHistory = view.findViewById(R.id.btnSearchHistory);
         rvMeasurementHistory = view.findViewById(R.id.rvMeasurementHistory);
 
-        dateTimeFrom = DTimeFormatHelper.getDayBeforeTodayAsString();
-        dateTimeTo = DTimeFormatHelper.getTodayDateAsString();
+        dateTimeFrom = DTimeFormatHelper.getYesterdayDateTimeAsString();
+        dateTimeTo = DTimeFormatHelper.getCurrentDateTimeAsString();
 
         btnSelectDateTimeFrom.setText(dateTimeFrom);
         btnSelectDateTimeTo.setText(dateTimeTo);
