@@ -55,6 +55,10 @@ dependencies {
     //GraphView
     implementation 'com.jjoe64:graphview:4.2.2'
 
+    //Room
+    implementation 'android.arch.persistence.room:runtime:1.1.1';
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1';
+
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
