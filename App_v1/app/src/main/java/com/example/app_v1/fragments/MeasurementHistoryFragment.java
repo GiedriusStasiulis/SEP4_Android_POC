@@ -222,6 +222,8 @@ public class MeasurementHistoryFragment extends Fragment
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
 
+
+
         measurementHistoryViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override
@@ -232,6 +234,14 @@ public class MeasurementHistoryFragment extends Fragment
                     case 0:
 
                         initTemperatureHistoryRView();
+
+                        try {
+                            temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo).getValue();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        temperatureRVAdapter.clearItems();
+                        temperatureRVAdapter.setItems(temperaturesInDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_temperature));
 
@@ -259,6 +269,15 @@ public class MeasurementHistoryFragment extends Fragment
 
                         initHumidityHistoryRView();
 
+                        try {
+                            humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        humidityRVAdapter.clearItems();
+                        humidityRVAdapter.setItems(humidityInDateRange);
+
                         titleMeasurementType.setText(getResources().getString(R.string.title_humidity));
 
                         btnSearchHistory.setOnClickListener(new View.OnClickListener()
@@ -284,6 +303,15 @@ public class MeasurementHistoryFragment extends Fragment
                     case 2:
 
                         initCo2HistoryRView();
+
+                        try {
+                            co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        co2RVAdapter.clearItems();
+                        co2RVAdapter.setItems(co2InDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_co2));
 
@@ -360,5 +388,13 @@ public class MeasurementHistoryFragment extends Fragment
         //outState.putParcelable("rvHistory_state", rvMeasurementHistory.getLayoutManager().onSaveInstanceState());
         //outState.putInt("rvAdapter_state",rvMeasurementHistory.getScrollState());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+
     }
 }
