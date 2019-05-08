@@ -27,9 +27,11 @@ public class GreenhouseSelectActivityViewModel extends ViewModel {
     public void init() {
         repo = Repository.getInstance();
         repo.addDummyGreenhouses();
+
+        greenhouses = queryGreenhouses();
     }
 
-    public List<Integer> getGreenhouses() {
+    public List<Integer> queryGreenhouses() {
         Retrofit retrofit = GemsApiClient.getRetrofitClient();
         GemsApi api = retrofit.create(GemsApi.class);
         Call call = api.getAllGreenhouses();
@@ -57,7 +59,12 @@ public class GreenhouseSelectActivityViewModel extends ViewModel {
         });
 
         return greenhouses;
-
     }
+
+    public List<Integer> getGreenhouses() {
+        return greenhouses;
+    }
+
+
 
 }

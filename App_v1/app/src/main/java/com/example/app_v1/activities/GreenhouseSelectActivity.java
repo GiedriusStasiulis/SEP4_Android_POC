@@ -46,7 +46,6 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
 
         // populate dropdown menu
 
-        greenhouses = new ArrayList<>();
         greenhouses = viewModel.getGreenhouses();
 
         ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, greenhouses);
@@ -60,12 +59,12 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
                 Log.d(TAG, "spinner selection: " + selection);
 
                 greenhouseId = Integer.parseInt(selection);
-                buttonGo.setVisibility(View.VISIBLE);
+//                buttonGo.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                buttonGo.setVisibility(View.GONE);
+//                buttonGo.setVisibility(View.GONE);
             }
         });
 
