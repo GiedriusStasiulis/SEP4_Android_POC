@@ -30,10 +30,10 @@ public class DashboardActivity extends AppCompatActivity
 {
     private static final String TAG = "DashboardActivity";
 
-    public Toolbar toolbar;
-    public TabLayout tabLayout;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
     private SectionsPageAdapter sectionsPageAdapter;
-    public ViewPager viewPager;
+    private ViewPager viewPager;
 
     private DashboardActivityViewModel dashboardActivityViewModel;
 

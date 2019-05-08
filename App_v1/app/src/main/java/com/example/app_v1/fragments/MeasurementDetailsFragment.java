@@ -44,15 +44,10 @@ public class MeasurementDetailsFragment extends Fragment
     private static final String TAG = "MeasurementDetailsFragment";
 
     private TextView titleMeasurementOverview;
-    private TextView titleMeasurementHistory;
     private TextView valueLatestMeasurement;
     private TextView valueMeasurementTime;
     private TextView valueMeasurementDate;
-    private TextView valueMinAlarmThreshold;
-    private TextView valueMaxAlarmThreshold;
     private TextView symbolMeasurementValue;
-    private TextView symbolMinAlarmThreshold;
-    private TextView symbolMaxAlarmThreshold;
 
     private ConstraintLayout measurementOverviewDisplay;
     private ConstraintLayout recentMeasurementDisplay;
@@ -66,8 +61,6 @@ public class MeasurementDetailsFragment extends Fragment
     private ToggleButton toggleBtnThresholdsDisplay;
     private RadioButton radioBtnShowRecentList;
     private RadioButton radioBtnShowRecentGraph;
-
-    private ScrollView scrollView;
 
     private GraphView graphView;
     private LineGraphSeries<DataPoint> series;
@@ -97,7 +90,6 @@ public class MeasurementDetailsFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         titleMeasurementOverview = view.findViewById(R.id.titleMeasurementOverview);
-        titleMeasurementHistory = view.findViewById(R.id.titleMeasurementHistory);
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
         valueMeasurementDate = view.findViewById(R.id.valueMeasurementDate);
@@ -112,7 +104,6 @@ public class MeasurementDetailsFragment extends Fragment
         toggleBtnThresholdsDisplay = view.findViewById(R.id.toggleBtnThresholdsDisplay);
         radioBtnShowRecentList = view.findViewById(R.id.radioBtnShowRecentList);
         radioBtnShowRecentGraph = view.findViewById(R.id.radioBtnShowRecentGraph);
-        scrollView = view.findViewById(R.id.scrollView);
         recentMeasurementRView = view.findViewById(R.id.recentMeasurementRView);
         graphView = view.findViewById(R.id.graphView);
 
