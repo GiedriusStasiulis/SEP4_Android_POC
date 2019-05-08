@@ -9,9 +9,18 @@ import java.util.Locale;
 
 public class DTimeFormatHelper
 {
-    public static long getCurrentDateTimeAsLong()
+    public static long getCurrentDateAsLong()
     {
         return new Date().getTime();
+    }
+
+    public static long getMinDateAsLong()
+    {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH,- 1);
+        Date date = cal.getTime();
+
+        return date.getTime();
     }
 
     public static String getCurrentDateTimeAsString()

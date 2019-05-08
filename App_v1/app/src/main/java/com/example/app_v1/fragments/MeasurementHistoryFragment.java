@@ -118,7 +118,8 @@ public class MeasurementHistoryFragment extends Fragment
                         dateFromSetListener,
                         year,month,day);
 
-                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateTimeAsLong());
+                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateAsLong());
+                dateDialog.getDatePicker().setMinDate(DTimeFormatHelper.getMinDateAsLong());
 
                 //Add min date a month back max
 
@@ -178,7 +179,8 @@ public class MeasurementHistoryFragment extends Fragment
                         dateToSetListener,
                         year,month,day);
 
-                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateTimeAsLong());
+                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateAsLong());
+                dateDialog.getDatePicker().setMinDate(DTimeFormatHelper.getMinDateAsLong());
 
                 dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dateDialog.show();
