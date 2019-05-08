@@ -233,7 +233,7 @@ public class MeasurementHistoryFragment extends Fragment
                                 temperaturesInDateRange.clear();
 
                                     try {
-                                        temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo);
+                                        temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo).getValue();
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
@@ -305,8 +305,10 @@ public class MeasurementHistoryFragment extends Fragment
 
         if(savedInstanceState != null)
         {
-            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable("rvHistory_state");
-            rvMeasurementHistory.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+            dateTimeFrom = savedInstanceState.getString("dateTimeFrom_value");
+            dateTimeTo = savedInstanceState.getString("dateTimeTo_value");
+            btnSelectDateTimeFrom.setText(dateTimeFrom);
+            btnSelectDateTimeTo.setText(dateTimeTo);
         }
     }
 
@@ -343,7 +345,10 @@ public class MeasurementHistoryFragment extends Fragment
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
-        outState.putParcelable("rvHistory_state", rvMeasurementHistory.getLayoutManager().onSaveInstanceState());
+        outState.putString("dateTimeFrom_value",dateTimeFrom);
+        outState.putString("dateTimeTo_value",dateTimeTo);
+        //outState.putParcelable("rvHistory_state", rvMeasurementHistory.getLayoutManager().onSaveInstanceState());
+        //outState.putInt("rvAdapter_state",rvMeasurementHistory.getScrollState());
         super.onSaveInstanceState(outState);
     }
 }
