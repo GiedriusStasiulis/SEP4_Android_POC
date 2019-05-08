@@ -58,6 +58,8 @@ public class MeasurementHistoryFragment extends Fragment
     private String timeTo;
     private String dateTimeTo;
 
+    private int selectedGreenhouseId;
+
     private TextView titleMeasurementType;
 
     private ConstraintLayout measurementHistoryDisplay;
@@ -248,6 +250,15 @@ public class MeasurementHistoryFragment extends Fragment
         });
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
+
+        measurementHistoryViewModel.getSelectedGreenhouseId().observe(getActivity(), new Observer<Integer>()
+        {
+            @Override
+            public void onChanged(Integer integer)
+            {
+                selectedGreenhouseId = integer;
+            }
+        });
 
         measurementHistoryViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {

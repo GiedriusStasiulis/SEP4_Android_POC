@@ -15,6 +15,7 @@ public class MeasurementHistoryViewModel extends ViewModel
     private Repository repo;
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
+    private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
     private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
     private MutableLiveData<ArrayList<Temperature>> temperaturesInRangeMld = new MutableLiveData<>();
     private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
@@ -24,6 +25,7 @@ public class MeasurementHistoryViewModel extends ViewModel
     {
         repo = Repository.getInstance();
         selectedTabIndex.setValue(0);
+        selectedGreenhouseId.setValue(0);
     }
 
     public void setSelectedTabIndex(Integer index)
@@ -34,6 +36,16 @@ public class MeasurementHistoryViewModel extends ViewModel
     public MutableLiveData<Integer> getSelectedTabIndex()
     {
         return selectedTabIndex;
+    }
+
+    public void setSelectedGreenhouseId(Integer id)
+    {
+        selectedGreenhouseId.setValue(id);
+    }
+
+    public MutableLiveData<Integer> getSelectedGreenhouseId()
+    {
+        return this.selectedGreenhouseId;
     }
 
     public MutableLiveData<ArrayList<Temperature>> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException

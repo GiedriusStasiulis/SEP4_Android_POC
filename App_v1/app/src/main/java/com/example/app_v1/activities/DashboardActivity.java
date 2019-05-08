@@ -90,6 +90,8 @@ public class DashboardActivity extends AppCompatActivity
         dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
         dashboardActivityViewModel.initViewModel();
 
+        dashboardActivityViewModel.setSelectedGreenhouseId(selectedGreenhouse);
+
         dashboardActivityViewModel.getLatestMeasurement().observe(this, new Observer<Measurement>() {
             @Override
             public void onChanged(@Nullable Measurement measurement)

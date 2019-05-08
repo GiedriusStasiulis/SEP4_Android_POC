@@ -19,6 +19,7 @@ public class DashboardActivityViewModel extends ViewModel
     private Repository repo;
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
+    private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
 
     private ArrayList<Measurement> latestMeasurementsArrList = new ArrayList<>();
     private MutableLiveData<Measurement> latestMeasurementMld = new MutableLiveData<>();
@@ -48,6 +49,16 @@ public class DashboardActivityViewModel extends ViewModel
     public MutableLiveData<Integer> getSelectedTabIndex()
     {
         return selectedTabIndex;
+    }
+
+    public void setSelectedGreenhouseId(Integer id)
+    {
+        selectedGreenhouseId.setValue(id);
+    }
+
+    public MutableLiveData<Integer> getSelectedGreenhouseId()
+    {
+        return this.selectedGreenhouseId;
     }
 
     private ArrayList<Measurement> getLatestMeasurementsArrList()

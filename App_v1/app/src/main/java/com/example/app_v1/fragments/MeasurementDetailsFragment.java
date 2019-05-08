@@ -43,6 +43,8 @@ public class MeasurementDetailsFragment extends Fragment
 {
     private static final String TAG = "MeasurementDetailsFragment";
 
+    private int selectedGreenhouseId;
+
     private TextView titleMeasurementOverview;
     private TextView valueLatestMeasurement;
     private TextView valueMeasurementTime;
@@ -149,6 +151,15 @@ public class MeasurementDetailsFragment extends Fragment
 
         dashboardActivityViewModel = ViewModelProviders.of(this.getActivity()).get(DashboardActivityViewModel.class);
 
+        dashboardActivityViewModel.getSelectedGreenhouseId().observe(this, new Observer<Integer>()
+        {
+            @Override
+            public void onChanged(Integer integer)
+            {
+                selectedGreenhouseId = integer;
+            }
+        });
+
         dashboardActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override
@@ -194,6 +205,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 String measurementType = "Temperature";
                                 Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
                                 intent.putExtra("measurement_type",measurementType);
+                                intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                                 startActivity(intent);
                             }
                         });
@@ -238,6 +250,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 String measurementType = "Humidity";
                                 Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
                                 intent.putExtra("measurement_type",measurementType);
+                                intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                                 startActivity(intent);
                             }
                         });
@@ -283,6 +296,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 String measurementType = "Co2";
                                 Intent intent = new Intent(getContext(), MeasurementHistoryActivity.class);
                                 intent.putExtra("measurement_type",measurementType);
+                                intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                                 startActivity(intent);
                             }
                         });

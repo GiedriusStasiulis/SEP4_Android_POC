@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
@@ -20,12 +21,13 @@ public class MeasurementHistoryActivity extends AppCompatActivity
 {
     private static final String TAG = "MeasurementHistoryActivity";
 
-    public Toolbar toolbar;
-    public TabLayout measurementSelectTabLayout;
-    public SectionsPageAdapter sectionsPageAdapter;
-    public ViewPager measurementHistoryViewPager;
+    private Toolbar toolbar;
+    private TabLayout measurementSelectTabLayout;
+    private SectionsPageAdapter sectionsPageAdapter;
+    private ViewPager measurementHistoryViewPager;
 
-    public String measurementTypeFromBundle;
+    private String measurementTypeFromBundle;
+    private int selectedGreenhouseId;
 
     private MeasurementHistoryViewModel measurementHistoryViewModel;
 
@@ -64,6 +66,9 @@ public class MeasurementHistoryActivity extends AppCompatActivity
         if(bundle != null)
         {
             measurementTypeFromBundle = bundle.getString("measurement_type");
+            selectedGreenhouseId = bundle.getInt("selectedGreenhouseId");
+
+            measurementHistoryViewModel.setSelectedGreenhouseId(selectedGreenhouseId);
         }
 
         switch (measurementTypeFromBundle)
