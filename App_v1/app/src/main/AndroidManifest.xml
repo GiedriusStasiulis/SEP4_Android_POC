@@ -35,10 +35,10 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.GreenhouseSelectActivity">
+            android:parentActivityName=".activities.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.app_v1.activities.GreenhouseSelectActivity" />
+                android:value="com.example.app_v1.activities.DashboardActivity" />
         </activity>
     </application>
 

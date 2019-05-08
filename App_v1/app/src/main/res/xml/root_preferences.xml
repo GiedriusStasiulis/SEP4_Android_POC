@@ -23,15 +23,7 @@
             app:title="@string/enable_notifications"/>
 
     </PreferenceCategory>
-    <PreferenceCategory app:title="@string/temperature_range">
-        <EditTextPreference
-            app:key="temperatureMin"
-            app:title="Temperature min threshold"/>
-        <EditTextPreference
-            app:key="temperatureMax"
-            app:title="Temperature max threshold"/>
 
-    </PreferenceCategory>
 
 
 </androidx.preference.PreferenceScreen>
