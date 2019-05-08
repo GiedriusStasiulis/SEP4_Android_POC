@@ -36,6 +36,7 @@ import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
 
 import org.w3c.dom.Text;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -117,6 +118,10 @@ public class MeasurementHistoryFragment extends Fragment
                         dateFromSetListener,
                         year,month,day);
 
+                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateTimeAsLong());
+
+                //Add min date a month back max
+
                 dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dateDialog.show();
             }
@@ -138,6 +143,7 @@ public class MeasurementHistoryFragment extends Fragment
                                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                                             timeFromSetListener,
                         hourOfDay,minute,true);
+
 
                 timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timeDialog.show();
@@ -171,6 +177,8 @@ public class MeasurementHistoryFragment extends Fragment
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         dateToSetListener,
                         year,month,day);
+
+                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateTimeAsLong());
 
                 dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dateDialog.show();

@@ -9,6 +9,11 @@ import java.util.Locale;
 
 public class DTimeFormatHelper
 {
+    public static long getCurrentDateTimeAsLong()
+    {
+        return new Date().getTime();
+    }
+
     public static String getCurrentDateTimeAsString()
     {
         return new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH).format(new Date());
