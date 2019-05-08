@@ -37,6 +37,7 @@ public class DashboardActivityViewModel extends ViewModel
         repo = Repository.getInstance();
         selectedTabIndex.setValue(0);
         repo.addDummyMeasurements();
+        repo.fetchLatestMeasurementsFromApi();
     }
 
     public void setSelectedTabIndex(Integer index)

@@ -22,6 +22,7 @@ import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
 import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.models.Measurement;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -147,6 +148,11 @@ public class DashboardActivity extends AppCompatActivity
                 Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.action_logout:
+
+                break;
+
 
             default:
                 return super.onOptionsItemSelected(item);

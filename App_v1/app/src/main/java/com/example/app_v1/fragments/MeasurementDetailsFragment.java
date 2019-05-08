@@ -121,6 +121,7 @@ public class MeasurementDetailsFragment extends Fragment
         toggleBtnThresholdsDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
 
         radioBtnShowRecentList.setChecked(true);
+        radioBtnShowRecentList.jumpDrawablesToCurrentState(); //bug fix for displaying partially checked radio button on last fragment
 
         graphView.setVisibility(View.GONE);
         recentMeasurementRView.setVisibility(View.VISIBLE);

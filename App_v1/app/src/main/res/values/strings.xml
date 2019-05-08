@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">App_v1</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
 
     <!-- Miscellaneous -->
     <string name="symbol_temperature">\u2103</string>

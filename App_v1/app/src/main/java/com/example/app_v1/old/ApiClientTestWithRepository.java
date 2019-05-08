@@ -62,7 +62,7 @@ public class ApiClientTestWithRepository
 
                     @Override
                     public void onFailure(Call<Temperature> call, Throwable t) {
-                        Log.e("OnFailure", "Failure: Sum ting wong: "  +  t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                        Log.e("OnFailure", "Failure: "  +  t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
                     }
                 });
             }

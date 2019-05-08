@@ -50,6 +50,14 @@ public class DTimeFormatHelper
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
     }
 
+    public static String convertStringDateTimeToISO8601String(final String dateTime) throws ParseException
+    {
+        SimpleDateFormat sdfIn = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
+        Date date = sdfIn.parse(dateTime);
+        SimpleDateFormat sdfOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.ENGLISH);
+        return sdfOut.format(date);
+    }
+
     public static String convertTimePickerValuesToString(int hourOfDay, int minute)
     {
         String formattedTime,hours,minutes;
