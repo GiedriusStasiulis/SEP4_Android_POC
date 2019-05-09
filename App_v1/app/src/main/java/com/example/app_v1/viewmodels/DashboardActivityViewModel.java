@@ -15,6 +15,7 @@ import com.example.app_v1.utils.DTimeFormatHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DashboardActivityViewModel extends ViewModel
 {
@@ -119,7 +120,7 @@ public class DashboardActivityViewModel extends ViewModel
 
             for (int i = 0; i < measurements.size(); i++)
             {
-                Co2 co2 = new Co2(String.valueOf(measurements.get(i).getcO2()));
+                Co2 co2 = new Co2(String.format(Locale.ENGLISH,"%.0f",measurements.get(i).getcO2()));
                 co2.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
                 co2.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
 
@@ -154,5 +155,4 @@ public class DashboardActivityViewModel extends ViewModel
     {
         return this.selectedGreenhouseId;
     }
-
 }
