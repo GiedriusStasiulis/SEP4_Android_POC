@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -56,6 +57,14 @@ public class MeasurementDetailsFragment extends Fragment
     private ConstraintLayout recentMeasurementDisplay;
     private ConstraintLayout thresholdSettingsDisplay;
 
+    private ConstraintLayout measurementOverviewDisplayContents;
+    private ConstraintLayout recentMeasurementDisplayContent;
+    private ConstraintLayout thresholdDisplayContent;
+
+    private ConstraintLayout measurementOverviewLoadingScreen;
+    private ConstraintLayout latestMeasurementsLoadingScreen;
+    private ConstraintLayout thresholdsLoadingScreen;
+
     private ImageButton btnOpenHistoryActivity;
     private ImageButton btnOpenThresholdsSettings;
 
@@ -67,6 +76,10 @@ public class MeasurementDetailsFragment extends Fragment
 
     private GraphView graphView;
     private LineGraphSeries<DataPoint> series;
+
+    private ProgressBar progressBarMeasurementOverview;
+    private ProgressBar progressBarLatestValues;
+    private ProgressBar progressBarThresholds;
 
     private RecyclerView recentMeasurementRView;
     private TemperatureRVAdapter temperatureRVAdapter;
@@ -99,6 +112,12 @@ public class MeasurementDetailsFragment extends Fragment
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         recentMeasurementDisplay = view.findViewById(R.id.recentMeasurementDisplay);
+        measurementOverviewDisplayContents = view.findViewById(R.id.measurementOverviewDisplayContents);
+        recentMeasurementDisplayContent = view.findViewById(R.id.recentMeasurementDisplayContent);
+        thresholdDisplayContent = view.findViewById(R.id.thresholdDisplayContent);
+        measurementOverviewLoadingScreen = view.findViewById(R.id.measurementOverviewLoadingScreen);
+        latestMeasurementsLoadingScreen = view.findViewById(R.id.latestMeasurementsLoadingScreen);
+        thresholdsLoadingScreen = view.findViewById(R.id.thresholdsLoadingScreen);
         thresholdSettingsDisplay = view.findViewById(R.id.thresholdSettingsDisplay);
         btnOpenHistoryActivity = view.findViewById(R.id.btnOpenHistoryActivity);
         btnOpenThresholdsSettings = view.findViewById(R.id.btnOpenThresholdsSettings);
@@ -109,6 +128,9 @@ public class MeasurementDetailsFragment extends Fragment
         radioBtnShowRecentGraph = view.findViewById(R.id.radioBtnShowRecentGraph);
         recentMeasurementRView = view.findViewById(R.id.recentMeasurementRView);
         graphView = view.findViewById(R.id.graphView);
+        progressBarMeasurementOverview = view.findViewById(R.id.progressBarMeasurementOverview);
+        progressBarLatestValues = view.findViewById(R.id.progressBarLatestValues);
+        progressBarThresholds = view.findViewById(R.id.progressBarThresholds);
 
         toggleBtnMeasurementOverviewDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
         toggleBtnRecentMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
@@ -150,6 +172,9 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
+        hideLayoutContentBeforeLoading();
+        showLoadingScreens();
+
         dashboardActivityViewModel = ViewModelProviders.of(this.getActivity()).get(DashboardActivityViewModel.class);
 
         dashboardActivityViewModel.getSelectedGreenhouseId().observe(this, new Observer<Integer>()
@@ -176,8 +201,26 @@ public class MeasurementDetailsFragment extends Fragment
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
                             @Override
-                            public void onChanged(ArrayList<Measurement> measurements)
+                            public void onChanged(final ArrayList<Measurement> measurements)
                             {
+                                dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
+                                {
+                                    @Override
+                                    public void onChanged(Boolean aBoolean)
+                                    {
+                                        if(!aBoolean)
+                                        {
+                                            hideLoadingScreens();
+                                            showLayoutContentAfterLoading();
+                                        }
+                                        else
+                                        {
+                                            hideLayoutContentBeforeLoading();
+                                            showLoadingScreens();
+                                        }
+                                    }
+                                });
+
                                 try {
                                     latestTemperatures = dashboardActivityViewModel.extractLatestTemperaturesFromMeasurements(measurements);
                                 } catch (ParseException e) {
@@ -386,10 +429,38 @@ public class MeasurementDetailsFragment extends Fragment
         }
     }
 
-    @Override
-    public void onResume()
+    private void hideLayoutContentBeforeLoading()
     {
-        super.onResume();
+        measurementOverviewDisplayContents.setVisibility(View.GONE);
+        recentMeasurementDisplayContent.setVisibility(View.GONE);
+        thresholdDisplayContent.setVisibility(View.GONE);
+    }
+
+    private void showLayoutContentAfterLoading()
+    {
+        measurementOverviewDisplayContents.setVisibility(View.VISIBLE);
+        recentMeasurementDisplayContent.setVisibility(View.VISIBLE);
+        thresholdDisplayContent.setVisibility(View.VISIBLE);
+    }
+
+    private void showLoadingScreens()
+    {
+        measurementOverviewLoadingScreen.setVisibility(View.VISIBLE);
+        latestMeasurementsLoadingScreen.setVisibility(View.VISIBLE);
+        thresholdsLoadingScreen.setVisibility(View.VISIBLE);
+        progressBarMeasurementOverview.setVisibility(View.VISIBLE);
+        progressBarLatestValues.setVisibility(View.VISIBLE);
+        progressBarThresholds.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingScreens()
+    {
+        measurementOverviewLoadingScreen.setVisibility(View.GONE);
+        latestMeasurementsLoadingScreen.setVisibility(View.GONE);
+        thresholdsLoadingScreen.setVisibility(View.GONE);
+        progressBarMeasurementOverview.setVisibility(View.GONE);
+        progressBarLatestValues.setVisibility(View.GONE);
+        progressBarThresholds.setVisibility(View.GONE);
     }
 
     private void initRecentTemperatureRView()
@@ -530,6 +601,8 @@ public class MeasurementDetailsFragment extends Fragment
         }
     }
 
+
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
@@ -542,6 +615,12 @@ public class MeasurementDetailsFragment extends Fragment
         outState.putBoolean("radioBtnShowGraph_state", radioBtnShowRecentGraph.isChecked());
 
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
     }
 
     @Override

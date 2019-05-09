@@ -16,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -136,6 +138,17 @@ public class DashboardActivity extends AppCompatActivity
 
             }
         });
+
+        if(savedInstanceState != null)
+        {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setText("");
+            Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
+
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setText(savedInstanceState.getString("temperatureTabValue"));
+            Objects.requireNonNull(tabLayout.getTabAt(1)).setText(savedInstanceState.getString("humidityTabValue"));
+            Objects.requireNonNull(tabLayout.getTabAt(2)).setText(savedInstanceState.getString("co2TabValue"));
+        }
     }
 
     private void setupViewPager(ViewPager viewPager)
@@ -196,10 +209,6 @@ public class DashboardActivity extends AppCompatActivity
             Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(tabIcons[0]);
             Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
             Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
-
-            Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: 25.5 \u2103");
-            Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: 35 %");
-            Objects.requireNonNull(tabLayout.getTabAt(2)).setText("650 ppm");
         }
 
         else if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -207,11 +216,16 @@ public class DashboardActivity extends AppCompatActivity
             tabLayout.getTabAt(0).setIcon(null);
             tabLayout.getTabAt(1).setIcon(null);
             tabLayout.getTabAt(2).setIcon(null);
-
-            Objects.requireNonNull(tabLayout.getTabAt(0)).setText("Temperature: 25.5 \u2103");
-            Objects.requireNonNull(tabLayout.getTabAt(1)).setText("Humidity: 35 %");
-            Objects.requireNonNull(tabLayout.getTabAt(2)).setText("CO2: 650 ppm");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
+    {
+        outState.putString("temperatureTabValue",tabLayout.getTabAt(0).getText().toString());
+        outState.putString("humidityTabValue",tabLayout.getTabAt(1).getText().toString());
+        outState.putString("co2TabValue",tabLayout.getTabAt(2).getText().toString());
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override

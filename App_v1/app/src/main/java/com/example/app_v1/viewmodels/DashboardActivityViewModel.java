@@ -25,24 +25,26 @@ public class DashboardActivityViewModel extends ViewModel
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     public void initViewModel(int greenhouseId)
     {
         repo = MeasurementRepository.getInstance();
         selectedTabIndex.setValue(0);
-        repo.addDummyMeasurements();
         repo.startFetchingDataFromApi(greenhouseId);
     }
 
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromRepo()
     {
-        Log.i("getFromRepo", "Method CALLED");
+        isLoading.postValue(true);
 
         if(latestMeasurementsFromRepo == null)
         {
             repo = MeasurementRepository.getInstance();
             latestMeasurementsFromRepo = repo.getLatestMeasurementsFromApi();
         }
+
+        isLoading.postValue(false);
 
         return this.latestMeasurementsFromRepo;
     }
@@ -143,6 +145,11 @@ public class DashboardActivityViewModel extends ViewModel
     public MutableLiveData<Integer> getSelectedGreenhouseId()
     {
         return this.selectedGreenhouseId;
+    }
+
+    public LiveData<Boolean> getIsLoading()
+    {
+        return this.isLoading;
     }
 
     public void stopRepoRunnable()

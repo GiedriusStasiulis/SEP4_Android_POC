@@ -50,7 +50,8 @@ public class MeasurementRepository
     public void startFetchingDataFromApi(int greenhouseId)
     {
         fetchDataFromApiRunnable = getFetchDataFromApiRunnable(greenhouseId);
-        fetchDataFromApiHandler.postDelayed(fetchDataFromApiRunnable,5000);
+        fetchDataFromApiRunnable.run();
+        //fetchDataFromApiHandler.post(fetchDataFromApiRunnable);
     }
 
     public void stopFetchingDataFromApi()
