@@ -23,6 +23,7 @@ public class GemsApiClient
 
     public static Retrofit getRetrofitClient()
     {
+
         //Create Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -68,6 +69,8 @@ public class GemsApiClient
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(loggingInterceptor);
+
+            builder.addInterceptor(new FirebaseUserInterceptor());
 
             builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             builder.hostnameVerifier(new HostnameVerifier() {
