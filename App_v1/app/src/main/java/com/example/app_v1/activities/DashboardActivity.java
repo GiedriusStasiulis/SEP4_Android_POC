@@ -25,6 +25,7 @@ import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.models.Measurement;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -88,13 +89,13 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("--- ppm");
 
         dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
-        dashboardActivityViewModel.initViewModel();
+        dashboardActivityViewModel.initViewModel(1);
 
         dashboardActivityViewModel.setSelectedGreenhouseId(selectedGreenhouse);
 
-        dashboardActivityViewModel.getLatestMeasurement().observe(this, new Observer<Measurement>() {
+        dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(this, new Observer<ArrayList<Measurement>>() {
             @Override
-            public void onChanged(@Nullable Measurement measurement)
+            public void onChanged(ArrayList<Measurement> measurements)
             {
                 getSupportActionBar().setSubtitle("Updated: " + DTimeFormatHelper.getCurrentDateTimeAsString());
 
@@ -102,9 +103,9 @@ public class DashboardActivity extends AppCompatActivity
                 Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
                 Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
 
-                Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurement.getTemperature()));
-                Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurement.getHumidity()));
-                Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurement.getcO2()));
+                Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurements.get(0).getTemperature()));
+                Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurements.get(0).getHumidity()));
+                Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurements.get(0).getcO2()));
             }
         });
 

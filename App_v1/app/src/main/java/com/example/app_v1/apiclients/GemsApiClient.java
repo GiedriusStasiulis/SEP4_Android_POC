@@ -1,5 +1,7 @@
 package com.example.app_v1.apiclients;
 
+import android.annotation.SuppressLint;
+
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.HostnameVerifier;
@@ -17,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class GemsApiClient
 {
     //private static final String BASE_URL = "https://10.0.2.2:44398/api/";    for internal API
-    private static final String BASE_URL = "https://sep4gems.azurewebsites.net/api/";
+    private static final String BASE_URL = "https://sep4secondary.azurewebsites.net/api/";
 
     public static Retrofit getRetrofitClient()
     {
@@ -31,16 +33,18 @@ public class GemsApiClient
         return retrofit;
     }
 
-    public static OkHttpClient.Builder getUnsafeOkHttpClient()
+    private static OkHttpClient.Builder getUnsafeOkHttpClient()
     {
         try {
             // Create a trust manager that does not validate certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
+                        @SuppressLint("TrustAllX509TrustManager")
                         @Override
                         public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                         }
 
+                        @SuppressLint("TrustAllX509TrustManager")
                         @Override
                         public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                         }
@@ -67,6 +71,7 @@ public class GemsApiClient
 
             builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             builder.hostnameVerifier(new HostnameVerifier() {
+                @SuppressLint("BadHostnameVerifier")
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
                     return true;

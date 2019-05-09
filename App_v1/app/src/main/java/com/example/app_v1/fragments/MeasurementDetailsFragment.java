@@ -30,6 +30,7 @@ import com.example.app_v1.adapters.HumidityRVAdapter;
 import com.example.app_v1.adapters.TemperatureRVAdapter;
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
+import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.viewmodels.DashboardActivityViewModel;
 import com.jjoe64.graphview.GraphView;
@@ -72,9 +73,9 @@ public class MeasurementDetailsFragment extends Fragment
     private HumidityRVAdapter humidityRVAdapter;
     private Co2RVAdapter co2RVAdapter;
 
-    private ArrayList<Temperature> recentTemperatures;
-    private ArrayList<Humidity> recentHumiditys;
-    private ArrayList<Co2> recentCo2s;
+    private ArrayList<Temperature> latestTemperatures = new ArrayList<>();
+    private ArrayList<Humidity> latestHumidity = new ArrayList<>();
+    private ArrayList<Co2> latestCo2 = new ArrayList<>();
 
     private DashboardActivityViewModel dashboardActivityViewModel;
 
@@ -172,28 +173,27 @@ public class MeasurementDetailsFragment extends Fragment
                         initRecentTemperatureRView();
                         graphView.removeAllSeries();
 
-                        try {
-                            dashboardActivityViewModel.getLatestTemperatures().observe(getActivity(), new Observer<ArrayList<Temperature>>()
+                        dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
+                        {
+                            @Override
+                            public void onChanged(ArrayList<Measurement> measurements)
                             {
-                                @Override
-                                public void onChanged(@Nullable ArrayList<Temperature> temperatures)
-                                {
-                                    recentTemperatures = new ArrayList<>();
-                                    recentTemperatures.addAll(temperatures);
-
-                                    valueLatestMeasurement.setText(recentTemperatures.get(0).getTemperature());
-                                    valueMeasurementTime.setText(recentTemperatures.get(0).getTime());
-                                    valueMeasurementDate.setText(recentTemperatures.get(0).getDate());
-
-                                    initTemperatureGraphView(recentTemperatures);
-
-                                    temperatureRVAdapter.clearItems();
-                                    temperatureRVAdapter.setItems(recentTemperatures);
+                                try {
+                                    latestTemperatures = dashboardActivityViewModel.extractLatestTemperaturesFromMeasurements(measurements);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                                valueLatestMeasurement.setText(latestTemperatures.get(0).getTemperature());
+                                valueMeasurementTime.setText(latestTemperatures.get(0).getTime());
+                                valueMeasurementDate.setText(latestTemperatures.get(0).getDate());
+
+                                initTemperatureGraphView(latestTemperatures);
+
+                                temperatureRVAdapter.clearItems();
+                                temperatureRVAdapter.setItems(latestTemperatures);
+                            }
+                        });
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
@@ -217,30 +217,29 @@ public class MeasurementDetailsFragment extends Fragment
                         initRecentHumidityRView();
                         graphView.removeAllSeries();
 
-                        try {
-                            dashboardActivityViewModel.getLatestHumiditys().observe(getActivity(), new Observer<ArrayList<Humidity>>() {
-                                @Override
-                                public void onChanged(@Nullable ArrayList<Humidity> humidities)
-                                {
-                                    recentHumiditys = new ArrayList<>();
-                                    recentHumiditys.addAll(humidities);
-
-                                    valueLatestMeasurement.setText(recentHumiditys.get(0).getHumidity());
-                                    valueMeasurementTime.setText(recentHumiditys.get(0).getTime());
-                                    valueMeasurementDate.setText(recentHumiditys.get(0).getDate());
-
-                                    initHumidityGraphView(recentHumiditys);
-
-                                    humidityRVAdapter.clearItems();
-                                    humidityRVAdapter.setItems(recentHumiditys);
+                        dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
+                        {
+                            @Override
+                            public void onChanged(ArrayList<Measurement> measurements)
+                            {
+                                try {
+                                    latestHumidity = dashboardActivityViewModel.extractLatestHumidityFromMeasurements(measurements);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                                valueLatestMeasurement.setText(latestHumidity.get(0).getHumidity());
+                                valueMeasurementTime.setText(latestHumidity.get(0).getTime());
+                                valueMeasurementDate.setText(latestHumidity.get(0).getDate());
+
+                                initHumidityGraphView(latestHumidity);
+
+                                humidityRVAdapter.clearItems();
+                                humidityRVAdapter.setItems(latestHumidity);
+                            }
+                        });
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
-                        valueLatestMeasurement.setText(getResources().getString(R.string.value_humidity));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
 
                         btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
@@ -262,31 +261,29 @@ public class MeasurementDetailsFragment extends Fragment
                         initRecentCO2RecyclerView();
                         graphView.removeAllSeries();
 
-                        try {
-                            dashboardActivityViewModel.getLatestCo2s().observe(getActivity(), new Observer<ArrayList<Co2>>()
+                        dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
+                        {
+                            @Override
+                            public void onChanged(ArrayList<Measurement> measurements)
                             {
-                                @Override
-                                public void onChanged(@Nullable ArrayList<Co2> co2s)
-                                {
-                                    recentCo2s = new ArrayList<>();
-                                    recentCo2s.addAll(co2s);
-
-                                    valueLatestMeasurement.setText(recentCo2s.get(0).getCo2());
-                                    valueMeasurementTime.setText(recentCo2s.get(0).getTime());
-                                    valueMeasurementDate.setText(recentCo2s.get(0).getDate());
-
-                                    initCo2GraphView(recentCo2s);
-
-                                    co2RVAdapter.clearItems();
-                                    co2RVAdapter.setItems(recentCo2s);
+                                try {
+                                    latestCo2 = dashboardActivityViewModel.extractLatestCo2FromMeasurements(measurements);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                                valueLatestMeasurement.setText(latestCo2.get(0).getCo2());
+                                valueMeasurementTime.setText(latestCo2.get(0).getTime());
+                                valueMeasurementDate.setText(latestCo2.get(0).getDate());
+
+                                initCo2GraphView(latestCo2);
+
+                                co2RVAdapter.clearItems();
+                                co2RVAdapter.setItems(latestCo2);
+                            }
+                        });
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
-                        valueLatestMeasurement.setText(getResources().getString(R.string.value_co2));
                         symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
 
                         btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
