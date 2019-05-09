@@ -155,4 +155,9 @@ public class DashboardActivityViewModel extends ViewModel
     {
         return this.selectedGreenhouseId;
     }
+
+    public void stopRepoRunnable()
+    {
+        repo.stopFetchingDataFromApi();
+    }
 }

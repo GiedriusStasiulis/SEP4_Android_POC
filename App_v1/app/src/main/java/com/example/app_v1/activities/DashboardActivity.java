@@ -218,6 +218,7 @@ public class DashboardActivity extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
+        dashboardActivityViewModel.stopRepoRunnable();
         finish();
     }
 }

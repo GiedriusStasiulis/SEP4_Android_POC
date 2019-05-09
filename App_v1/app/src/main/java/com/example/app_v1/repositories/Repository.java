@@ -26,10 +26,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Repository
-{
+public class Repository {
     private static final String TAG = "Repository";
-    
+
+    //private
+
     private static Repository instance;
 
     private MutableLiveData<ArrayList<Greenhouse>> greenhouses = new MutableLiveData<>();
@@ -45,47 +46,46 @@ public class Repository
 
     private static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
-    private Handler fetchDataFromApiHandler;
+    private Runnable fetchDataFromApiRunnable;
+    private Handler fetchDataFromApiHandler = new Handler();
 
     public static Repository getInstance()
     {
-        if(instance == null)
-        {
+        if (instance == null) {
             instance = new Repository();
         }
 
         return instance;
     }
 
-    public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromApi()
+    public void startFetchingDataFromApi(int greenhouseId)
     {
-        return this.latestMeasurementsFromApi;
+        fetchDataFromApiRunnable = getFetchDataFromApiRunnable(greenhouseId);
+        fetchDataFromApiHandler.postDelayed(fetchDataFromApiRunnable,5000);
     }
 
     public void stopFetchingDataFromApi()
     {
-
+        fetchDataFromApiHandler.removeCallbacks(fetchDataFromApiRunnable);
     }
 
-    public void startFetchingDataFromApi(final int greenhouseId)
+    private Runnable getFetchDataFromApiRunnable(final int greenhouseId)
     {
         final GemsApi gemsApi = GemsApiClient.getRetrofitClient().create(GemsApi.class);
 
-        scheduler.scheduleAtFixedRate(new Runnable() {
+        return new Runnable()
+        {
             @Override
             public void run()
             {
                 Call<ArrayList<Measurement>> call = gemsApi.getMeasurement(greenhouseId);
 
-                call.enqueue(new Callback<ArrayList<Measurement>>()
-                {
+                call.enqueue(new Callback<ArrayList<Measurement>>() {
                     @Override
-                    public void onResponse(@NonNull Call<ArrayList<Measurement>> call, @NonNull Response<ArrayList<Measurement>> response)
-                    {
+                    public void onResponse(@NonNull Call<ArrayList<Measurement>> call, @NonNull Response<ArrayList<Measurement>> response) {
                         response.body();
 
-                        if (response.isSuccessful())
-                        {
+                        if (response.isSuccessful()) {
                             Log.d("OnSuccess", "onResponse: " + response.toString());
 
                             assert response.body() != null;
@@ -98,36 +98,19 @@ public class Repository
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<ArrayList<Measurement>> call,@NonNull Throwable t)
-                    {
+                    public void onFailure(@NonNull Call<ArrayList<Measurement>> call, @NonNull Throwable t) {
                         Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
                     }
                 });
+
+                fetchDataFromApiHandler.postDelayed(this,10000);
             }
-        },5,10, TimeUnit.SECONDS);
+        };
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public LiveData<ArrayList<Greenhouse>> getGreenhouses()
+    public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromApi()
     {
-        return this.greenhouses;
+        return this.latestMeasurementsFromApi;
     }
 
     public ArrayList<Measurement> getMeasurementsInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
