@@ -1,6 +1,7 @@
 package com.example.app_v1.repositories;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ import retrofit2.Response;
 
 public class Repository
 {
+    private static final String TAG = "Repository";
+    
     private static Repository instance;
 
     private MutableLiveData<ArrayList<Greenhouse>> greenhouses = new MutableLiveData<>();
@@ -42,6 +45,8 @@ public class Repository
 
     private static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
+    private Handler fetchDataFromApiHandler;
+
     public static Repository getInstance()
     {
         if(instance == null)
@@ -55,6 +60,11 @@ public class Repository
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromApi()
     {
         return this.latestMeasurementsFromApi;
+    }
+
+    public void stopFetchingDataFromApi()
+    {
+
     }
 
     public void startFetchingDataFromApi(final int greenhouseId)
@@ -96,6 +106,7 @@ public class Repository
             }
         },5,10, TimeUnit.SECONDS);
     }
+
 
 
 

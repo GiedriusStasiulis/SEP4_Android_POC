@@ -89,7 +89,7 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("--- ppm");
 
         dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
-        dashboardActivityViewModel.initViewModel(1);
+        dashboardActivityViewModel.initViewModel(selectedGreenhouse);
 
         dashboardActivityViewModel.setSelectedGreenhouseId(selectedGreenhouse);
 
@@ -99,13 +99,22 @@ public class DashboardActivity extends AppCompatActivity
             {
                 getSupportActionBar().setSubtitle("Updated: " + DTimeFormatHelper.getCurrentDateTimeAsString());
 
-                Objects.requireNonNull(tabLayout.getTabAt(0)).setText("");
-                Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
-                Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
+                if(!measurements.isEmpty())
+                {
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText("");
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
+                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
 
-                Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurements.get(0).getTemperature()));
-                Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurements.get(0).getHumidity()));
-                Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurements.get(0).getcO2()));
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurements.get(0).getTemperature()));
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurements.get(0).getHumidity()));
+                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurements.get(0).getcO2()));
+                }
+                else
+                {
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText("N/A");
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText("N/A");
+                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText("N/A");
+                }
             }
         });
 
@@ -203,5 +212,12 @@ public class DashboardActivity extends AppCompatActivity
             Objects.requireNonNull(tabLayout.getTabAt(1)).setText("Humidity: 35 %");
             Objects.requireNonNull(tabLayout.getTabAt(2)).setText("CO2: 650 ppm");
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        finish();
     }
 }

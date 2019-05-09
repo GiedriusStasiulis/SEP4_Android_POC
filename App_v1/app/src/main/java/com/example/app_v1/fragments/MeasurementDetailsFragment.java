@@ -184,14 +184,25 @@ public class MeasurementDetailsFragment extends Fragment
                                     e.printStackTrace();
                                 }
 
-                                valueLatestMeasurement.setText(latestTemperatures.get(0).getTemperature());
-                                valueMeasurementTime.setText(latestTemperatures.get(0).getTime());
-                                valueMeasurementDate.setText(latestTemperatures.get(0).getDate());
+                                if(!measurements.isEmpty())
+                                {
+                                    valueLatestMeasurement.setText(latestTemperatures.get(0).getTemperature());
+                                    valueMeasurementTime.setText(latestTemperatures.get(0).getTime());
+                                    valueMeasurementDate.setText(latestTemperatures.get(0).getDate());
 
-                                initTemperatureGraphView(latestTemperatures);
+                                    initTemperatureGraphView(latestTemperatures);
 
-                                temperatureRVAdapter.clearItems();
-                                temperatureRVAdapter.setItems(latestTemperatures);
+                                    temperatureRVAdapter.clearItems();
+                                    temperatureRVAdapter.setItems(latestTemperatures);
+                                }
+
+                                else
+                                {
+                                    valueLatestMeasurement.setText("N/A");
+                                    valueMeasurementTime.setText("N/A");
+                                    valueMeasurementDate.setText("N/A");
+                                    temperatureRVAdapter.clearItems();
+                                }
                             }
                         });
 
