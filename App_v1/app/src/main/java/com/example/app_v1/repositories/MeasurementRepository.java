@@ -14,11 +14,9 @@ import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DTimeFormatHelper;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +38,8 @@ public class MeasurementRepository
 
     public static MeasurementRepository getInstance()
     {
-        if (instance == null) {
+        if (instance == null)
+        {
             instance = new MeasurementRepository();
         }
 
@@ -51,7 +50,6 @@ public class MeasurementRepository
     {
         fetchDataFromApiRunnable = getFetchDataFromApiRunnable(greenhouseId);
         fetchDataFromApiRunnable.run();
-        //fetchDataFromApiHandler.post(fetchDataFromApiRunnable);
     }
 
     public void stopFetchingDataFromApi()
@@ -70,29 +68,31 @@ public class MeasurementRepository
             {
                 Call<ArrayList<Measurement>> call = gemsApi.getMeasurement(greenhouseId);
 
-                call.enqueue(new Callback<ArrayList<Measurement>>() {
+                call.enqueue(new Callback<ArrayList<Measurement>>()
+                {
                     @Override
-                    public void onResponse(@NonNull Call<ArrayList<Measurement>> call, @NonNull Response<ArrayList<Measurement>> response) {
+                    public void onResponse(@NonNull Call<ArrayList<Measurement>> call, @NonNull Response<ArrayList<Measurement>> response)
+                    {
                         response.body();
 
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful())
+                        {
                             Log.d("OnSuccess", "onResponse: " + response.toString());
-
                             assert response.body() != null;
 
                             measurementsArrList.clear();
                             measurementsArrList = response.body();
-
                             latestMeasurementsFromApi.postValue(measurementsArrList);
                         }
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<ArrayList<Measurement>> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<ArrayList<Measurement>> call, @NonNull Throwable t)
+                    {
                         Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                        //Handle no connection to API
                     }
                 });
-
                 fetchDataFromApiHandler.postDelayed(this,10000);
             }
         };
@@ -195,24 +195,5 @@ public class MeasurementRepository
         }
 
         return this.co2InDateRange;
-    }
-
-    public void addDummyMeasurements()
-    {
-        measurementsArrList.clear();
-
-        Measurement mes1 = new Measurement("2019-05-05T09:45:00Z",28.2, 420.5, 352.6);
-        Measurement mes2 = new Measurement("2019-05-05T09:35:00Z",25.2, 440.5, 382.6);
-        Measurement mes3 = new Measurement("2019-05-05T09:25:00Z",22.2, 450.5, 362.6);
-        Measurement mes4 = new Measurement("2019-05-05T09:15:00Z",26.2, 430.5, 332.6);
-        Measurement mes5 = new Measurement("2019-05-05T09:05:00Z",27.2, 440.5, 372.6);
-
-        measurementsArrList.add(mes1);
-        measurementsArrList.add(mes2);
-        measurementsArrList.add(mes3);
-        measurementsArrList.add(mes4);
-        measurementsArrList.add(mes5);
-
-        latestMeasurementsFromApi.postValue(measurementsArrList);
     }
 }

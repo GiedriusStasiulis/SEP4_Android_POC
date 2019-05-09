@@ -25,7 +25,7 @@ public class DTimeFormatHelper
 
     public static String getCurrentDateTimeAsString()
     {
-        return new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH).format(new Date());
+        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss",Locale.ENGLISH).format(new Date());
     }
 
     public static String getYesterdayDateTimeAsString()

@@ -107,9 +107,12 @@ public class DashboardActivity extends AppCompatActivity
                     Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
                     Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
 
+                    String humidity = measurements.get(0).getHumidity().toString().replace(".0","");
+
+
                     Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurements.get(0).getTemperature()));
                     Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurements.get(0).getHumidity()));
-                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurements.get(0).getcO2()));
+                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurements.get(0).getcO2().toString().replace(".0","")));
                 }
                 else
                 {
