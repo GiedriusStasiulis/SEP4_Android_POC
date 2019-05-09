@@ -59,12 +59,12 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
                 Log.d(TAG, "spinner selection: " + selection);
 
                 greenhouseId = Integer.parseInt(selection);
-//                buttonGo.setVisibility(View.VISIBLE);
+                buttonGo.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-//                buttonGo.setVisibility(View.GONE);
+                buttonGo.setVisibility(View.GONE);
             }
         });
 
