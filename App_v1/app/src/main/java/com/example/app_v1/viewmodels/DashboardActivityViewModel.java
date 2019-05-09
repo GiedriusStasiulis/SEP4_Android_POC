@@ -36,15 +36,16 @@ public class DashboardActivityViewModel extends ViewModel
 
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromRepo()
     {
-        isLoading.postValue(true);
+        isLoading.setValue(true);
 
         if(latestMeasurementsFromRepo == null)
         {
+            Log.d("OnSuccess", "ltsMesr = null");
             repo = MeasurementRepository.getInstance();
             latestMeasurementsFromRepo = repo.getLatestMeasurementsFromApi();
         }
 
-        isLoading.postValue(false);
+        isLoading.setValue(false);
 
         return this.latestMeasurementsFromRepo;
     }

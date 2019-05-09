@@ -13,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +66,10 @@ public class MeasurementDetailsFragment extends Fragment
     private ConstraintLayout measurementOverviewLoadingScreen;
     private ConstraintLayout latestMeasurementsLoadingScreen;
     private ConstraintLayout thresholdsLoadingScreen;
+
+    private ConstraintLayout noDataDisplay;
+    private ConstraintLayout noDataDisplay2;
+    private ConstraintLayout noDataDisplay3;
 
     private ImageButton btnOpenHistoryActivity;
     private ImageButton btnOpenThresholdsSettings;
@@ -119,6 +125,9 @@ public class MeasurementDetailsFragment extends Fragment
         latestMeasurementsLoadingScreen = view.findViewById(R.id.latestMeasurementsLoadingScreen);
         thresholdsLoadingScreen = view.findViewById(R.id.thresholdsLoadingScreen);
         thresholdSettingsDisplay = view.findViewById(R.id.thresholdSettingsDisplay);
+        noDataDisplay = view.findViewById(R.id.noDataDisplay);
+        noDataDisplay2 = view.findViewById(R.id.noDataDisplay2);
+        noDataDisplay3 = view.findViewById(R.id.noDataDisplay3);
         btnOpenHistoryActivity = view.findViewById(R.id.btnOpenHistoryActivity);
         btnOpenThresholdsSettings = view.findViewById(R.id.btnOpenThresholdsSettings);
         toggleBtnMeasurementOverviewDisplay = view.findViewById(R.id.toggleBtnMeasurementOverviewDisplay);
@@ -172,7 +181,9 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
-        hideLayoutContentBeforeLoading();
+        graphView.removeAllSeries();
+
+        hideLayoutContent();
         showLoadingScreens();
 
         dashboardActivityViewModel = ViewModelProviders.of(this.getActivity()).get(DashboardActivityViewModel.class);
@@ -208,14 +219,14 @@ public class MeasurementDetailsFragment extends Fragment
                                     @Override
                                     public void onChanged(Boolean aBoolean)
                                     {
+
                                         if(!aBoolean)
                                         {
                                             hideLoadingScreens();
-                                            showLayoutContentAfterLoading();
+
                                         }
                                         else
                                         {
-                                            hideLayoutContentBeforeLoading();
                                             showLoadingScreens();
                                         }
                                     }
@@ -229,6 +240,10 @@ public class MeasurementDetailsFragment extends Fragment
 
                                 if(!measurements.isEmpty())
                                 {
+                                    showLayoutContentAfterLoading();
+
+                                    symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
+
                                     valueLatestMeasurement.setText(latestTemperatures.get(0).getTemperature());
                                     valueMeasurementTime.setText(latestTemperatures.get(0).getTime());
                                     valueMeasurementDate.setText(latestTemperatures.get(0).getDate());
@@ -238,19 +253,16 @@ public class MeasurementDetailsFragment extends Fragment
                                     temperatureRVAdapter.clearItems();
                                     temperatureRVAdapter.setItems(latestTemperatures);
                                 }
-
                                 else
                                 {
-                                    valueLatestMeasurement.setText("N/A");
-                                    valueMeasurementTime.setText("N/A");
-                                    valueMeasurementDate.setText("N/A");
+                                    hideLayoutContent();
+                                    showNoDataScreens();
                                     temperatureRVAdapter.clearItems();
                                 }
                             }
                         });
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
-                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
 
                         btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -276,25 +288,53 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(ArrayList<Measurement> measurements)
                             {
+                                dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
+                                {
+                                    @Override
+                                    public void onChanged(Boolean aBoolean)
+                                    {
+                                        if(!aBoolean)
+                                        {
+                                            hideLoadingScreens();
+                                        }
+                                        else
+                                        {
+                                            showLoadingScreens();
+                                        }
+                                    }
+                                });
+
                                 try {
                                     latestHumidity = dashboardActivityViewModel.extractLatestHumidityFromMeasurements(measurements);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
-                                valueLatestMeasurement.setText(latestHumidity.get(0).getHumidity());
-                                valueMeasurementTime.setText(latestHumidity.get(0).getTime());
-                                valueMeasurementDate.setText(latestHumidity.get(0).getDate());
+                                if(!measurements.isEmpty())
+                                {
+                                    hideNoDataDisplays();
 
-                                initHumidityGraphView(latestHumidity);
+                                    symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
 
-                                humidityRVAdapter.clearItems();
-                                humidityRVAdapter.setItems(latestHumidity);
+                                    valueLatestMeasurement.setText(latestHumidity.get(0).getHumidity());
+                                    valueMeasurementTime.setText(latestHumidity.get(0).getTime());
+                                    valueMeasurementDate.setText(latestHumidity.get(0).getDate());
+
+                                    initHumidityGraphView(latestHumidity);
+
+                                    humidityRVAdapter.clearItems();
+                                    humidityRVAdapter.setItems(latestHumidity);
+                                }
+                                else
+                                {
+                                    hideLayoutContent();
+                                    showNoDataScreens();
+                                    humidityRVAdapter.clearItems();
+                                }
                             }
                         });
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
-                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
 
                         btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -320,25 +360,53 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(ArrayList<Measurement> measurements)
                             {
+                                dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
+                                {
+                                    @Override
+                                    public void onChanged(Boolean aBoolean)
+                                    {
+                                        if(!aBoolean)
+                                        {
+                                            hideLoadingScreens();
+                                        }
+                                        else
+                                        {
+                                            showLoadingScreens();
+                                        }
+                                    }
+                                });
+
                                 try {
                                     latestCo2 = dashboardActivityViewModel.extractLatestCo2FromMeasurements(measurements);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
-                                valueLatestMeasurement.setText(latestCo2.get(0).getCo2());
-                                valueMeasurementTime.setText(latestCo2.get(0).getTime());
-                                valueMeasurementDate.setText(latestCo2.get(0).getDate());
+                                if(!measurements.isEmpty())
+                                {
+                                    hideNoDataDisplays();
 
-                                initCo2GraphView(latestCo2);
+                                    symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
 
-                                co2RVAdapter.clearItems();
-                                co2RVAdapter.setItems(latestCo2);
+                                    valueLatestMeasurement.setText(latestCo2.get(0).getCo2());
+                                    valueMeasurementTime.setText(latestCo2.get(0).getTime());
+                                    valueMeasurementDate.setText(latestCo2.get(0).getDate());
+
+                                    initCo2GraphView(latestCo2);
+
+                                    co2RVAdapter.clearItems();
+                                    co2RVAdapter.setItems(latestCo2);
+                                }
+                                else
+                                {
+                                    hideLayoutContent();
+                                    showNoDataScreens();
+                                    co2RVAdapter.clearItems();
+                                }
                             }
                         });
 
                         titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
-                        symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
 
                         btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -429,7 +497,7 @@ public class MeasurementDetailsFragment extends Fragment
         }
     }
 
-    private void hideLayoutContentBeforeLoading()
+    private void hideLayoutContent()
     {
         measurementOverviewDisplayContents.setVisibility(View.GONE);
         recentMeasurementDisplayContent.setVisibility(View.GONE);
@@ -461,6 +529,20 @@ public class MeasurementDetailsFragment extends Fragment
         progressBarMeasurementOverview.setVisibility(View.GONE);
         progressBarLatestValues.setVisibility(View.GONE);
         progressBarThresholds.setVisibility(View.GONE);
+    }
+
+    private void showNoDataScreens()
+    {
+        noDataDisplay.setVisibility(View.VISIBLE);
+        noDataDisplay2.setVisibility(View.VISIBLE);
+        noDataDisplay3.setVisibility(View.VISIBLE);
+    }
+
+    private void hideNoDataDisplays()
+    {
+        noDataDisplay.setVisibility(View.GONE);
+        noDataDisplay2.setVisibility(View.GONE);
+        noDataDisplay3.setVisibility(View.GONE);
     }
 
     private void initRecentTemperatureRView()
@@ -601,8 +683,6 @@ public class MeasurementDetailsFragment extends Fragment
         }
     }
 
-
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
@@ -620,12 +700,15 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public void onResume()
     {
+        hideNoDataDisplays();
+        //hideLayoutContent();
         super.onResume();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroy()
+    {
         getActivity().finish();
+        super.onDestroy();
     }
 }

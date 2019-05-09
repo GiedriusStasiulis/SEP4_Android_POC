@@ -39,6 +39,7 @@
     <string name="title_max_threshold">Max:</string>
     <string name="title_radio_list">List</string>
     <string name="title_radio_graph">Graph</string>
+    <string name="title_no_data_available">No data available for the selected greenhouse!</string>
 
     <!-- Measurement history activity -->
     <!-- Dummy data -->
