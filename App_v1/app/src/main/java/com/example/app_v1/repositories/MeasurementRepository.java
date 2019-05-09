@@ -1,6 +1,5 @@
 package com.example.app_v1.repositories;
 
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
@@ -11,48 +10,38 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.app_v1.apiclients.GemsApi;
 import com.example.app_v1.apiclients.GemsApiClient;
 import com.example.app_v1.models.Co2;
-import com.example.app_v1.models.Greenhouse;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DTimeFormatHelper;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Repository {
-    private static final String TAG = "Repository";
+public class MeasurementRepository
+{
+    private static MeasurementRepository instance;
 
-    //private
-
-    private static Repository instance;
-
-    private MutableLiveData<ArrayList<Greenhouse>> greenhouses = new MutableLiveData<>();
-    private ArrayList<Greenhouse> greenhouseArrayList = new ArrayList<>();
-
-    private ArrayList<Measurement> measurementsArrList = new ArrayList<>();
-    private ArrayList<Measurement> measurementsInDateRange = new ArrayList<>();
     private MutableLiveData<ArrayList<Measurement>> latestMeasurementsFromApi = new MutableLiveData<>();
+    private ArrayList<Measurement> measurementsArrList = new ArrayList<>();
 
+    private ArrayList<Measurement> measurementsInDateRange = new ArrayList<>();
     private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
     private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
     private ArrayList<Co2> co2InDateRange = new ArrayList<>();
 
-    private static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
     private Runnable fetchDataFromApiRunnable;
     private Handler fetchDataFromApiHandler = new Handler();
 
-    public static Repository getInstance()
+    public static MeasurementRepository getInstance()
     {
         if (instance == null) {
-            instance = new Repository();
+            instance = new MeasurementRepository();
         }
 
         return instance;
@@ -225,17 +214,4 @@ public class Repository {
 
         latestMeasurementsFromApi.postValue(measurementsArrList);
     }
-
-    public void addDummyGreenhouses() {
-
-        greenhouseArrayList.clear();
-
-        greenhouseArrayList.add(new Greenhouse(1, "Denmark", "Horsens", "8700", "Kattesund 12A"));
-        greenhouseArrayList.add(new Greenhouse(2, "Denmark", "Horsens", "8700", "Kattesund 12A"));
-        greenhouseArrayList.add(new Greenhouse(3, "Denmark", "Horsens", "8700", "Kattesund 12A"));
-        greenhouseArrayList.add(new Greenhouse(4, "Denmark", "Horsens", "8700", "Kattesund 12A"));
-
-        greenhouses.setValue(greenhouseArrayList);
-    }
-
 }

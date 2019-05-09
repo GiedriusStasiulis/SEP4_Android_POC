@@ -2,17 +2,17 @@ package com.example.app_v1.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.repositories.Repository;
+import com.example.app_v1.repositories.MeasurementRepository;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MeasurementHistoryViewModel extends ViewModel
 {
-    private Repository repo;
+    private MeasurementRepository repo;
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
@@ -23,7 +23,7 @@ public class MeasurementHistoryViewModel extends ViewModel
 
     public void initViewModel()
     {
-        repo = Repository.getInstance();
+        repo = MeasurementRepository.getInstance();
         selectedTabIndex.setValue(0);
         selectedGreenhouseId.setValue(0);
     }

@@ -10,7 +10,7 @@ import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.repositories.Repository;
+import com.example.app_v1.repositories.MeasurementRepository;
 import com.example.app_v1.utils.DTimeFormatHelper;
 
 import java.text.ParseException;
@@ -19,27 +19,16 @@ import java.util.Locale;
 
 public class DashboardActivityViewModel extends ViewModel
 {
-    private Repository repo;
+    private MeasurementRepository repo;
 
     private LiveData<ArrayList<Measurement>> latestMeasurementsFromRepo;
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
 
-    private ArrayList<Measurement> latestMeasurementsArrList = new ArrayList<>();
-    private MutableLiveData<Measurement> latestMeasurementMld = new MutableLiveData<>();
-
-    private MutableLiveData<ArrayList<Temperature>> latestTemperatures = new MutableLiveData<>();
-
-
-    private MutableLiveData<ArrayList<Humidity>> latestHumiditys = new MutableLiveData<>();
-
-    private ArrayList<Co2> latestCo2ArrList = new ArrayList<>();
-    private MutableLiveData<ArrayList<Co2>> latestCo2s = new MutableLiveData<>();
-
     public void initViewModel(int greenhouseId)
     {
-        repo = Repository.getInstance();
+        repo = MeasurementRepository.getInstance();
         selectedTabIndex.setValue(0);
         repo.addDummyMeasurements();
         repo.startFetchingDataFromApi(greenhouseId);
@@ -51,7 +40,7 @@ public class DashboardActivityViewModel extends ViewModel
 
         if(latestMeasurementsFromRepo == null)
         {
-            repo = Repository.getInstance();
+            repo = MeasurementRepository.getInstance();
             latestMeasurementsFromRepo = repo.getLatestMeasurementsFromApi();
         }
 
