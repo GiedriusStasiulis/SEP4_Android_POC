@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -24,8 +25,9 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
 
     public Spinner selectGreenhouse;
     public Button buttonGo;
-    private List<Integer> greenhouses;
+    private List<Integer> greenhouses = new ArrayList<>();
     private int greenhouseId;
+    private ArrayAdapter<Integer> adapter;
 
     private GreenhouseSelectActivityViewModel viewModel;
 
@@ -46,9 +48,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
 
         // populate dropdown menu
 
-        greenhouses = viewModel.getGreenhouses();
-
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, greenhouses);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, greenhouses);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectGreenhouse.setAdapter(adapter);
 
@@ -65,6 +65,17 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 //                buttonGo.setVisibility(View.GONE);
+            }
+        });
+
+        viewModel.getGreenhouses().observe(this, new Observer<List<Integer>>() {
+            @Override
+            public void onChanged(List<Integer> integers) {
+                greenhouses = integers;
+                ArrayAdapter<Integer> adapter = new ArrayAdapter<>(GreenhouseSelectActivity.this, android.R.layout.simple_spinner_item, greenhouses);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                selectGreenhouse.setAdapter(adapter);
+
             }
         });
 
