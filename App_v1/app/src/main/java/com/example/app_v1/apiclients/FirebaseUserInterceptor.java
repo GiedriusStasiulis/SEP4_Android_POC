@@ -16,8 +16,7 @@ import okhttp3.Response;
 
 public class FirebaseUserInterceptor implements Interceptor {
 
-    // TODO
-    private static final String X_FIREBASE_ID_TOKEN = "";
+    private static final String X_FIREBASE_ID_TOKEN = "firebaseUserId";
     private static final String TAG = "FirebaseUserInterceptor";
 
     @Override
@@ -33,6 +32,7 @@ public class FirebaseUserInterceptor implements Interceptor {
                 Task<GetTokenResult> task = user.getIdToken(true);
                 GetTokenResult tokenResult = Tasks.await(task);
                 String idToken = tokenResult.getToken();
+                Log.d(TAG, "intercept: token=" + idToken);
 
                 if (idToken == null) {
                     Log.d(TAG, "intercept: idToken null");
