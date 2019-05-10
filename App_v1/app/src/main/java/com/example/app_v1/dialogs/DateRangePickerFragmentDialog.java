@@ -43,7 +43,7 @@ public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
 
             }
         })
-        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {

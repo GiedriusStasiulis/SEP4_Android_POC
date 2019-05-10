@@ -178,14 +178,14 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                         initHumidityHistoryRView();
 
-                        try {
-                            humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
 
-                        humidityRVAdapter.clearItems();
-                        humidityRVAdapter.setItems(humidityInDateRange);
+//                        humidityRVAdapter.clearItems();
+//                        humidityRVAdapter.setItems(humidityInDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_humidity));
 
@@ -194,16 +194,19 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                             @Override
                             public void onClick(View view)
                             {
-                                humidityInDateRange.clear();
+                                Toast.makeText(getActivity(), "Searching...",
+                                        Toast.LENGTH_LONG).show();
 
-                                try {
-                                    humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                humidityRVAdapter.clearItems();
-                                humidityRVAdapter.setItems(humidityInDateRange);
+//                                humidityInDateRange.clear();
+//
+//                                try {
+//                                    humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
+//                                } catch (ParseException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                humidityRVAdapter.clearItems();
+//                                humidityRVAdapter.setItems(humidityInDateRange);
                             }
                         });
 
@@ -213,14 +216,14 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                         initCo2HistoryRView();
 
-                        try {
-                            co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
 
-                        co2RVAdapter.clearItems();
-                        co2RVAdapter.setItems(co2InDateRange);
+//                        co2RVAdapter.clearItems();
+//                        co2RVAdapter.setItems(co2InDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_co2));
 
@@ -229,16 +232,19 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                             @Override
                             public void onClick(View view)
                             {
-                                co2InDateRange.clear();
+                                Toast.makeText(getActivity(), "Searching...",
+                                        Toast.LENGTH_LONG).show();
 
-                                try {
-                                    co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                co2RVAdapter.clearItems();
-                                co2RVAdapter.setItems(co2InDateRange);
+//                                co2InDateRange.clear();
+//
+//                                try {
+//                                    co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
+//                                } catch (ParseException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                co2RVAdapter.clearItems();
+//                                co2RVAdapter.setItems(co2InDateRange);
                             }
                         });
 
