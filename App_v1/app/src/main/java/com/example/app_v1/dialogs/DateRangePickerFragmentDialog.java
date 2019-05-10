@@ -1,0 +1,108 @@
+package com.example.app_v1.dialogs;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.example.app_v1.R;
+import com.example.app_v1.utils.DTimeFormatHelper;
+import com.squareup.timessquare.CalendarPickerView;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
+{
+    private CalendarPickerView calendarPickerView;
+    private String dates;
+    private DateRangePickerFragmentDialogListener dialogListener;
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_custom_calendarpicker, null);
+
+        builder.setView(view).setTitle("Select date range from & to:")
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        })
+        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                List<Date> datesList = calendarPickerView.getSelectedDates();
+                Date firstDate = datesList.get(0);
+                Date lastDate = datesList.get(datesList.size() - 1);
+
+                Calendar firstDateCal = Calendar.getInstance();
+                Calendar lastDateCal = Calendar.getInstance();
+
+                firstDateCal.setTime(firstDate);
+                lastDateCal.setTime(lastDate);
+
+                String firstDateString = DTimeFormatHelper.
+                        convertDatePickerValuesToString(firstDateCal.get(Calendar.YEAR),
+                                firstDateCal.get(Calendar.MONTH),
+                                firstDateCal.get(Calendar.DAY_OF_MONTH));
+
+                String lastDateString = DTimeFormatHelper.convertDatePickerValuesToString(lastDateCal.get(Calendar.YEAR),
+                        lastDateCal.get(Calendar.MONTH),
+                        lastDateCal.get(Calendar.DAY_OF_MONTH));
+
+                dates = String.format(Locale.ENGLISH,"%s - %s",firstDateString,lastDateString);
+
+                dialogListener.returnDates(dates);
+
+                Toast.makeText(getActivity(),dates,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        calendarPickerView = view.findViewById(R.id.calendarPickerView);
+
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.DAY_OF_MONTH, 1);
+        Calendar oneMonthAgo = Calendar.getInstance();
+        oneMonthAgo.add(Calendar.MONTH, -1);
+
+        calendarPickerView.init(oneMonthAgo.getTime(),today.getTime())
+                .withSelectedDate(oneMonthAgo.getTime())
+                .inMode(CalendarPickerView.SelectionMode.RANGE);
+
+        return builder.create();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context)
+    {
+        super.onAttach(context);
+        try {
+            dialogListener = (DateRangePickerFragmentDialogListener)getTargetFragment();
+        } catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString()
+                    + "must implement DateRangePickerFragmentDialogListener");
+        }
+    }
+
+    public interface DateRangePickerFragmentDialogListener
+    {
+        void returnDates(String dates);
+    }
+}

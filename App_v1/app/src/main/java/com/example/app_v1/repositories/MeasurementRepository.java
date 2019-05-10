@@ -33,8 +33,6 @@ public class MeasurementRepository
     private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
     private ArrayList<Co2> co2InDateRange = new ArrayList<>();
 
-    private MutableLiveData<Boolean> isDataEmpty = new MutableLiveData();
-
     private Runnable fetchDataFromApiRunnable;
     private Handler fetchDataFromApiHandler = new Handler();
 
@@ -102,11 +100,6 @@ public class MeasurementRepository
                 fetchDataFromApiHandler.postDelayed(this,60000);
             }
         };
-    }
-
-    public LiveData<Boolean> getIsDataEmpty()
-    {
-        return this.isDataEmpty;
     }
 
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromApi()

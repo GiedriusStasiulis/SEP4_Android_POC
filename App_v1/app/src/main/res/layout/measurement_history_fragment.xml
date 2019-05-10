@@ -44,7 +44,6 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:includeFontPadding="false"
-                android:text="@string/title_measurement_type"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -71,76 +70,124 @@
             android:id="@+id/measurementHistoryDisplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="8dp"
+            android:background="@color/colorPrimary"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/title_select_datetime_from"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnSelectDateTimeFrom"
-                android:layout_width="162dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/value_select_datetime_from"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="173dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/title_select_datetime_to"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnSelectDateTimeTo"
-                android:layout_width="162dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="169dp"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:text="@string/value_select_datetime_to"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-            <ImageButton
-                android:id="@+id/btnSearchHistory"
-                android:layout_width="53dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_search"
-                android:backgroundTint="@color/white"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/title_select_date_range"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <Button
+                    android:id="@+id/btnOpenCalendarDialog"
+                    android:layout_width="240dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/title_click_select"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    app:layout_constraintStart_toEndOf="@+id/textView9"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/title_select_time_from"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnOpenCalendarDialog" />
+
+                <Button
+                    android:id="@+id/btnSelectTimeFrom"
+                    android:layout_width="120dp"
+                    android:layout_height="55dp"
+                    android:textSize="18sp"
+                    android:text="@string/title_select"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/title_select_time_to"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@+id/textView10"
+                    app:layout_constraintTop_toBottomOf="@+id/btnOpenCalendarDialog" />
+
+                <Button
+                    android:id="@+id/btnSelectTimeTo"
+                    android:layout_width="120dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="7dp"
+                    android:text="@string/title_select"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toEndOf="@+id/btnSelectTimeFrom"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                <ImageButton
+                    android:id="@+id/btnSearchHistory"
+                    android:layout_width="65dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="5dp"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="@color/white"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_search"
+                    app:layout_constraintStart_toEndOf="@+id/btnSelectTimeTo"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                <ImageButton
+                    android:id="@+id/btnClearSearchParams"
+                    android:layout_width="65dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/title_reset"
+                    android:backgroundTint="@color/white"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_clear"
+                    app:layout_constraintStart_toEndOf="@+id/btnSearchHistory"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -68,7 +68,6 @@ public class DashboardActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(String.format(Locale.ENGLISH,"Dashboard - %d",selectedGreenhouseId));
-        //getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
 
         //Enable back-arrow
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,9 +89,9 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
 
         //Dummy tab titles
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: -.- \u2103");
-        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("H: -.- %");
-        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("--- ppm");
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: -");
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setText("T: -");
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("-");
 
         dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
         dashboardActivityViewModel.initViewModel(selectedGreenhouseId);
@@ -103,7 +102,7 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onChanged(ArrayList<Measurement> measurements)
             {
-                getSupportActionBar().setSubtitle("Updated: " + DTimeFormatHelper.getCurrentDateTimeAsString());
+                getSupportActionBar().setSubtitle("Updated: " + DTimeFormatHelper.getCurrentDateTimeWithSecondsAsString());
 
                 if(!measurements.isEmpty())
                 {
@@ -111,18 +110,15 @@ public class DashboardActivity extends AppCompatActivity
                     Objects.requireNonNull(tabLayout.getTabAt(1)).setText("");
                     Objects.requireNonNull(tabLayout.getTabAt(2)).setText("");
 
-                    String humidity = measurements.get(0).getHumidity().toString().replace(".0","");
-
-
                     Objects.requireNonNull(tabLayout.getTabAt(0)).setText(String.format("T: %s\u2103", measurements.get(0).getTemperature()));
                     Objects.requireNonNull(tabLayout.getTabAt(1)).setText(String.format("H: %s%%", measurements.get(0).getHumidity()));
                     Objects.requireNonNull(tabLayout.getTabAt(2)).setText(String.format("%s ppm", measurements.get(0).getcO2().toString().replace(".0","")));
                 }
                 else
                 {
-                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText("N/A");
-                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText("N/A");
-                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText("N/A");
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText("T: -");
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText("T: -");
+                    Objects.requireNonNull(tabLayout.getTabAt(2)).setText("-");
                 }
             }
         });

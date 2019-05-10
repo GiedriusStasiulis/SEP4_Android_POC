@@ -111,8 +111,6 @@ public class MeasurementDetailsFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d("PrBarDebug", "Fragment onViewCreated called");
-
         titleMeasurementOverview = view.findViewById(R.id.titleMeasurementOverview);
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
@@ -186,6 +184,9 @@ public class MeasurementDetailsFragment extends Fragment
 
         graphView.removeAllSeries();
 
+        hideLayoutContent();
+        showLoadingScreens();
+
         dashboardActivityViewModel = ViewModelProviders.of(this.getActivity()).get(DashboardActivityViewModel.class);
 
         dashboardActivityViewModel.getSelectedGreenhouseId().observe(this, new Observer<Integer>()
@@ -197,9 +198,6 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
-        hideLayoutContent();
-        showLoadingScreens();
-
         dashboardActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override
@@ -208,6 +206,7 @@ public class MeasurementDetailsFragment extends Fragment
                 switch(integer)
                 {
                     case 0:
+
                         initRecentTemperatureRView();
                         graphView.removeAllSeries();
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
@@ -215,19 +214,6 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(final ArrayList<Measurement> measurements)
                             {
-                                /*dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
-                                {
-                                    @Override
-                                    public void onChanged(Boolean aBoolean)
-                                    {
-                                        Log.d("DashboardActivityVM", "aBoolean changed");
-                                        if(!aBoolean)
-                                        {
-                                            hideLoadingScreens();
-                                        }
-                                    }
-                                });*/
-
                                 hideLoadingScreens();
                                 showLayoutContentAfterLoading();
 
@@ -239,7 +225,6 @@ public class MeasurementDetailsFragment extends Fragment
 
                                 if(!measurements.isEmpty())
                                 {
-
                                     hideNoDataDisplays();
                                     symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
 
@@ -313,9 +298,8 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
-                        titleMeasurementOverview.setText(getResources().getString(R.string.title_humidity_display));
-
-                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener()
+                        {
                             @Override
                             public void onClick(View view)
                             {
@@ -366,9 +350,8 @@ public class MeasurementDetailsFragment extends Fragment
                             }
                         });
 
-                        titleMeasurementOverview.setText(getResources().getString(R.string.title_co2_display));
-
-                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
+                        btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener()
+                        {
                             @Override
                             public void onClick(View view)
                             {
@@ -388,8 +371,6 @@ public class MeasurementDetailsFragment extends Fragment
                 }
             }
         });
-
-
 
         toggleBtnMeasurementOverviewDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -454,7 +435,6 @@ public class MeasurementDetailsFragment extends Fragment
             toggleBtnMeasurementOverviewDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementDisplayBtn_state"));
             toggleBtnRecentMeasurementDisplay.setChecked(savedInstanceState.getBoolean("toggleMeasurementHistoryBtn_state"));
             toggleBtnThresholdsDisplay.setChecked(savedInstanceState.getBoolean("toggleThresholdSettingsBtn_state"));
-
             radioBtnShowRecentList.setChecked(savedInstanceState.getBoolean("radioBtnShowList_state"));
             radioBtnShowRecentGraph.setChecked(savedInstanceState.getBoolean("radioBtnShowGraph_state"));
         }
@@ -507,7 +487,6 @@ public class MeasurementDetailsFragment extends Fragment
         noDataDisplay2.setVisibility(View.GONE);
         noDataDisplay3.setVisibility(View.GONE);
     }
-
 
     private void initRecentTemperatureRView()
     {
@@ -654,7 +633,6 @@ public class MeasurementDetailsFragment extends Fragment
         outState.putBoolean("toggleMeasurementDisplayBtn_state", toggleBtnMeasurementOverviewDisplay.isChecked());
         outState.putBoolean("toggleMeasurementHistoryBtn_state", toggleBtnRecentMeasurementDisplay.isChecked());
         outState.putBoolean("toggleThresholdSettingsBtn_state", toggleBtnThresholdsDisplay.isChecked());
-
         outState.putBoolean("radioBtnShowList_state", radioBtnShowRecentList.isChecked());
         outState.putBoolean("radioBtnShowGraph_state", radioBtnShowRecentGraph.isChecked());
 
@@ -664,7 +642,6 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public void onResume()
     {
-        Log.d("PrBarDebug", "Fragment onResume called");
         hideNoDataDisplays();
         hideLayoutContent();
         showLoadingScreens();
@@ -674,7 +651,6 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public void onDestroy()
     {
-        Log.d("PrBarDebug", "Fragment odDestroy called");
         getActivity().finish();
         super.onDestroy();
     }

@@ -42,16 +42,21 @@
 
     <!-- Measurement history activity -->
     <!-- Dummy data -->
-    <string name="value_select_datetime_from">5/4/2019 12:00</string>
-    <string name="value_select_datetime_to">5/6/2019 12:00</string>
+    <string name="title_select_date_range">Select date range:</string>
+    <string name="value_select_datetime_from">5/4/2019</string>
+    <string name="value_select_datetime_to">5/6/2019</string>
+    <string name="value_datetime_from_to">12/10/2019 &#8212; 12/20/2019</string>
+    <string name="value_time">12:00</string>
 
     <string name="title_temperature">Temperature</string>
     <string name="title_humidity">Humidity</string>
     <string name="title_co2">Co2</string>
-    <string name="title_measurement_type">type</string>
+    <string name="title_click_select">Click to select</string>
+    <string name="title_select">Select</string>
+    <string name="title_select_time_from">Time from:</string>
+    <string name="title_select_time_to">Time to:</string>
     <string name="title_measurement_history">History:</string>
-    <string name="title_select_datetime_from">Select from:</string>
-    <string name="title_select_datetime_to">Select to:</string>
+    <string name="title_reset">R</string>
     <string name="title_button_show_history">Go</string>
 
     <!-- Greenhouse Select -->

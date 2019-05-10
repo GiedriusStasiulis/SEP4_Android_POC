@@ -14,27 +14,45 @@ public class DTimeFormatHelper
         return new Date().getTime();
     }
 
-    public static long getMinDateAsLong()
-    {
+    public static long getFixedMinDateAsLong()
+        {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH,- 1);
-        Date date = cal.getTime();
 
-        return date.getTime();
+        return cal.getTimeInMillis();
     }
 
-    public static String getCurrentDateTimeAsString()
+    public static long convertCalendarToLong(Calendar calendar)
+    {
+        return calendar.getTimeInMillis();
+    }
+
+    public static Calendar convertSimpleDateTimeToCalendar(String dateTime)
+    {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        try {
+            calendar.setTime(sdf.parse(dateTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return calendar;
+    }
+
+    public static Date convertStringToDate(final String dateTimeString) throws ParseException
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
+        return sdf.parse(dateTimeString);
+    }
+
+    public static Date convertISO8601stringToDate(final String timestampISO8601) throws ParseException
+    {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
+    }
+
+    public static String getCurrentDateTimeWithSecondsAsString()
     {
         return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss",Locale.ENGLISH).format(new Date());
-    }
-
-    public static String getYesterdayDateTimeAsString()
-    {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        Date date = cal.getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
-        return dateFormat.format(date);
     }
 
     public static String getTimeStringFromISO8601Timestamp(final String timestampISO8601) throws ParseException
@@ -51,17 +69,6 @@ public class DTimeFormatHelper
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
         DateFormat df = new SimpleDateFormat("dd-MMM-yy",Locale.ENGLISH);
         return df.format(date);
-    }
-
-    public static Date convertStringToDate(final String dateTimeString) throws ParseException
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
-        return sdf.parse(dateTimeString);
-    }
-
-    public static Date convertISO8601stringToDate(final String timestampISO8601) throws ParseException
-    {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
     }
 
     public static String convertStringDateTimeToISO8601String(final String dateTime) throws ParseException

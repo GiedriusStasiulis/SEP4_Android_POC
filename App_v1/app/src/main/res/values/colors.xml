@@ -8,4 +8,5 @@
     <color name="lightGray">#DBDADA</color>
     <color name="black">#000000</color>
     <color name="red">#FF3333</color>
+    <color name="calendar_highlighted_day_bg">#EEF71919</color>
 </resources>

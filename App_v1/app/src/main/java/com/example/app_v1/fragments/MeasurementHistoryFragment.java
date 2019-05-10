@@ -1,20 +1,14 @@
 package com.example.app_v1.fragments;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -31,22 +25,16 @@ import com.example.app_v1.R;
 import com.example.app_v1.adapters.Co2RVAdapter;
 import com.example.app_v1.adapters.HumidityRVAdapter;
 import com.example.app_v1.adapters.TemperatureRVAdapter;
+import com.example.app_v1.dialogs.DateRangePickerFragmentDialog;
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.utils.DTimeFormatHelper;
 import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
 
-import org.w3c.dom.Text;
-
-import java.sql.Date;
-import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
-public class MeasurementHistoryFragment extends Fragment
+public class MeasurementHistoryFragment extends Fragment implements DateRangePickerFragmentDialog.DateRangePickerFragmentDialogListener
 {
     private static final String TAG = "MeasurementHistoryFragment";
 
@@ -64,12 +52,14 @@ public class MeasurementHistoryFragment extends Fragment
 
     private ConstraintLayout measurementHistoryDisplay;
 
-    private Button btnSelectDateTimeFrom;
-    private Button btnSelectDateTimeTo;
+    private Button btnOpenCalendarDialog;
+    private Button btnSelectTimeFrom;
+    private Button btnSelectTimeTo;
 
     private ToggleButton toggleBtnHistoryDisplay;
 
     private ImageButton btnSearchHistory;
+    private ImageButton btnClearSearchParams;
 
     private RecyclerView rvMeasurementHistory;
     private TemperatureRVAdapter temperatureRVAdapter;
@@ -80,9 +70,7 @@ public class MeasurementHistoryFragment extends Fragment
     private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
     private ArrayList<Co2> co2InDateRange = new ArrayList<>();
 
-    private DatePickerDialog.OnDateSetListener dateFromSetListener;
     private TimePickerDialog.OnTimeSetListener timeFromSetListener;
-    private DatePickerDialog.OnDateSetListener dateToSetListener;
     private TimePickerDialog.OnTimeSetListener timeToSetListener;
 
     private MeasurementHistoryViewModel measurementHistoryViewModel;
@@ -100,135 +88,15 @@ public class MeasurementHistoryFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         titleMeasurementType = view.findViewById(R.id.titleMeasurementType);
-        btnSelectDateTimeFrom = view.findViewById(R.id.btnSelectDateTimeFrom);
-        btnSelectDateTimeTo = view.findViewById(R.id.btnSelectDateTimeTo);
+        btnOpenCalendarDialog = view.findViewById(R.id.btnOpenCalendarDialog);
+        btnSelectTimeFrom = view.findViewById(R.id.btnSelectTimeFrom);
+        btnSelectTimeTo = view.findViewById(R.id.btnSelectTimeTo);
         btnSearchHistory = view.findViewById(R.id.btnSearchHistory);
+        btnClearSearchParams = view.findViewById(R.id.btnClearSearchParams);
         rvMeasurementHistory = view.findViewById(R.id.rvMeasurementHistory);
         toggleBtnHistoryDisplay = view.findViewById(R.id.toggleBtnHistoryDisplay);
         measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
-
         toggleBtnHistoryDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
-
-        dateTimeFrom = DTimeFormatHelper.getYesterdayDateTimeAsString();
-        dateTimeTo = DTimeFormatHelper.getCurrentDateTimeAsString();
-
-        btnSelectDateTimeFrom.setText(dateTimeFrom);
-        btnSelectDateTimeTo.setText(dateTimeTo);
-
-        btnSelectDateTimeFrom.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dateDialog = new DatePickerDialog(
-                        getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        dateFromSetListener,
-                        year,month,day);
-
-                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateAsLong());
-                dateDialog.getDatePicker().setMinDate(DTimeFormatHelper.getMinDateAsLong());
-
-                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dateDialog.show();
-            }
-        });
-
-        dateFromSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
-            {
-                dateFrom = DTimeFormatHelper.convertDatePickerValuesToString(year,month,dayOfMonth);
-
-                Calendar calendar = Calendar.getInstance();
-                int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-
-                TimePickerDialog timeDialog = new TimePickerDialog(
-                                            getActivity(),
-                                            android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                                            timeFromSetListener,
-                        hourOfDay,minute,true);
-
-                timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                timeDialog.show();
-            }
-        };
-
-        timeFromSetListener = new TimePickerDialog.OnTimeSetListener()
-        {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-            {
-                timeFrom = DTimeFormatHelper.convertTimePickerValuesToString(hourOfDay,minute);
-
-                dateTimeFrom = String.format("%s %s",dateFrom,timeFrom);
-                btnSelectDateTimeFrom.setText(dateTimeFrom);
-            }
-        };
-
-        btnSelectDateTimeTo.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dateDialog = new DatePickerDialog(
-                        getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        dateToSetListener,
-                        year,month,day);
-
-                dateDialog.getDatePicker().setMaxDate(DTimeFormatHelper.getCurrentDateAsLong());
-                dateDialog.getDatePicker().setMinDate(DTimeFormatHelper.getMinDateAsLong());
-
-                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dateDialog.show();
-            }
-        });
-
-        dateToSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
-            {
-                dateTo = DTimeFormatHelper.convertDatePickerValuesToString(year,month,dayOfMonth);
-
-                Calendar calendar = Calendar.getInstance();
-                int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-
-                TimePickerDialog timeDialog = new TimePickerDialog(
-                        getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        timeToSetListener,
-                        hourOfDay,minute,true);
-
-                timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                timeDialog.show();
-            }
-        };
-
-        timeToSetListener = new TimePickerDialog.OnTimeSetListener()
-        {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-            {
-                timeTo = DTimeFormatHelper.convertTimePickerValuesToString(hourOfDay,minute);
-
-                dateTimeTo = String.format("%s %s",dateTo,timeTo);
-                btnSelectDateTimeTo.setText(dateTimeTo);
-            }
-        };
 
         toggleBtnHistoryDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -248,6 +116,16 @@ public class MeasurementHistoryFragment extends Fragment
                 }
             }
         });
+
+        btnOpenCalendarDialog.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                openDatePickerDialog();
+            }
+        });
+
 
         measurementHistoryViewModel = ViewModelProviders.of(getActivity()).get(MeasurementHistoryViewModel.class);
 
@@ -271,14 +149,6 @@ public class MeasurementHistoryFragment extends Fragment
 
                         initTemperatureHistoryRView();
 
-                        try {
-                            temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo).getValue();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        temperatureRVAdapter.clearItems();
-                        temperatureRVAdapter.setItems(temperaturesInDateRange);
-
                         titleMeasurementType.setText(getResources().getString(R.string.title_temperature));
 
                         btnSearchHistory.setOnClickListener(new View.OnClickListener()
@@ -286,17 +156,20 @@ public class MeasurementHistoryFragment extends Fragment
                             @Override
                             public void onClick(View view)
                             {
-                                temperaturesInDateRange.clear();
+                                Toast.makeText(getActivity(), "Searching...",
+                                        Toast.LENGTH_LONG).show();
 
-                                    try {
-                                        temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo).getValue();
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+                                /*temperaturesInDateRange.clear();
 
-                                    temperatureRVAdapter.clearItems();
-                                    temperatureRVAdapter.setItems(temperaturesInDateRange);
+                                try {
+                                    temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo).getValue();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
+
+                                temperatureRVAdapter.clearItems();
+                                temperatureRVAdapter.setItems(temperaturesInDateRange);*/
+                            }
                         });
 
                         break;
@@ -381,11 +254,16 @@ public class MeasurementHistoryFragment extends Fragment
         {
             dateTimeFrom = savedInstanceState.getString("dateTimeFrom_value");
             dateTimeTo = savedInstanceState.getString("dateTimeTo_value");
-            btnSelectDateTimeFrom.setText(dateTimeFrom);
-            btnSelectDateTimeTo.setText(dateTimeTo);
 
             toggleBtnHistoryDisplay.setChecked(savedInstanceState.getBoolean("toggleHistoryDisplayBtn_state"));
         }
+    }
+
+    private void openDatePickerDialog()
+    {
+        DateRangePickerFragmentDialog dateRangePickerFragmentDialog = new DateRangePickerFragmentDialog();
+        dateRangePickerFragmentDialog.setTargetFragment(MeasurementHistoryFragment.this,1);
+        dateRangePickerFragmentDialog.show(getFragmentManager(),null);
     }
 
     private void initTemperatureHistoryRView()
@@ -431,5 +309,12 @@ public class MeasurementHistoryFragment extends Fragment
     public void onResume()
     {
         super.onResume();
+    }
+
+    @Override
+    public void returnDates(String dates)
+    {
+        btnOpenCalendarDialog.setText("");
+        btnOpenCalendarDialog.setText(dates);
     }
 }
