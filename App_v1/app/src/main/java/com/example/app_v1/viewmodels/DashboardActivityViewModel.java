@@ -29,6 +29,8 @@ public class DashboardActivityViewModel extends ViewModel
 
     public void initViewModel(int greenhouseId)
     {
+        Log.d("PrBarDebug", "ViewModel init");
+
         repo = MeasurementRepository.getInstance();
         selectedTabIndex.setValue(0);
         repo.startFetchingDataFromApi(greenhouseId);
@@ -37,15 +39,17 @@ public class DashboardActivityViewModel extends ViewModel
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromRepo()
     {
         isLoading.setValue(true);
+        Log.d("PrBarDebug", "isLoading = " + isLoading.getValue());
 
         if(latestMeasurementsFromRepo == null)
         {
-            Log.d("OnSuccess", "ltsMesr = null");
+            Log.d("PrBarDebug", "isLoading = " + isLoading.getValue());
             repo = MeasurementRepository.getInstance();
             latestMeasurementsFromRepo = repo.getLatestMeasurementsFromApi();
         }
 
         isLoading.setValue(false);
+        Log.d("PrBarDebug", "isLoading = " + isLoading.getValue());
 
         return this.latestMeasurementsFromRepo;
     }

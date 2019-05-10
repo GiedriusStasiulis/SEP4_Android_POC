@@ -33,8 +33,7 @@
     <string name="title_last_updated">Last updated:</string>
     <string name="title_recent_values">Latest Values:</string>
     <string name="title_thresholds">Threshold Settings:</string>
-    <string name="title_device_alarm_thresholds">Alarm:</string>
-    <string name="title_notification_thresholds">Notification:</string>
+    <string name="title_device_alarm_thresholds">Triggers set to:</string>
     <string name="title_min_threshold">Min:</string>
     <string name="title_max_threshold">Max:</string>
     <string name="title_radio_list">List</string>

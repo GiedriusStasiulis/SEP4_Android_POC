@@ -56,6 +56,8 @@ public class MeasurementRepository
 
     public void stopFetchingDataFromApi()
     {
+        measurementsArrList = new ArrayList<>();
+        latestMeasurementsFromApi.postValue(measurementsArrList);
         fetchDataFromApiHandler.removeCallbacks(fetchDataFromApiRunnable);
     }
 
@@ -97,7 +99,7 @@ public class MeasurementRepository
                     }
                 });
 
-                fetchDataFromApiHandler.postDelayed(this,10000);
+                fetchDataFromApiHandler.postDelayed(this,60000);
             }
         };
     }

@@ -1,6 +1,8 @@
 package com.example.app_v1.activities;
 
 import android.annotation.SuppressLint;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -20,6 +22,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
@@ -35,7 +39,7 @@ public class DashboardActivity extends AppCompatActivity
 {
     private static final String TAG = "DashboardActivity";
 
-    private int selectedGreenhouse;
+    private int selectedGreenhouseId;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -55,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         if(bundle != null)
         {
-            selectedGreenhouse = bundle.getInt("greenhouseId");
+            selectedGreenhouseId = bundle.getInt("selectedGreenhouseId");
         }
 
         setContentView(R.layout.activity_dashboard);
@@ -63,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity
         //Toolbar settings
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(String.format(Locale.ENGLISH,"Dashboard - %d",selectedGreenhouse));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(String.format(Locale.ENGLISH,"Dashboard - %d",selectedGreenhouseId));
         //getSupportActionBar().setSubtitle("Updated: " + getResources().getString(R.string.value_last_updated));
 
         //Enable back-arrow
@@ -91,9 +95,9 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("--- ppm");
 
         dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
-        dashboardActivityViewModel.initViewModel(selectedGreenhouse);
+        dashboardActivityViewModel.initViewModel(selectedGreenhouseId);
 
-        dashboardActivityViewModel.setSelectedGreenhouseId(selectedGreenhouse);
+        dashboardActivityViewModel.setSelectedGreenhouseId(selectedGreenhouseId);
 
         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(this, new Observer<ArrayList<Measurement>>() {
             @Override
@@ -187,7 +191,9 @@ public class DashboardActivity extends AppCompatActivity
             case R.id.action_settings:
 
                 Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+                intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                 startActivity(intent);
+                finish();
                 break;
 
             case R.id.action_logout:

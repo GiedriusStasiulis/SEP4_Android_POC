@@ -29,9 +29,13 @@
             android:name=".activities.DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize">
-
         </activity>
-        <activity android:name=".activities.MeasurementHistoryActivity">
+        <activity
+            android:name=".activities.MeasurementHistoryActivity"
+            android:parentActivityName=".activities.DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.app_v1.activities.DashboardActivity" />
         </activity>
         <activity
             android:name=".activities.SettingsActivity"

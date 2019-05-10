@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -120,6 +121,9 @@ public class MeasurementHistoryActivity extends AppCompatActivity
     {
         if (item.getItemId() == android.R.id.home)
         {
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
+            startActivity(intent);
             finish();
         }
 

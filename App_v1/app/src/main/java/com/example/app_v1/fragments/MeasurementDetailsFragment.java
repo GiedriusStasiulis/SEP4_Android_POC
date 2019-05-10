@@ -71,6 +71,10 @@ public class MeasurementDetailsFragment extends Fragment
     private ConstraintLayout noDataDisplay2;
     private ConstraintLayout noDataDisplay3;
 
+    private ProgressBar progressBarMeasurementOverview;
+    private ProgressBar progressBarLatestValues;
+    private ProgressBar progressBarThresholds;
+
     private ImageButton btnOpenHistoryActivity;
     private ImageButton btnOpenThresholdsSettings;
 
@@ -82,10 +86,6 @@ public class MeasurementDetailsFragment extends Fragment
 
     private GraphView graphView;
     private LineGraphSeries<DataPoint> series;
-
-    private ProgressBar progressBarMeasurementOverview;
-    private ProgressBar progressBarLatestValues;
-    private ProgressBar progressBarThresholds;
 
     private RecyclerView recentMeasurementRView;
     private TemperatureRVAdapter temperatureRVAdapter;
@@ -111,6 +111,8 @@ public class MeasurementDetailsFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d("PrBarDebug", "Fragment onViewCreated called");
+
         titleMeasurementOverview = view.findViewById(R.id.titleMeasurementOverview);
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
@@ -118,16 +120,7 @@ public class MeasurementDetailsFragment extends Fragment
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         recentMeasurementDisplay = view.findViewById(R.id.recentMeasurementDisplay);
-        measurementOverviewDisplayContents = view.findViewById(R.id.measurementOverviewDisplayContents);
-        recentMeasurementDisplayContent = view.findViewById(R.id.recentMeasurementDisplayContent);
-        thresholdDisplayContent = view.findViewById(R.id.thresholdDisplayContent);
-        measurementOverviewLoadingScreen = view.findViewById(R.id.measurementOverviewLoadingScreen);
-        latestMeasurementsLoadingScreen = view.findViewById(R.id.latestMeasurementsLoadingScreen);
-        thresholdsLoadingScreen = view.findViewById(R.id.thresholdsLoadingScreen);
         thresholdSettingsDisplay = view.findViewById(R.id.thresholdSettingsDisplay);
-        noDataDisplay = view.findViewById(R.id.noDataDisplay);
-        noDataDisplay2 = view.findViewById(R.id.noDataDisplay2);
-        noDataDisplay3 = view.findViewById(R.id.noDataDisplay3);
         btnOpenHistoryActivity = view.findViewById(R.id.btnOpenHistoryActivity);
         btnOpenThresholdsSettings = view.findViewById(R.id.btnOpenThresholdsSettings);
         toggleBtnMeasurementOverviewDisplay = view.findViewById(R.id.toggleBtnMeasurementOverviewDisplay);
@@ -137,6 +130,16 @@ public class MeasurementDetailsFragment extends Fragment
         radioBtnShowRecentGraph = view.findViewById(R.id.radioBtnShowRecentGraph);
         recentMeasurementRView = view.findViewById(R.id.recentMeasurementRView);
         graphView = view.findViewById(R.id.graphView);
+
+        measurementOverviewDisplayContents = view.findViewById(R.id.measurementOverviewDisplayContents);
+        recentMeasurementDisplayContent = view.findViewById(R.id.recentMeasurementDisplayContent);
+        thresholdDisplayContent = view.findViewById(R.id.thresholdDisplayContent);
+        measurementOverviewLoadingScreen = view.findViewById(R.id.measurementOverviewLoadingScreen);
+        latestMeasurementsLoadingScreen = view.findViewById(R.id.latestMeasurementsLoadingScreen);
+        thresholdsLoadingScreen = view.findViewById(R.id.thresholdsLoadingScreen);
+        noDataDisplay = view.findViewById(R.id.noDataDisplay);
+        noDataDisplay2 = view.findViewById(R.id.noDataDisplay2);
+        noDataDisplay3 = view.findViewById(R.id.noDataDisplay3);
         progressBarMeasurementOverview = view.findViewById(R.id.progressBarMeasurementOverview);
         progressBarLatestValues = view.findViewById(R.id.progressBarLatestValues);
         progressBarThresholds = view.findViewById(R.id.progressBarThresholds);
@@ -183,9 +186,6 @@ public class MeasurementDetailsFragment extends Fragment
 
         graphView.removeAllSeries();
 
-        hideLayoutContent();
-        showLoadingScreens();
-
         dashboardActivityViewModel = ViewModelProviders.of(this.getActivity()).get(DashboardActivityViewModel.class);
 
         dashboardActivityViewModel.getSelectedGreenhouseId().observe(this, new Observer<Integer>()
@@ -197,6 +197,9 @@ public class MeasurementDetailsFragment extends Fragment
             }
         });
 
+        hideLayoutContent();
+        showLoadingScreens();
+
         dashboardActivityViewModel.getSelectedTabIndex().observe(this, new Observer<Integer>()
         {
             @Override
@@ -205,32 +208,28 @@ public class MeasurementDetailsFragment extends Fragment
                 switch(integer)
                 {
                     case 0:
-
                         initRecentTemperatureRView();
                         graphView.removeAllSeries();
-
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
                             @Override
                             public void onChanged(final ArrayList<Measurement> measurements)
                             {
-                                dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
+                                /*dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
                                 {
                                     @Override
                                     public void onChanged(Boolean aBoolean)
                                     {
-
+                                        Log.d("DashboardActivityVM", "aBoolean changed");
                                         if(!aBoolean)
                                         {
                                             hideLoadingScreens();
-
-                                        }
-                                        else
-                                        {
-                                            showLoadingScreens();
                                         }
                                     }
-                                });
+                                });*/
+
+                                hideLoadingScreens();
+                                showLayoutContentAfterLoading();
 
                                 try {
                                     latestTemperatures = dashboardActivityViewModel.extractLatestTemperaturesFromMeasurements(measurements);
@@ -240,8 +239,8 @@ public class MeasurementDetailsFragment extends Fragment
 
                                 if(!measurements.isEmpty())
                                 {
-                                    showLayoutContentAfterLoading();
 
+                                    hideNoDataDisplays();
                                     symbolMeasurementValue.setText(getResources().getString(R.string.symbol_temperature));
 
                                     valueLatestMeasurement.setText(latestTemperatures.get(0).getTemperature());
@@ -259,10 +258,9 @@ public class MeasurementDetailsFragment extends Fragment
                                     showNoDataScreens();
                                     temperatureRVAdapter.clearItems();
                                 }
+
                             }
                         });
-
-                        titleMeasurementOverview.setText(getResources().getString(R.string.title_temperature_display));
 
                         btnOpenHistoryActivity.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -273,6 +271,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 intent.putExtra("measurement_type",measurementType);
                                 intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                                 startActivity(intent);
+                                getActivity().finish();
                             }
                         });
 
@@ -288,22 +287,6 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(ArrayList<Measurement> measurements)
                             {
-                                dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
-                                {
-                                    @Override
-                                    public void onChanged(Boolean aBoolean)
-                                    {
-                                        if(!aBoolean)
-                                        {
-                                            hideLoadingScreens();
-                                        }
-                                        else
-                                        {
-                                            showLoadingScreens();
-                                        }
-                                    }
-                                });
-
                                 try {
                                     latestHumidity = dashboardActivityViewModel.extractLatestHumidityFromMeasurements(measurements);
                                 } catch (ParseException e) {
@@ -312,8 +295,6 @@ public class MeasurementDetailsFragment extends Fragment
 
                                 if(!measurements.isEmpty())
                                 {
-                                    hideNoDataDisplays();
-
                                     symbolMeasurementValue.setText(getResources().getString(R.string.symbol_humidity));
 
                                     valueLatestMeasurement.setText(latestHumidity.get(0).getHumidity());
@@ -327,8 +308,6 @@ public class MeasurementDetailsFragment extends Fragment
                                 }
                                 else
                                 {
-                                    hideLayoutContent();
-                                    showNoDataScreens();
                                     humidityRVAdapter.clearItems();
                                 }
                             }
@@ -345,6 +324,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 intent.putExtra("measurement_type",measurementType);
                                 intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                                 startActivity(intent);
+                                getActivity().finish();
                             }
                         });
 
@@ -360,22 +340,6 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(ArrayList<Measurement> measurements)
                             {
-                                dashboardActivityViewModel.getIsLoading().observe(getActivity(), new Observer<Boolean>()
-                                {
-                                    @Override
-                                    public void onChanged(Boolean aBoolean)
-                                    {
-                                        if(!aBoolean)
-                                        {
-                                            hideLoadingScreens();
-                                        }
-                                        else
-                                        {
-                                            showLoadingScreens();
-                                        }
-                                    }
-                                });
-
                                 try {
                                     latestCo2 = dashboardActivityViewModel.extractLatestCo2FromMeasurements(measurements);
                                 } catch (ParseException e) {
@@ -384,8 +348,6 @@ public class MeasurementDetailsFragment extends Fragment
 
                                 if(!measurements.isEmpty())
                                 {
-                                    hideNoDataDisplays();
-
                                     symbolMeasurementValue.setText(getResources().getString(R.string.symbol_co2));
 
                                     valueLatestMeasurement.setText(latestCo2.get(0).getCo2());
@@ -399,8 +361,6 @@ public class MeasurementDetailsFragment extends Fragment
                                 }
                                 else
                                 {
-                                    hideLayoutContent();
-                                    showNoDataScreens();
                                     co2RVAdapter.clearItems();
                                 }
                             }
@@ -417,6 +377,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 intent.putExtra("measurement_type",measurementType);
                                 intent.putExtra("selectedGreenhouseId",selectedGreenhouseId);
                                 startActivity(intent);
+                                getActivity().finish();
                             }
                         });
 
@@ -427,6 +388,8 @@ public class MeasurementDetailsFragment extends Fragment
                 }
             }
         });
+
+
 
         toggleBtnMeasurementOverviewDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -544,6 +507,7 @@ public class MeasurementDetailsFragment extends Fragment
         noDataDisplay2.setVisibility(View.GONE);
         noDataDisplay3.setVisibility(View.GONE);
     }
+
 
     private void initRecentTemperatureRView()
     {
@@ -700,14 +664,17 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public void onResume()
     {
+        Log.d("PrBarDebug", "Fragment onResume called");
         hideNoDataDisplays();
-        //hideLayoutContent();
+        hideLayoutContent();
+        showLoadingScreens();
         super.onResume();
     }
 
     @Override
     public void onDestroy()
     {
+        Log.d("PrBarDebug", "Fragment odDestroy called");
         getActivity().finish();
         super.onDestroy();
     }

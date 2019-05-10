@@ -26,7 +26,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
     public Spinner selectGreenhouse;
     public Button buttonGo;
     private List<Integer> greenhouses = new ArrayList<>();
-    private int greenhouseId;
+    private int selectedGreenhouseId;
     private ArrayAdapter<Integer> adapter;
 
     private GreenhouseSelectActivityViewModel viewModel;
@@ -58,7 +58,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
                 String selection = selectGreenhouse.getSelectedItem().toString();
                 Log.d(TAG, "spinner selection: " + selection);
 
-                greenhouseId = Integer.parseInt(selection);
+                selectedGreenhouseId = Integer.parseInt(selection);
                 buttonGo.setVisibility(View.VISIBLE);
             }
 
@@ -83,7 +83,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GreenhouseSelectActivity.this, DashboardActivity.class);
-                intent.putExtra("greenhouseId", greenhouseId);
+                intent.putExtra("selectedGreenhouseId", selectedGreenhouseId);
                 startActivity(intent);
             }
         });
