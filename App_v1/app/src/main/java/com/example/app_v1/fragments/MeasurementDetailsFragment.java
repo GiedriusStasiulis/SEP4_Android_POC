@@ -103,7 +103,7 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.measurement_details_fragment,container,false);
+        return inflater.inflate(R.layout.fragment_measurement_details,container,false);
     }
 
     @Override
@@ -243,7 +243,6 @@ public class MeasurementDetailsFragment extends Fragment
                                     showNoDataScreens();
                                     temperatureRVAdapter.clearItems();
                                 }
-
                             }
                         });
 
@@ -259,7 +258,6 @@ public class MeasurementDetailsFragment extends Fragment
                                 getActivity().finish();
                             }
                         });
-
                         break;
 
                     case 1:
@@ -311,7 +309,6 @@ public class MeasurementDetailsFragment extends Fragment
                                 getActivity().finish();
                             }
                         });
-
                         break;
 
                     case 2:
@@ -363,7 +360,6 @@ public class MeasurementDetailsFragment extends Fragment
                                 getActivity().finish();
                             }
                         });
-
                         break;
 
                     default:

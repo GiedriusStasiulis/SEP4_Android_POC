@@ -1,7 +1,5 @@
 package com.example.app_v1.viewmodels;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -22,14 +20,11 @@ public class DashboardActivityViewModel extends ViewModel
     private MeasurementRepository repo;
 
     private LiveData<ArrayList<Measurement>> latestMeasurementsFromRepo;
-
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
 
     public void initViewModel(int greenhouseId)
     {
-        Log.d("PrBarDebug", "ViewModel init");
-
         repo = MeasurementRepository.getInstance();
         selectedTabIndex.setValue(0);
         repo.startFetchingDataFromApi(greenhouseId);
@@ -62,12 +57,10 @@ public class DashboardActivityViewModel extends ViewModel
                 latestTemperaturesArrList.add(temperature);
             }
         }
-
         else
         {
             latestTemperaturesArrList = new ArrayList<>();
         }
-
         return latestTemperaturesArrList;
     }
 
@@ -88,12 +81,10 @@ public class DashboardActivityViewModel extends ViewModel
                 latestHumidityArrList.add(humidity);
             }
         }
-
         else
         {
             latestHumidityArrList = new ArrayList<>();
         }
-
         return latestHumidityArrList;
     }
 
@@ -114,12 +105,10 @@ public class DashboardActivityViewModel extends ViewModel
                 latestCo2ArrList.add(co2);
             }
         }
-
         else
         {
             latestCo2ArrList = new ArrayList<>();
         }
-
         return latestCo2ArrList;
     }
 
@@ -128,7 +117,7 @@ public class DashboardActivityViewModel extends ViewModel
         selectedTabIndex.setValue(index);
     }
 
-    public MutableLiveData<Integer> getSelectedTabIndex()
+    public LiveData<Integer> getSelectedTabIndex()
     {
         return selectedTabIndex;
     }
@@ -138,7 +127,7 @@ public class DashboardActivityViewModel extends ViewModel
         selectedGreenhouseId.setValue(id);
     }
 
-    public MutableLiveData<Integer> getSelectedGreenhouseId()
+    public LiveData<Integer> getSelectedGreenhouseId()
     {
         return this.selectedGreenhouseId;
     }

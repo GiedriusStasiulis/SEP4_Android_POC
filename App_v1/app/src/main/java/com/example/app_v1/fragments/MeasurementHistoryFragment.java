@@ -46,6 +46,8 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
     private String timeFrom;
     private String timeTo;
     private String dateFromToString;
+    private String dateTimeFrom;
+    private String dateTimeTo;
     private int selectedGreenhouseId;
 
     private TextView titleMeasurementType;
@@ -79,7 +81,7 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.measurement_history_fragment,container,false);
+        return inflater.inflate(R.layout.fragment_measurement_history,container,false);
     }
 
     @Override
@@ -200,8 +202,8 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                             public void onClick(View view)
                             {
                                 if(!measurementHistoryViewModel.validateSearchParameters(btnOpenCalendarDialog.getText().toString(),
-                                                                                         btnSelectTimeFrom.getText().toString(),
-                                                                                         btnSelectTimeTo.getText().toString()))
+                                        btnSelectTimeFrom.getText().toString(),
+                                        btnSelectTimeTo.getText().toString()))
                                 {
                                     Toast.makeText(getActivity(), "Please select all search parameters",
                                             Toast.LENGTH_SHORT).show();
@@ -210,8 +212,11 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 {
                                     temperaturesInDateRange.clear();
 
-                                    String dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
-                                    String dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
+                                    dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
+                                    dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
+
+                                    /*Toast.makeText(getActivity(), "Searching for humidity in date range: " + dateTimeFrom + " and " + dateTimeTo,
+                                            Toast.LENGTH_SHORT).show();*/
 
                                     //Test to see ISO8601 timestamps that will be sent to repo with selectedGreenhouseId
                                     String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
@@ -258,8 +263,11 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                     humidityInDateRange.clear();
 
-                                    String dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
-                                    String dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
+                                    dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
+                                    dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
+
+                                    /*Toast.makeText(getActivity(), "Searching for humidity in date range: " + dateTimeFrom + " and " + dateTimeTo,
+                                            Toast.LENGTH_SHORT).show();*/
 
                                     //Test to see ISO8601 timestamp format that will be sent to repo
                                     String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
@@ -306,8 +314,8 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                     co2InDateRange.clear();
 
-                                    String dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
-                                    String dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
+                                    dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
+                                    dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
                                     //Test to see ISO8601 timestamp format that will be sent to repo
                                     String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
@@ -365,6 +373,10 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
             dateFromToString = savedInstanceState.getString("dateFromTo_value");
             timeFrom = savedInstanceState.getString("timeFrom_value");
             timeTo = savedInstanceState.getString("timeTo_value");
+            dateFrom = savedInstanceState.getString("dateFrom_value");
+            dateTo = savedInstanceState.getString("dateTo_value");
+            dateTimeFrom = savedInstanceState.getString("dateTimeFrom_value");
+            dateTimeTo = savedInstanceState.getString("dateTimeTo_value");
 
             btnOpenCalendarDialog.setText(dateFromToString);
             btnSelectTimeFrom.setText(timeFrom);
@@ -426,6 +438,10 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
         outState.putString("dateFromTo_value",btnOpenCalendarDialog.getText().toString());
+        outState.putString("dateTimeFrom_value",dateTimeFrom);
+        outState.putString("dateTimeTo_value",dateTimeTo);
+        outState.putString("dateFrom_value",dateFrom);
+        outState.putString("dateTo_value",dateTo);
         outState.putString("timeFrom_value",btnSelectTimeFrom.getText().toString());
         outState.putString("timeTo_value",btnSelectTimeTo.getText().toString());
         outState.putBoolean("toggleHistoryDisplayBtn_state", toggleBtnHistoryDisplay.isChecked());

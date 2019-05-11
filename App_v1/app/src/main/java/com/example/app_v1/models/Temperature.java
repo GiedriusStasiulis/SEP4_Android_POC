@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class Temperature implements Serializable
+public class Temperature
 {
     private String temperature;
     private String time;

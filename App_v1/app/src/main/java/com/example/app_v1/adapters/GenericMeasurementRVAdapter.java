@@ -18,7 +18,7 @@ public abstract class GenericMeasurementRVAdapter<T, VH extends BaseViewHolder<T
     private ArrayList<T> items;
     private LayoutInflater layoutInflater;
 
-    public GenericMeasurementRVAdapter(Context context)
+    GenericMeasurementRVAdapter(Context context)
     {
         this.layoutInflater = LayoutInflater.from(context);
         this.items = new ArrayList<>();
@@ -76,13 +76,13 @@ public abstract class GenericMeasurementRVAdapter<T, VH extends BaseViewHolder<T
     }
 
     @NonNull
-    protected View inflate(@LayoutRes final int layout, @Nullable final ViewGroup parent, final boolean attachToRoot)
+    private View inflate(@LayoutRes final int layout, @Nullable final ViewGroup parent, final boolean attachToRoot)
     {
         return layoutInflater.inflate(layout,parent,attachToRoot);
     }
 
     @NonNull
-    protected View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent)
+    View inflate(@LayoutRes final int layout, final @Nullable ViewGroup parent)
     {
         return inflate(layout,parent,false);
     }

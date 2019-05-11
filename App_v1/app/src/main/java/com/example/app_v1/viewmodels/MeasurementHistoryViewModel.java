@@ -1,15 +1,13 @@
 package com.example.app_v1.viewmodels;
 
-import android.widget.Toast;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.MeasurementRepository;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MeasurementHistoryViewModel extends ViewModel
@@ -30,6 +28,15 @@ public class MeasurementHistoryViewModel extends ViewModel
         selectedGreenhouseId.setValue(0);
     }
 
+    public Boolean validateSearchParameters(String dateRangeString, String timeFrom, String timeTo)
+    {
+        boolean isValid;
+
+        isValid = !dateRangeString.equals("Select") && !timeFrom.equals("Select") && !timeTo.equals("Select");
+
+        return isValid;
+    }
+
     public void setSelectedTabIndex(Integer index)
     {
         selectedTabIndex.postValue(index);
@@ -43,15 +50,6 @@ public class MeasurementHistoryViewModel extends ViewModel
     public void setSelectedGreenhouseId(Integer id)
     {
         selectedGreenhouseId.setValue(id);
-    }
-
-    public Boolean validateSearchParameters(String dateRangeString, String timeFrom, String timeTo)
-    {
-        boolean isValid;
-
-        isValid = !dateRangeString.equals("Select") && !timeFrom.equals("Select") && !timeTo.equals("Select");
-
-        return isValid;
     }
 
     public MutableLiveData<Integer> getSelectedGreenhouseId()

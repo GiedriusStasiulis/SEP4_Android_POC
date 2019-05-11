@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -15,7 +14,6 @@ import com.example.app_v1.R;
 import com.example.app_v1.utils.DateTimeConverterHelper;
 import com.squareup.timessquare.CalendarCellDecorator;
 import com.squareup.timessquare.CalendarPickerView;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -86,7 +84,7 @@ public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
         Calendar todayMax = Calendar.getInstance();
         todayMax.add(Calendar.DAY_OF_MONTH, 1);
 
-        //Init with selected dates from today to one week ago
+        //Init with selected dates from today to today - 1 day ago
         Calendar oneWeekAgo = Calendar.getInstance();
         oneWeekAgo.add(Calendar.DAY_OF_MONTH, -1);
         initDates.add(oneWeekAgo.getTime());
