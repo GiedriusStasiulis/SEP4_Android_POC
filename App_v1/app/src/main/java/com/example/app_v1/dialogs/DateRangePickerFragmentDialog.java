@@ -7,16 +7,19 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
-
 import com.example.app_v1.R;
 import com.example.app_v1.utils.DTimeFormatHelper;
+import com.squareup.timessquare.CalendarCellDecorator;
 import com.squareup.timessquare.CalendarPickerView;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +38,7 @@ public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_custom_calendarpicker, null);
 
-        builder.setView(view).setTitle("Select date range from & to:")
+        builder.setView(view).setTitle("Please select date range from & to:")
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
         {
             @Override
@@ -43,7 +46,8 @@ public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
 
             }
         })
-        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        .setPositiveButton("Confirm", new DialogInterface.OnClickListener()
+        {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
@@ -69,21 +73,55 @@ public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
                 dates = String.format(Locale.ENGLISH,"%s - %s",firstDateString,lastDateString);
 
                 dialogListener.returnDates(dates);
-
-                Toast.makeText(getActivity(),dates,Toast.LENGTH_LONG).show();
             }
         });
 
         calendarPickerView = view.findViewById(R.id.calendarPickerView);
 
-        Calendar today = Calendar.getInstance();
-        today.add(Calendar.DAY_OF_MONTH, 1);
+        ArrayList<Date> initDates = new ArrayList<>();
+
+        //Set minDate and MaxDate
         Calendar oneMonthAgo = Calendar.getInstance();
         oneMonthAgo.add(Calendar.MONTH, -1);
 
-        calendarPickerView.init(oneMonthAgo.getTime(),today.getTime())
-                .withSelectedDate(oneMonthAgo.getTime())
-                .inMode(CalendarPickerView.SelectionMode.RANGE);
+        Calendar todayMax = Calendar.getInstance();
+        todayMax.add(Calendar.DAY_OF_MONTH, 1);
+
+        //Init with selected dates from today to one week ago
+        Calendar oneWeekAgo = Calendar.getInstance();
+        oneWeekAgo.add(Calendar.DAY_OF_MONTH, -1);
+        initDates.add(oneWeekAgo.getTime());
+
+        Calendar today = Calendar.getInstance();
+        initDates.add(today.getTime());
+
+        calendarPickerView.setDecorators(Collections.<CalendarCellDecorator>emptyList());
+
+        calendarPickerView.init(oneMonthAgo.getTime(),todayMax.getTime())
+                .inMode(CalendarPickerView.SelectionMode.RANGE)
+                .withSelectedDates(initDates);
+
+        calendarPickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener()
+        {
+            @Override
+            public void onDateSelected(Date date)
+            {
+                //Check if more than one date has been selected
+                if(calendarPickerView.getSelectedDates().size() > 1)
+                {
+                    ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onDateUnselected(Date date) {
+
+            }
+        });
 
         return builder.create();
     }

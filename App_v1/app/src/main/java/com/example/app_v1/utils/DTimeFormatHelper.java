@@ -3,51 +3,32 @@ package com.example.app_v1.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class DTimeFormatHelper
 {
-    public static long getCurrentDateAsLong()
+    public static Date convertStringToDate(final String dateTimeString)
     {
-        return new Date().getTime();
-    }
-
-    public static long getFixedMinDateAsLong()
-        {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH,- 1);
-
-        return cal.getTimeInMillis();
-    }
-
-    public static long convertCalendarToLong(Calendar calendar)
-    {
-        return calendar.getTimeInMillis();
-    }
-
-    public static Calendar convertSimpleDateTimeToCalendar(String dateTime)
-    {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
+        Date date = null;
         try {
-            calendar.setTime(sdf.parse(dateTime));
+            date = sdf.parse(dateTimeString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return calendar;
+        return date;
     }
 
-    public static Date convertStringToDate(final String dateTimeString) throws ParseException
+    public static Date convertISO8601stringToDate(final String timestampISO8601)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
-        return sdf.parse(dateTimeString);
-    }
-
-    public static Date convertISO8601stringToDate(final String timestampISO8601) throws ParseException
-    {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public static String getCurrentDateTimeWithSecondsAsString()
@@ -55,26 +36,46 @@ public class DTimeFormatHelper
         return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss",Locale.ENGLISH).format(new Date());
     }
 
-    public static String getTimeStringFromISO8601Timestamp(final String timestampISO8601) throws ParseException
+    public static String getTimeStringFromISO8601Timestamp(final String timestampISO8601)
     {
         String s = timestampISO8601.replace("Z","+02:00");
-        Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         DateFormat df = new SimpleDateFormat("HH:mm",Locale.ENGLISH);
         return df.format(date);
     }
 
-    public static String getDateStringFromISO8601Timestamp(final String timestampISO8601) throws ParseException
+    public static String getDateStringFromISO8601Timestamp(final String timestampISO8601)
     {
         String s = timestampISO8601.replace("Z","+02:00");
-        Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         DateFormat df = new SimpleDateFormat("dd-MMM-yy",Locale.ENGLISH);
         return df.format(date);
     }
 
-    public static String convertStringDateTimeToISO8601String(final String dateTime) throws ParseException
+    public static String joinDateAndTimeStrings(final String date, final String time)
+    {
+        return String.format(Locale.ENGLISH,"%s %s",date,time);
+    }
+
+    public static String convertStringDateTimeToISO8601String(final String dateTime)
     {
         SimpleDateFormat sdfIn = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
-        Date date = sdfIn.parse(dateTime);
+        Date date = null;
+        try {
+            date = sdfIn.parse(dateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         SimpleDateFormat sdfOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.ENGLISH);
         return sdfOut.format(date);
     }

@@ -107,7 +107,7 @@ public class MeasurementRepository
         return this.latestMeasurementsFromApi;
     }
 
-    public ArrayList<Measurement> getMeasurementsInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public ArrayList<Measurement> getMeasurementsInDateRange(String dateTimeFrom, String dateTimeTo)
     {
         String iso8601dateTimeFrom = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeFrom);
         String iso8601dateTimeTo = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeTo);
@@ -117,7 +117,7 @@ public class MeasurementRepository
         return this.measurementsInDateRange;
     }
 
-    public ArrayList<Temperature> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public ArrayList<Temperature> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo)
     {
         //getMeasurementsInDateRange(dateTimeFrom,dateTimeTo);
 
@@ -145,7 +145,7 @@ public class MeasurementRepository
         return this.temperaturesInDateRange;
     }
 
-    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo)
     {
         //getMeasurementsInDateRange(dateTimeFrom,dateTimeTo);
 
@@ -173,7 +173,7 @@ public class MeasurementRepository
         return this.humidityInDateRange;
     }
 
-    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo)
     {
         //getMeasurementsInDateRange(dateTimeFrom,dateTimeTo);
 

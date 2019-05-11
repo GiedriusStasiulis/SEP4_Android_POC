@@ -1,5 +1,7 @@
 package com.example.app_v1.viewmodels;
 
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.app_v1.models.Co2;
@@ -43,12 +45,21 @@ public class MeasurementHistoryViewModel extends ViewModel
         selectedGreenhouseId.setValue(id);
     }
 
+    public Boolean validateSearchParameters(String dateRangeString, String timeFrom, String timeTo)
+    {
+        boolean isValid;
+
+        isValid = !dateRangeString.equals("Select") && !timeFrom.equals("Select") && !timeTo.equals("Select");
+
+        return isValid;
+    }
+
     public MutableLiveData<Integer> getSelectedGreenhouseId()
     {
         return this.selectedGreenhouseId;
     }
 
-    public MutableLiveData<ArrayList<Temperature>> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public MutableLiveData<ArrayList<Temperature>> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo)
     {
         temperaturesInDateRange.clear();
         temperaturesInDateRange = repo.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo);
@@ -58,7 +69,7 @@ public class MeasurementHistoryViewModel extends ViewModel
         return this.temperaturesInRangeMld;
     }
 
-    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo)
     {
         humidityInDateRange.clear();
         humidityInDateRange = repo.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
@@ -66,7 +77,7 @@ public class MeasurementHistoryViewModel extends ViewModel
         return this.humidityInDateRange;
     }
 
-    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo) throws ParseException
+    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo)
     {
         co2InDateRange.clear();
         co2InDateRange = repo.getCo2InDateRange(dateTimeFrom,dateTimeTo);
