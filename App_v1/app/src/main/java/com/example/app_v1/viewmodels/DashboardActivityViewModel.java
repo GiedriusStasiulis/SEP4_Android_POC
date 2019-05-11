@@ -11,7 +11,7 @@ import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.MeasurementRepository;
-import com.example.app_v1.utils.DTimeFormatHelper;
+import com.example.app_v1.utils.DateTimeConverterHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -56,8 +56,8 @@ public class DashboardActivityViewModel extends ViewModel
             for (int i = 0; i < measurements.size(); i++)
             {
                 Temperature temperature = new Temperature(String.valueOf(measurements.get(i).getTemperature()));
-                temperature.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
-                temperature.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
+                temperature.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
+                temperature.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
 
                 latestTemperaturesArrList.add(temperature);
             }
@@ -82,8 +82,8 @@ public class DashboardActivityViewModel extends ViewModel
             for (int i = 0; i < measurements.size(); i++)
             {
                 Humidity humidity = new Humidity(String.valueOf(measurements.get(i).getHumidity()));
-                humidity.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
-                humidity.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
+                humidity.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
+                humidity.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
 
                 latestHumidityArrList.add(humidity);
             }
@@ -108,8 +108,8 @@ public class DashboardActivityViewModel extends ViewModel
             for (int i = 0; i < measurements.size(); i++)
             {
                 Co2 co2 = new Co2(String.format(Locale.ENGLISH,"%.0f",measurements.get(i).getcO2()));
-                co2.setTime(DTimeFormatHelper.getTimeStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
-                co2.setDate(DTimeFormatHelper.getDateStringFromISO8601Timestamp(measurements.get(i).getTimeStamp()));
+                co2.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
+                co2.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
 
                 latestCo2ArrList.add(co2);
             }

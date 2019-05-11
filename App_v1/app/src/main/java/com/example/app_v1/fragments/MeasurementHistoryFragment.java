@@ -31,10 +31,11 @@ import com.example.app_v1.dialogs.DateRangePickerFragmentDialog;
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Temperature;
-import com.example.app_v1.utils.DTimeFormatHelper;
+import com.example.app_v1.utils.DateTimeConverterHelper;
 import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MeasurementHistoryFragment extends Fragment implements DateRangePickerFragmentDialog.DateRangePickerFragmentDialogListener
 {
@@ -131,7 +132,7 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute)
             {
-                timeFrom = DTimeFormatHelper.convertTimePickerValuesToString(hourOfDay,minute);
+                timeFrom = DateTimeConverterHelper.convertTimePickerValuesToString(hourOfDay,minute);
                 btnSelectTimeFrom.setText(timeFrom);
             }
         };
@@ -161,7 +162,7 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute)
             {
-                timeTo = DTimeFormatHelper.convertTimePickerValuesToString(hourOfDay,minute);
+                timeTo = DateTimeConverterHelper.convertTimePickerValuesToString(hourOfDay,minute);
                 btnSelectTimeTo.setText(timeTo);
             }
         };
@@ -187,6 +188,10 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                     case 0:
 
                         initTemperatureHistoryRView();
+
+                        temperatureRVAdapter.clearItems();
+                        temperatureRVAdapter.setItems(temperaturesInDateRange);
+
                         titleMeasurementType.setText(getResources().getString(R.string.title_temperature));
 
                         btnSearchHistory.setOnClickListener(new View.OnClickListener()
@@ -205,12 +210,12 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 {
                                     temperaturesInDateRange.clear();
 
-                                    String dateTimeFrom = DTimeFormatHelper.joinDateAndTimeStrings(dateFrom,timeFrom);
-                                    String dateTimeTo = DTimeFormatHelper.joinDateAndTimeStrings(dateTo,timeTo);
+                                    String dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
+                                    String dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
-                                    //Test to see ISO8601 timestamp format that will be sent to repo
-                                    String dateTimeFromISO8601 = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeFrom);
-                                    String dateTimeToISO8601 = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeTo);
+                                    //Test to see ISO8601 timestamps that will be sent to repo with selectedGreenhouseId
+                                    String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
+                                    String dateTimeToISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
 
                                     Toast.makeText(getActivity(), "Searching for temperature in date range: " + dateTimeFromISO8601 + " and " + dateTimeToISO8601,
                                             Toast.LENGTH_SHORT).show();
@@ -227,14 +232,10 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                         initHumidityHistoryRView();
 
-//                        try {
-//                            humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
+                        //humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
 
-//                        humidityRVAdapter.clearItems();
-//                        humidityRVAdapter.setItems(humidityInDateRange);
+                        humidityRVAdapter.clearItems();
+                        humidityRVAdapter.setItems(humidityInDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_humidity));
 
@@ -257,12 +258,12 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                     humidityInDateRange.clear();
 
-                                    String dateTimeFrom = DTimeFormatHelper.joinDateAndTimeStrings(dateFrom,timeFrom);
-                                    String dateTimeTo = DTimeFormatHelper.joinDateAndTimeStrings(dateTo,timeTo);
+                                    String dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
+                                    String dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
                                     //Test to see ISO8601 timestamp format that will be sent to repo
-                                    String dateTimeFromISO8601 = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeFrom);
-                                    String dateTimeToISO8601 = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeTo);
+                                    String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
+                                    String dateTimeToISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
 
                                     Toast.makeText(getActivity(), "Searching for humidity in date range: " + dateTimeFromISO8601 + " and " + dateTimeToISO8601,
                                             Toast.LENGTH_SHORT).show();
@@ -271,8 +272,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                     humidityRVAdapter.clearItems();
                                     humidityRVAdapter.setItems(humidityInDateRange);
                                 }
-
-//
                             }
                         });
                         break;
@@ -281,14 +280,10 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                         initCo2HistoryRView();
 
-//                        try {
-//                            co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
+                        //co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
 
-//                        co2RVAdapter.clearItems();
-//                        co2RVAdapter.setItems(co2InDateRange);
+                        co2RVAdapter.clearItems();
+                        co2RVAdapter.setItems(co2InDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_co2));
 
@@ -311,12 +306,12 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                     co2InDateRange.clear();
 
-                                    String dateTimeFrom = DTimeFormatHelper.joinDateAndTimeStrings(dateFrom,timeFrom);
-                                    String dateTimeTo = DTimeFormatHelper.joinDateAndTimeStrings(dateTo,timeTo);
+                                    String dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
+                                    String dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
                                     //Test to see ISO8601 timestamp format that will be sent to repo
-                                    String dateTimeFromISO8601 = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeFrom);
-                                    String dateTimeToISO8601 = DTimeFormatHelper.convertStringDateTimeToISO8601String(dateTimeTo);
+                                    String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
+                                    String dateTimeToISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
 
                                     Toast.makeText(getActivity(), "Searching for co2 in date range: " + dateTimeFromISO8601 + " and " + dateTimeToISO8601,
                                             Toast.LENGTH_SHORT).show();

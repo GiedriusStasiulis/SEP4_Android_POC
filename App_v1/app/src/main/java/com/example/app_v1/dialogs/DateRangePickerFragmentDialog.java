@@ -7,13 +7,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import com.example.app_v1.R;
-import com.example.app_v1.utils.DTimeFormatHelper;
+import com.example.app_v1.utils.DateTimeConverterHelper;
 import com.squareup.timessquare.CalendarCellDecorator;
 import com.squareup.timessquare.CalendarPickerView;
 
@@ -61,12 +60,12 @@ public class DateRangePickerFragmentDialog extends AppCompatDialogFragment
                 firstDateCal.setTime(firstDate);
                 lastDateCal.setTime(lastDate);
 
-                String firstDateString = DTimeFormatHelper.
+                String firstDateString = DateTimeConverterHelper.
                         convertDatePickerValuesToString(firstDateCal.get(Calendar.YEAR),
                                 firstDateCal.get(Calendar.MONTH),
                                 firstDateCal.get(Calendar.DAY_OF_MONTH));
 
-                String lastDateString = DTimeFormatHelper.convertDatePickerValuesToString(lastDateCal.get(Calendar.YEAR),
+                String lastDateString = DateTimeConverterHelper.convertDatePickerValuesToString(lastDateCal.get(Calendar.YEAR),
                         lastDateCal.get(Calendar.MONTH),
                         lastDateCal.get(Calendar.DAY_OF_MONTH));
 

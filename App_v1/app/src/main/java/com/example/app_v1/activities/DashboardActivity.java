@@ -2,16 +2,12 @@ package com.example.app_v1.activities;
 
 import android.annotation.SuppressLint;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import androidx.annotation.Nullable;
-
-import com.example.app_v1.utils.DTimeFormatHelper;
 import com.example.app_v1.viewmodels.DashboardActivityViewModel;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -22,16 +18,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
 import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.models.Measurement;
-import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -102,7 +97,8 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onChanged(ArrayList<Measurement> measurements)
             {
-                getSupportActionBar().setSubtitle("Updated: " + DTimeFormatHelper.getCurrentDateTimeWithSecondsAsString());
+                String dateTimeNow = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss",Locale.ENGLISH).format(new Date());
+                getSupportActionBar().setSubtitle("Updated: " + dateTimeNow);
 
                 if(!measurements.isEmpty())
                 {
