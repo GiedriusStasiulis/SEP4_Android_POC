@@ -81,7 +81,10 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
         viewModel.getGreenhouses().observe(this, new Observer<List<Integer>>() {
             @Override
             public void onChanged(List<Integer> integers) {
+                greenhouses = new ArrayList<>();
                 greenhouses = integers;
+
+                Log.d(TAG, "onChanged: " + greenhouses.toString());
                 ArrayAdapter<Integer> adapter = new ArrayAdapter<>(GreenhouseSelectActivity.this, android.R.layout.simple_spinner_item, greenhouses);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 selectGreenhouse.setAdapter(adapter);

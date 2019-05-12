@@ -20,7 +20,7 @@ public class GemsApiClient
 {
     //private static final String BASE_URL = "https://10.0.2.2:44398/api/";    for internal API
     //private static final String BASE_URL = "https://sep4gems.azurewebsites.net/api/";
-    private static final String BASE_URL = "https://sep4secondary.azurewebsites.net/api/";
+    private static final String BASE_URL = "https://sep4gems.azurewebsites.net/api/";
 
     public static Retrofit getRetrofitClient()
     {

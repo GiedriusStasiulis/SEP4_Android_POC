@@ -1,73 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ToolbarTheme"
-        app:title="GMS"
-        app:titleTextColor="#fff"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.example.app_v1.activities.GreenhouseSelectActivity" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize"
-        android:paddingLeft="48dp"
-        android:paddingRight="48dp"
-        >
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_herb"
-            android:layout_width="match_parent"
-            android:layout_height="128dp"
-            android:padding="24dp"
-            app:srcCompat="@drawable/image_herb"
-            android:layout_marginTop="48dp"/>
-
-        <TextView
-            android:id="@+id/text_title"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img_herb"
-            android:layout_marginTop="24dp"
-            android:text="@string/gs_text_title"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ToolbarTheme"
+            app:title="GMS"
+            app:titleTextColor="#fff"/>
 
-        <TextView
-            android:id="@+id/text_explainer"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_title"
-            android:layout_marginTop="24dp"
-            android:text="@string/gs_text_explainer"
-            android:textAlignment="center"
-            />
+            android:layout_height="match_parent"
+            android:paddingLeft="48dp"
+            android:paddingTop="?attr/actionBarSize"
+            android:paddingRight="48dp"
+            android:paddingBottom="48dp">
 
-        <Spinner
-            android:id="@+id/spinner_select_greenhouse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:layout_below="@id/text_explainer"
-            android:layout_marginTop="36dp"
-            />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_herb"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:layout_marginTop="48dp"
+                android:padding="24dp"
+                app:srcCompat="@drawable/image_herb" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/spinner_select_greenhouse"
-            android:layout_marginTop="36dp"
-            android:id="@+id/button_go"
-            android:text="@string/gs_button_go"
-            android:visibility="visible"/>
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_herb"
+                android:layout_marginTop="24dp"
+                android:text="@string/gs_text_title"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <TextView
+                android:id="@+id/text_explainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_title"
+                android:layout_marginTop="24dp"
+                android:text="@string/gs_text_explainer"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/spinner_select_greenhouse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_explainer"
+                android:layout_marginTop="36dp"
+                android:padding="24dp" />
+
+            <Button
+                android:id="@+id/button_go"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spinner_select_greenhouse"
+                android:layout_marginTop="36dp"
+                android:text="@string/gs_button_go"
+                android:visibility="visible" />
 
 
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</ScrollView>

@@ -41,13 +41,15 @@ public class GreenhouseRepository
             public void onResponse(Call call, Response response) {
                 if(response.body() != null) {
                     returnedValues = (List<Greenhouse>)response.body();
+                    Log.d(TAG, "tempList: " + tempList.toString());
+                    tempList.clear();
 
                     for( Greenhouse g : returnedValues) {
                         tempList.add(g.getId());
                     }
                 }
 
-                greenhouses.postValue(tempList);
+                greenhouses.setValue(tempList);
             }
 
             @Override
