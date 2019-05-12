@@ -23,6 +23,7 @@ import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
 import com.example.app_v1.fragments.MeasurementDetailsFragment;
 import com.example.app_v1.models.Measurement;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -189,10 +190,12 @@ public class DashboardActivity extends AppCompatActivity
                 break;
 
             case R.id.action_logout:
-                
-                Intent intent1 = new Intent(DashboardActivity.this, LogInActivity.class);
-                intent1.putExtra("selectedGreenhouseId",selectedGreenhouseId);
-                startActivity(intent1);
+
+                Intent logoutIntent =new Intent(DashboardActivity.this, LogInActivity.class);
+                logoutIntent.putExtra("finish", true);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(logoutIntent);
+                FirebaseAuth.getInstance().signOut();
                 finish();
                 break;
 
