@@ -47,6 +47,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.app_v1.activities.DashboardActivity" />
         </activity>
+
+        <service
+            android:name=".fcm.FirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id"/>
     </application>
 
 </manifest>

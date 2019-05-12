@@ -1,5 +1,6 @@
 package com.example.app_v1.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -80,6 +84,38 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         mEditor=mPreferences.edit();
 
         checkSharedPreferences();
+
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "getInstanceId failed", task.getException());
+//                            return;
+//                        }
+//
+//                        // Get new Instance ID token
+//                        String token = task.getResult().getToken();
+//
+//                        // Log and toast
+//                        //String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, token);
+//                        Toast.makeText(LogInActivity.this, token, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
+        FirebaseMessaging.getInstance().subscribeToTopic("greenhouse1")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getString(R.string.msg_subscribe_failed);
+                        }
+                        Log.d(TAG, msg);
+                        Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void checkSharedPreferences()
