@@ -55,6 +55,9 @@ public class MeasurementDetailsFragment extends Fragment
     private TextView valueMeasurementDate;
     private TextView symbolMeasurementValue;
 
+    private TextView temperatureMinValue;
+    private TextView temperatureMaxValue;
+
     private ConstraintLayout measurementOverviewDisplay;
     private ConstraintLayout recentMeasurementDisplay;
     private ConstraintLayout thresholdSettingsDisplay;
@@ -115,6 +118,10 @@ public class MeasurementDetailsFragment extends Fragment
         valueLatestMeasurement = view.findViewById(R.id.valueLatestMeasurement);
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
         valueMeasurementDate = view.findViewById(R.id.valueMeasurementDate);
+
+        temperatureMinValue = view.findViewById(R.id.thresholdTempMin);
+        temperatureMaxValue = view.findViewById(R.id.thresholdTempMax);
+
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
         recentMeasurementDisplay = view.findViewById(R.id.recentMeasurementDisplay);
@@ -177,8 +184,8 @@ public class MeasurementDetailsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(getActivity(), "Clicked on open thresholds settings button",
-                        Toast.LENGTH_LONG).show();
+                ThresholdDialog thresholdDialog = new ThresholdDialog(temperatureMinValue, temperatureMaxValue);
+                thresholdDialog.show(getFragmentManager(), "ThresholdDialogFragment");
             }
         });
 
@@ -440,7 +447,7 @@ public class MeasurementDetailsFragment extends Fragment
     {
         measurementOverviewDisplayContents.setVisibility(View.GONE);
         recentMeasurementDisplayContent.setVisibility(View.GONE);
-        thresholdDisplayContent.setVisibility(View.GONE);
+        //thresholdDisplayContent.setVisibility(View.GONE);
     }
 
     private void showLayoutContentAfterLoading()
@@ -454,7 +461,7 @@ public class MeasurementDetailsFragment extends Fragment
     {
         measurementOverviewLoadingScreen.setVisibility(View.VISIBLE);
         latestMeasurementsLoadingScreen.setVisibility(View.VISIBLE);
-        thresholdsLoadingScreen.setVisibility(View.VISIBLE);
+        //thresholdsLoadingScreen.setVisibility(View.VISIBLE);
         progressBarMeasurementOverview.setVisibility(View.VISIBLE);
         progressBarLatestValues.setVisibility(View.VISIBLE);
         progressBarThresholds.setVisibility(View.VISIBLE);

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="240dp"
+    android:padding="10dp">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:padding="10dp">
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_range"
+            android:layout_marginBottom="10dp"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/rangeMinText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/heading"
+            android:text="@string/min"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/minInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rangeMinText"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/lightGray"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_bottom_border"
+            android:inputType="numberDecimal"
+            android:maxLength="4"
+            android:hint="@string/threshHint"
+            android:textColorHint="@color/colorPrimary"
+            android:textColor="#000"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/rangeMaxText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/minInput"
+            android:text="@string/max"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/maxInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rangeMaxText"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_bottom_border"
+            android:backgroundTint="@color/lightGray"
+            android:hint="@string/threshHint"
+            android:textColorHint="@color/colorPrimary"
+            android:inputType="numberDecimal"
+            android:maxLength="4"
+            android:textColor="#000"
+            android:importantForAutofill="no" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true"
+        style="?android:attr/buttonBarStyle"
+        >
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/action_ok"
+            android:layout_weight="1"
+
+            />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/action_cancel"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+     </RelativeLayout>
+
+
+</RelativeLayout>

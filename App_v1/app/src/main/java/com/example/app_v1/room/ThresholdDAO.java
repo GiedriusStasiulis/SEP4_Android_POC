@@ -27,5 +27,8 @@ public interface ThresholdDAO {
     @Query("SELECT * FROM threshold_table")
     LiveData<List<Threshold>> getAllThresholds();
 
+   /* @Query("UPDATE threshold_table SET minValue= :minValue, maxValue= :maxValue WHERE id=1 ")
+    void update(String minValue, String maxValue);*/
+
 
 }
