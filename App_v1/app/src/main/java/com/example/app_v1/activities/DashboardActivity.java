@@ -189,7 +189,11 @@ public class DashboardActivity extends AppCompatActivity
                 break;
 
             case R.id.action_logout:
-
+                
+                Intent intent1 = new Intent(DashboardActivity.this, LogInActivity.class);
+                intent1.putExtra("selectedGreenhouseId",selectedGreenhouseId);
+                startActivity(intent1);
+                finish();
                 break;
 
 
