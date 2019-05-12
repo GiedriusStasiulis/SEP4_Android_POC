@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import com.example.app_v1.models.Threshold;
 import com.example.app_v1.viewmodels.DashboardActivityViewModel;
+import com.example.app_v1.viewmodels.ThresholdViewModel;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.app_v1.R;
 import com.example.app_v1.adapters.SectionsPageAdapter;
@@ -28,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -44,6 +48,8 @@ public class DashboardActivity extends AppCompatActivity
 
     private DashboardActivityViewModel dashboardActivityViewModel;
 
+    private ThresholdViewModel roomDbViewModel;
+
     final int[] tabIcons = new int[]{R.drawable.tab_icon_temperature,R.drawable.tab_icon_humidity,R.drawable.tab_icon_co2};
 
     @SuppressLint("ClickableViewAccessibility")
@@ -59,6 +65,24 @@ public class DashboardActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_dashboard);
+
+        //Thresholds
+        roomDbViewModel = ViewModelProviders.of(this).get(ThresholdViewModel.class);
+        roomDbViewModel.getAllThresholds().observe(this, new Observer<List<Threshold>>() {
+            @Override
+            public void onChanged(List<Threshold> thresholds) {
+                TextView tempMinText =findViewById(R.id.thresholdTempMin);
+                TextView tempMaxText =findViewById(R.id.thresholdTempMax);
+                try {
+                    tempMinText.setText(thresholds.get(0).getMinValue());
+                    tempMaxText.setText(thresholds.get(0).getMaxValue());
+                }
+                catch (IndexOutOfBoundsException x) {
+                    tempMinText.setText("No data");
+                    tempMaxText.setText("No data");
+                }
+            }
+        });
 
         //Toolbar settings
         toolbar = findViewById(R.id.toolbar);

@@ -76,6 +76,14 @@
     <string name="notifications">Notifications</string>
     <string name="enable_notifications">Enable message notifications</string>
 
+    <!-- Thresholds settings -->
+    <string name="set_range">Set range</string>
+    <string name="max">Max:</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="min">Min:</string>
+    <string name="_00_0">00.0</string>
+    <string name="threshHint">value between 1.0 - 60.0</string>
 
 
 </resources>
