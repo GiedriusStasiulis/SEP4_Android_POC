@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -22,11 +23,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class GreenhouseSelectActivity extends AppCompatActivity {
     private static final String TAG = "GhSelectActivity";
 
     public Spinner selectGreenhouse;
+    private Toolbar toolbar2;
     public Button buttonGo;
     private List<Integer> greenhouses = new ArrayList<>();
     private int selectedGreenhouseId;
@@ -42,7 +46,10 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
 
         selectGreenhouse = findViewById(R.id.spinner_select_greenhouse);
         buttonGo = findViewById(R.id.button_go);
+        toolbar2 = findViewById(R.id.toolbar2);
 
+        setSupportActionBar(toolbar2);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("GMS");
 
         viewModel = ViewModelProviders.of(this).get(GreenhouseSelectActivityViewModel.class);
         viewModel.init();
@@ -95,35 +102,21 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_logout_only,menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
-        }
-
-        switch (item.getItemId())
-        {
-            case android.R.id.home:
-                finish();
-                break;
-
-            case R.id.action_logout:
-
-                Intent logoutIntent =new Intent(GreenhouseSelectActivity.this, LogInActivity.class);
-                logoutIntent.putExtra("finish", true);
-                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(logoutIntent);
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                break;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_logout) {
+            Intent logoutIntent = new Intent(GreenhouseSelectActivity.this, LogInActivity.class);
+            logoutIntent.putExtra("finish", true);
+            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(logoutIntent);
+            FirebaseAuth.getInstance().signOut();
+            finish();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
 
         return super.onOptionsItemSelected(item);
