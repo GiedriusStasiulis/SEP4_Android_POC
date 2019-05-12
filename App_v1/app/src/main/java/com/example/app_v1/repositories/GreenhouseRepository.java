@@ -13,7 +13,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class GreenhouseRepository {
+public class GreenhouseRepository
+{
     private static final String TAG = "GreenhouseRepo";
 
     private List<Integer> tempList = new ArrayList<>();

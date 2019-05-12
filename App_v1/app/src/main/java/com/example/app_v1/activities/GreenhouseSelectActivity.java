@@ -97,8 +97,8 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -106,6 +106,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         if (item.getItemId() == R.id.action_logout) {

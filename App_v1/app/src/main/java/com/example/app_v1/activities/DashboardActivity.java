@@ -171,10 +171,6 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-//        if (item.getItemId() == android.R.id.home) {
-//            finish(); // close this activity and return to preview activity (if there is any)
-//        }
-
         switch (item.getItemId())
         {
             case android.R.id.home:
@@ -199,14 +195,12 @@ public class DashboardActivity extends AppCompatActivity
                 finish();
                 break;
 
-
             default:
                 return super.onOptionsItemSelected(item);
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig)
