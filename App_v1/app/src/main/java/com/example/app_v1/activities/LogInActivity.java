@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences mPreferences;
-    private  SharedPreferences.Editor mEditor;
+    private SharedPreferences.Editor mEditor;
 
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
@@ -33,7 +33,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private EditText mPassword;
     private CheckBox mCheckBox;
     private Button buttonLogIn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                 //save the checkbox preference
                 if(mCheckBox.isChecked()){
                     //set a checkbox when the application starts
-                    mEditor.putString(getString(R.string.checkBox), "True");
+                    mEditor.putString(getString(R.string.check_box), "True");
                     mEditor.commit();
 
                     //save email
@@ -62,7 +61,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     mEditor.commit();
                 }else{
                     //set a checkbox when the application starts
-                    mEditor.putString(getString(R.string.checkBox), "False");
+                    mEditor.putString(getString(R.string.check_box), "False");
                     mEditor.commit();
 
                     //save email
@@ -86,7 +85,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private void checkSharedPreferences()
     {
 
-        String checkbox = mPreferences.getString(getString(R.string.checkBox), "false");
+        String checkbox = mPreferences.getString(getString(R.string.check_box), "false");
         String email= mPreferences.getString(getString(R.string.email), "");
 
         mEmail.setText(email);
