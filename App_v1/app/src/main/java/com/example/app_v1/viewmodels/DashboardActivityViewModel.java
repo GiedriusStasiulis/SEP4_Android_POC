@@ -55,19 +55,19 @@ public class DashboardActivityViewModel extends ViewModel
     public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
     {
         repo = MeasurementRepository.getInstance();
-        return repo.extractLatestTemperaturesFromMeasurements(measurements);
+        return repo.extractTemperaturesFromMeasurements(measurements);
     }
 
     public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements)
     {
         repo = MeasurementRepository.getInstance();
-        return repo.extractLatestHumidityFromMeasurements(measurements);
+        return repo.extractHumidityFromMeasurements(measurements);
     }
 
     public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements)
     {
         repo = MeasurementRepository.getInstance();
-        return repo.extractLatestCo2FromMeasurements(measurements);
+        return repo.extractCo2FromMeasurements(measurements);
     }
 
     public void setSelectedTabIndex(Integer index)

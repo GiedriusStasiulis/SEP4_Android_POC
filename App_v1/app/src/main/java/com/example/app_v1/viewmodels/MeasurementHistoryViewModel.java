@@ -1,10 +1,12 @@
 package com.example.app_v1.viewmodels;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
+import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.MeasurementRepository;
 
@@ -16,10 +18,9 @@ public class MeasurementHistoryViewModel extends ViewModel
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
-    private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
-    private MutableLiveData<ArrayList<Temperature>> temperaturesInRangeMld = new MutableLiveData<>();
-    private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
-    private ArrayList<Co2> co2InDateRange = new ArrayList<>();
+    private LiveData<ArrayList<Temperature>> temperaturesInDateRangeFromRepo;
+    private LiveData<ArrayList<Humidity>> humidityInDateRangeFromRepo;
+    private LiveData<ArrayList<Co2>> co2InDateRangeFromRepo;
 
     public void initViewModel()
     {
@@ -57,29 +58,27 @@ public class MeasurementHistoryViewModel extends ViewModel
         return this.selectedGreenhouseId;
     }
 
-    public MutableLiveData<ArrayList<Temperature>> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo)
+    public LiveData<ArrayList<Temperature>> getTemperaturesInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
     {
-        /*temperaturesInDateRange.clear();
-        temperaturesInDateRange = repo.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo);
+       repo = MeasurementRepository.getInstance();
+       temperaturesInDateRangeFromRepo = repo.getTemperaturesInDateRange(greenhouseId,dateTimeFrom,dateTimeTo);
 
-        temperaturesInRangeMld.setValue(temperaturesInDateRange);*/
-
-        return this.temperaturesInRangeMld;
+       return this.temperaturesInDateRangeFromRepo;
     }
 
-    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo)
+    public LiveData<ArrayList<Humidity>> getHumidityInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
     {
-       /* humidityInDateRange.clear();
-        humidityInDateRange = repo.getHumidityInDateRange(dateTimeFrom,dateTimeTo);*/
+        repo = MeasurementRepository.getInstance();
+        humidityInDateRangeFromRepo = repo.getHumidityInDateRange(greenhouseId,dateTimeFrom,dateTimeTo);
 
-        return this.humidityInDateRange;
+        return this.humidityInDateRangeFromRepo;
     }
 
-    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo)
-    {/*
-        co2InDateRange.clear();
-        co2InDateRange = repo.getCo2InDateRange(dateTimeFrom,dateTimeTo);*/
+    public LiveData<ArrayList<Co2>> getCo2InDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
+    {
+        repo = MeasurementRepository.getInstance();
+        co2InDateRangeFromRepo = repo.getCo2InDateRange(greenhouseId,dateTimeFrom,dateTimeTo);
 
-        return this.co2InDateRange;
+        return this.co2InDateRangeFromRepo;
     }
 }

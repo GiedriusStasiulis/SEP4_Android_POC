@@ -30,7 +30,7 @@ public interface GemsApi
     @GET("Measurements")
     Call<ArrayList<Measurement>> getMeasurementsInDateRange(
             @Query("greenhouseId") int greenhouseId,
-            @Query("from") String dateTimeFrom,
-            @Query("to") String dateTimeTo
+            @Query(value = "from", encoded = true) String dateTimeFrom,
+            @Query(value = "to", encoded = true) String dateTimeTo
     );
 }

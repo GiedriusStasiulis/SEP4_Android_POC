@@ -2,6 +2,7 @@ package com.example.app_v1.repositories;
 
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -15,6 +16,8 @@ import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DateTimeConverterHelper;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -27,9 +30,15 @@ public class MeasurementRepository
     private static MeasurementRepository instance;
 
     private MutableLiveData<ArrayList<Measurement>> latestMeasurementsFromApi = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Measurement>> measurementsInDateRangeFromApi = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Temperature>> temperaturesInDateRangeFromApi = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Humidity>> humidityInDateRangeFromApi = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Co2>> co2InDateRangeFromApi = new MutableLiveData<>();
+
     private ArrayList<Measurement> latestMeasurementsArrList = new ArrayList<>();
     private ArrayList<Measurement> measurementsInDateRangeArrList = new ArrayList<>();
+    private ArrayList<Temperature> temperatureInDateRangeArrList = new ArrayList<>();
+    private ArrayList<Humidity> humidityInDateRangeArrList = new ArrayList<>();
+    private ArrayList<Co2> co2InDateRangeArrList = new ArrayList<>();
 
     private Runnable fetchDataFromApiRunnable;
     private Handler fetchDataFromApiHandler = new Handler();
@@ -103,19 +112,19 @@ public class MeasurementRepository
         return this.latestMeasurementsFromApi;
     }
 
-    public LiveData<ArrayList<Measurement>> getMeasurementsInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
+    public LiveData<ArrayList<Temperature>> getTemperaturesInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
     {
         String iso8601dateTimeFrom = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
         String iso8601dateTimeTo = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
 
         final GemsApi gemsApi = GemsApiClient.getRetrofitClient().create(GemsApi.class);
 
-        Call<ArrayList<Measurement>> call = gemsApi.getMeasurementsInDateRange(greenhouseId,iso8601dateTimeFrom,iso8601dateTimeTo);
+        Call<ArrayList<Measurement>> call = gemsApi.getMeasurementsInDateRange(greenhouseId,iso8601dateTimeFrom, iso8601dateTimeTo);
 
         call.enqueue(new Callback<ArrayList<Measurement>>()
         {
             @Override
-            public void onResponse(Call<ArrayList<Measurement>> call, Response<ArrayList<Measurement>> response)
+            public void onResponse(@NonNull Call<ArrayList<Measurement>> call,@NonNull Response<ArrayList<Measurement>> response)
             {
                 response.body();
 
@@ -127,21 +136,103 @@ public class MeasurementRepository
                     measurementsInDateRangeArrList.clear();
                     measurementsInDateRangeArrList = response.body();
 
-                    measurementsInDateRangeFromApi.postValue(measurementsInDateRangeArrList);
+                    temperatureInDateRangeArrList.clear();
+                    temperatureInDateRangeArrList = extractTemperaturesFromMeasurements(measurementsInDateRangeArrList);
+                    temperaturesInDateRangeFromApi.postValue(temperatureInDateRangeArrList);
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Measurement>> call, Throwable t)
+            public void onFailure(@NonNull Call<ArrayList<Measurement>> call,@NonNull Throwable t)
             {
                 Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                measurementsInDateRangeArrList = new ArrayList<>();
             }
         });
-
-        return this.measurementsInDateRangeFromApi;
+        return this.temperaturesInDateRangeFromApi;
     }
 
-    public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
+    public LiveData<ArrayList<Humidity>> getHumidityInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
+    {
+        String iso8601dateTimeFrom = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
+        String iso8601dateTimeTo = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
+
+        final GemsApi gemsApi = GemsApiClient.getRetrofitClient().create(GemsApi.class);
+
+        Call<ArrayList<Measurement>> call = gemsApi.getMeasurementsInDateRange(greenhouseId,iso8601dateTimeFrom, iso8601dateTimeTo);
+
+        call.enqueue(new Callback<ArrayList<Measurement>>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Measurement>> call,@NonNull Response<ArrayList<Measurement>> response)
+            {
+                response.body();
+
+                if(response.isSuccessful())
+                {
+                    Log.d("OnSuccess", "onResponse: " + response.toString());
+                    assert response.body() != null;
+
+                    measurementsInDateRangeArrList.clear();
+                    measurementsInDateRangeArrList = response.body();
+
+                    humidityInDateRangeArrList.clear();
+                    humidityInDateRangeArrList = extractHumidityFromMeasurements(measurementsInDateRangeArrList);
+                    humidityInDateRangeFromApi.postValue(humidityInDateRangeArrList);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Measurement>> call,@NonNull Throwable t)
+            {
+                Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                measurementsInDateRangeArrList = new ArrayList<>();
+            }
+        });
+        return this.humidityInDateRangeFromApi;
+    }
+
+    public LiveData<ArrayList<Co2>> getCo2InDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
+    {
+        String iso8601dateTimeFrom = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
+        String iso8601dateTimeTo = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
+
+        final GemsApi gemsApi = GemsApiClient.getRetrofitClient().create(GemsApi.class);
+
+        Call<ArrayList<Measurement>> call = gemsApi.getMeasurementsInDateRange(greenhouseId,iso8601dateTimeFrom, iso8601dateTimeTo);
+
+        call.enqueue(new Callback<ArrayList<Measurement>>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Measurement>> call,@NonNull Response<ArrayList<Measurement>> response)
+            {
+                response.body();
+
+                if(response.isSuccessful())
+                {
+                    Log.d("OnSuccess", "onResponse: " + response.toString());
+                    assert response.body() != null;
+
+                    measurementsInDateRangeArrList.clear();
+                    measurementsInDateRangeArrList = response.body();
+
+                    co2InDateRangeArrList.clear();
+                    co2InDateRangeArrList = extractCo2FromMeasurements(measurementsInDateRangeArrList);
+                    co2InDateRangeFromApi.postValue(co2InDateRangeArrList);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Measurement>> call,@NonNull Throwable t)
+            {
+                Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                measurementsInDateRangeArrList = new ArrayList<>();
+            }
+        });
+        return this.co2InDateRangeFromApi;
+    }
+
+    public ArrayList<Temperature> extractTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
     {
         ArrayList<Temperature> latestTemperaturesArrList;
 
@@ -165,7 +256,7 @@ public class MeasurementRepository
         return latestTemperaturesArrList;
     }
 
-    public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements)
+    public ArrayList<Humidity> extractHumidityFromMeasurements(ArrayList<Measurement> measurements)
     {
         ArrayList<Humidity> latestHumidityArrList;
 
@@ -189,7 +280,7 @@ public class MeasurementRepository
         return latestHumidityArrList;
     }
 
-    public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements)
+    public ArrayList<Co2> extractCo2FromMeasurements(ArrayList<Measurement> measurements)
     {
         ArrayList<Co2> latestCo2ArrList;
 

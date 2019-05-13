@@ -30,6 +30,7 @@ import com.example.app_v1.adapters.TemperatureRVAdapter;
 import com.example.app_v1.dialogs.DateRangePickerFragmentDialog;
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
+import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DateTimeConverterHelper;
 import com.example.app_v1.viewmodels.MeasurementHistoryViewModel;
@@ -215,19 +216,24 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
-                                    /*Toast.makeText(getActivity(), "Searching for humidity in date range: " + dateTimeFrom + " and " + dateTimeTo,
-                                            Toast.LENGTH_SHORT).show();*/
+                                    measurementHistoryViewModel.getTemperaturesInDateRange(selectedGreenhouseId,dateTimeFrom,dateTimeTo).observe(MeasurementHistoryFragment.this, new Observer<ArrayList<Temperature>>() {
+                                        @Override
+                                        public void onChanged(ArrayList<Temperature> temperatures)
+                                        {
+                                            if(temperatures.size() > 0)
+                                            {
+                                                temperaturesInDateRange.clear();
+                                                temperaturesInDateRange.addAll(temperatures);
+                                                temperatureRVAdapter.clearItems();
+                                                temperatureRVAdapter.setItems(temperaturesInDateRange);
+                                            }
 
-                                    //Test to see ISO8601 timestamps that will be sent to repo with selectedGreenhouseId
-                                    String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
-                                    String dateTimeToISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
-
-                                    Toast.makeText(getActivity(), "Searching for temperature in date range: " + dateTimeFromISO8601 + " and " + dateTimeToISO8601,
-                                            Toast.LENGTH_SHORT).show();
-
-                                    temperaturesInDateRange = measurementHistoryViewModel.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo).getValue();
-                                    temperatureRVAdapter.clearItems();
-                                    temperatureRVAdapter.setItems(temperaturesInDateRange);
+                                            else
+                                            {
+                                                temperatureRVAdapter.clearItems();
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         });
@@ -236,8 +242,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                     case 1:
 
                         initHumidityHistoryRView();
-
-                        //humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
 
                         humidityRVAdapter.clearItems();
                         humidityRVAdapter.setItems(humidityInDateRange);
@@ -258,27 +262,29 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                                 else
                                 {
-                                    Toast.makeText(getActivity(), "Searching...",
-                                            Toast.LENGTH_SHORT).show();
-
                                     humidityInDateRange.clear();
 
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
-                                    /*Toast.makeText(getActivity(), "Searching for humidity in date range: " + dateTimeFrom + " and " + dateTimeTo,
-                                            Toast.LENGTH_SHORT).show();*/
+                                    measurementHistoryViewModel.getHumidityInDateRange(selectedGreenhouseId,dateTimeFrom,dateTimeTo).observe(MeasurementHistoryFragment.this, new Observer<ArrayList<Humidity>>() {
+                                        @Override
+                                        public void onChanged(ArrayList<Humidity> humidity)
+                                        {
+                                            if(humidity.size() > 0)
+                                            {
+                                                humidityInDateRange.clear();
+                                                humidityInDateRange.addAll(humidity);
+                                                humidityRVAdapter.clearItems();
+                                                humidityRVAdapter.setItems(humidityInDateRange);
+                                            }
 
-                                    //Test to see ISO8601 timestamp format that will be sent to repo
-                                    String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
-                                    String dateTimeToISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
-
-                                    Toast.makeText(getActivity(), "Searching for humidity in date range: " + dateTimeFromISO8601 + " and " + dateTimeToISO8601,
-                                            Toast.LENGTH_SHORT).show();
-
-                                    humidityInDateRange = measurementHistoryViewModel.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
-                                    humidityRVAdapter.clearItems();
-                                    humidityRVAdapter.setItems(humidityInDateRange);
+                                            else
+                                            {
+                                                humidityRVAdapter.clearItems();
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         });
@@ -287,8 +293,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                     case 2:
 
                         initCo2HistoryRView();
-
-                        //co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
 
                         co2RVAdapter.clearItems();
                         co2RVAdapter.setItems(co2InDateRange);
@@ -309,24 +313,29 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                                 else
                                 {
-                                    Toast.makeText(getActivity(), "Searching...",
-                                            Toast.LENGTH_SHORT).show();
-
                                     co2InDateRange.clear();
 
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
-                                    //Test to see ISO8601 timestamp format that will be sent to repo
-                                    String dateTimeFromISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
-                                    String dateTimeToISO8601 = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
+                                    measurementHistoryViewModel.getCo2InDateRange(selectedGreenhouseId,dateTimeFrom,dateTimeTo).observe(MeasurementHistoryFragment.this, new Observer<ArrayList<Co2>>() {
+                                        @Override
+                                        public void onChanged(ArrayList<Co2> co2)
+                                        {
+                                            if(co2.size() > 0)
+                                            {
+                                                co2InDateRange.clear();
+                                                co2InDateRange.addAll(co2);
+                                                co2RVAdapter.clearItems();
+                                                co2RVAdapter.setItems(co2InDateRange);
+                                            }
 
-                                    Toast.makeText(getActivity(), "Searching for co2 in date range: " + dateTimeFromISO8601 + " and " + dateTimeToISO8601,
-                                            Toast.LENGTH_SHORT).show();
-
-                                    co2InDateRange = measurementHistoryViewModel.getCo2InDateRange(dateTimeFrom,dateTimeTo);
-                                    co2RVAdapter.clearItems();
-                                    co2RVAdapter.setItems(co2InDateRange);
+                                            else
+                                            {
+                                                co2RVAdapter.clearItems();
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         });
