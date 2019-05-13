@@ -49,7 +49,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
         toolbar2 = findViewById(R.id.toolbar2);
 
         setSupportActionBar(toolbar2);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("GMS");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Greenhouse Management System");
 
         viewModel = ViewModelProviders.of(this).get(GreenhouseSelectActivityViewModel.class);
         viewModel.init();

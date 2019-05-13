@@ -17,7 +17,7 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ToolbarTheme"
-            app:title="GMS"
+            app:title="Greenhouse Management System"
             app:titleTextColor="#fff"/>
 
         <RelativeLayout

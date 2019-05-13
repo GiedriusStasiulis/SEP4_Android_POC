@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/logInActivity">
+
+    <activity
+        android:id="@+id/logInActivity"
+        android:name="com.example.app_v1.activities.LogInActivity"
+        android:label="activity_log_in"
+        tools:layout="@layout/activity_log_in" />
+    <activity
+        android:id="@+id/greenhouseSelectActivity"
+        android:name="com.example.app_v1.activities.GreenhouseSelectActivity"
+        android:label="activity_greenhouse_select"
+        tools:layout="@layout/activity_greenhouse_select" />
+    <fragment
+        android:id="@+id/measurementDetailsFragment"
+        android:name="com.example.app_v1.fragments.MeasurementDetailsFragment"
+        android:label="fragment_measurement_details"
+        tools:layout="@layout/fragment_measurement_details" />
+</navigation>

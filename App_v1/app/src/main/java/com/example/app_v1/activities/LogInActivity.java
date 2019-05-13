@@ -85,26 +85,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         checkSharedPreferences();
 
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.w(TAG, "getInstanceId failed", task.getException());
-//                            return;
-//                        }
-//
-//                        // Get new Instance ID token
-//                        String token = task.getResult().getToken();
-//
-//                        // Log and toast
-//                        //String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d(TAG, token);
-//                        Toast.makeText(LogInActivity.this, token, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-        FirebaseMessaging.getInstance().subscribeToTopic("greenhouse1")
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("greenhouse1")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

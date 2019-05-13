@@ -1,6 +1,5 @@
 package com.example.app_v1.fcm;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,16 +8,13 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.app_v1.R;
 import com.example.app_v1.activities.LogInActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService
 {
@@ -34,11 +30,25 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     {
         String title = remoteMessage.getNotification().getTitle();
         String message = remoteMessage.getNotification().getBody();
+        String data = "";
+
+        for (Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            Log.d(TAG, "key, " + key + " value " + value);
+        }
+
+        if (remoteMessage.getData().size() > 0)
+        {
+            data = remoteMessage.getData().toString();
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+        }
+
         Log.d(TAG, "onMessageReceived: Message Received: \n" +
                 "Title: " + title + "\n" +
                 "Message: " + message);
 
-        sendNotification(title,message);
+        sendNotification(title,data);
     }
 
     @Override
