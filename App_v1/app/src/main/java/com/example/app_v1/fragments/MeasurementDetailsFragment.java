@@ -645,9 +645,18 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public void onResume()
     {
-        hideNoDataDisplays();
-        hideLayoutContent();
-        showLoadingScreens();
+        if(latestTemperatures.size() > 0)
+        {
+            showLayoutContentAfterLoading();
+        }
+
+        else
+        {
+            hideNoDataDisplays();
+            hideLayoutContent();
+            showLoadingScreens();
+        }
+        //showLayoutContentAfterLoading();
         super.onResume();
     }
 

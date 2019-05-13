@@ -104,8 +104,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                 boolean checked = notifPref.isChecked();
                 if (checked)
-
-
                         FirebaseMessaging.getInstance().subscribeToTopic("greenhouse1")
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
