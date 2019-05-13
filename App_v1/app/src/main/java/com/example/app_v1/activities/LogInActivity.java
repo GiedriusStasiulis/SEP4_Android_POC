@@ -28,11 +28,13 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "EmailPassword";
+
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
 
     private FirebaseAuth mAuth;
-    private static final String TAG = "EmailPassword";
+
     private EditText mEmail;
     private EditText mPassword;
     private CheckBox mCheckBox;
@@ -48,7 +50,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
 
-        //Buttons
+        //Buttons and CheckBox
+        mCheckBox = findViewById(R.id.check_box);
         buttonLogIn =findViewById(R.id.log_in_button);
         buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +74,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     //save email
                     mEditor.putString(getString(R.string.email), "");
                     mEditor.commit();
-
                 }
+
                 logIn();
             }
         });
-
-        mCheckBox = findViewById(R.id.check_box);
 
         //Objects
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -88,7 +89,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private void checkSharedPreferences()
     {
-
         String checkbox = mPreferences.getString(getString(R.string.check_box), "false");
         String email= mPreferences.getString(getString(R.string.email), "");
 
@@ -100,12 +100,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         else{
             mCheckBox.setChecked(false);
         }
-
     }
-
-    private void updateUI(FirebaseUser user) {
-    }
-
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
@@ -120,16 +115,13 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
 
-                            goNextPage();
+                            goToGreenhouseSelection();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LogInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
@@ -170,7 +162,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         signIn(mEmail.getText().toString(), mPassword.getText().toString());
     }
 
-    public void goNextPage(){
+    public void goToGreenhouseSelection(){
         Intent intent = new Intent(this, GreenhouseSelectActivity.class);
         startActivity(intent);
     }
