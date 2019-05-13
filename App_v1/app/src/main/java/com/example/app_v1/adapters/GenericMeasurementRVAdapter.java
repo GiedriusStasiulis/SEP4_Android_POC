@@ -53,26 +53,11 @@ public abstract class GenericMeasurementRVAdapter<T, VH extends BaseViewHolder<T
         notifyDataSetChanged();
     }
 
-    public ArrayList<T> getItems()
-    {
-        return items;
-    }
-
-    public T getItem(int pos)
-    {
-        return items.get(pos);
-    }
-
     public void clearItems()
     {
         this.items.clear();
         notifyDataSetChanged();
         notifyItemRangeChanged(0,items.size());
-    }
-
-    public boolean isEmpty()
-    {
-        return items.isEmpty();
     }
 
     @NonNull
