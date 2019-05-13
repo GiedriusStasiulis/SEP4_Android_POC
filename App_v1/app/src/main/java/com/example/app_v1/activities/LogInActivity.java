@@ -77,7 +77,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        mCheckBox = findViewById(R.id.checkBox);
+        mCheckBox = findViewById(R.id.check_box);
 
         //Objects
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -100,8 +100,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         else{
             mCheckBox.setChecked(false);
         }
-
-
 
     }
 
