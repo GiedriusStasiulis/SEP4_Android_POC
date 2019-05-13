@@ -216,6 +216,7 @@ public class MeasurementDetailsFragment extends Fragment
 
                         initLatestTemperatureRecyclerView();
                         graphView.removeAllSeries();
+
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
                             @Override
@@ -224,11 +225,7 @@ public class MeasurementDetailsFragment extends Fragment
                                 hideLoadingScreens();
                                 showLayoutContentAfterLoading();
 
-                                try {
-                                    latestTemperatures = dashboardActivityViewModel.extractLatestTemperaturesFromMeasurements(measurements);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                latestTemperatures = dashboardActivityViewModel.extractLatestTemperaturesFromMeasurements(measurements);
 
                                 if(!measurements.isEmpty())
                                 {
@@ -277,11 +274,8 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(ArrayList<Measurement> measurements)
                             {
-                                try {
-                                    latestHumidity = dashboardActivityViewModel.extractLatestHumidityFromMeasurements(measurements);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+
+                                latestHumidity = dashboardActivityViewModel.extractLatestHumidityFromMeasurements(measurements);
 
                                 if(!measurements.isEmpty())
                                 {
@@ -328,11 +322,8 @@ public class MeasurementDetailsFragment extends Fragment
                             @Override
                             public void onChanged(ArrayList<Measurement> measurements)
                             {
-                                try {
-                                    latestCo2 = dashboardActivityViewModel.extractLatestCo2FromMeasurements(measurements);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+
+                                latestCo2 = dashboardActivityViewModel.extractLatestCo2FromMeasurements(measurements);
 
                                 if(!measurements.isEmpty())
                                 {
@@ -645,7 +636,7 @@ public class MeasurementDetailsFragment extends Fragment
     @Override
     public void onResume()
     {
-        if(latestTemperatures.size() > 0)
+        if(latestTemperatures.size() > 0 || latestHumidity.size() > 0 || latestCo2.size() > 0)
         {
             showLayoutContentAfterLoading();
         }

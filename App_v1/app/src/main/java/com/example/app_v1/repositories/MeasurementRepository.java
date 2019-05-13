@@ -2,9 +2,11 @@ package com.example.app_v1.repositories;
 
 import android.os.Handler;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.app_v1.apiclients.GemsApi;
 import com.example.app_v1.apiclients.GemsApiClient;
 import com.example.app_v1.models.Co2;
@@ -14,7 +16,8 @@ import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DateTimeConverterHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,11 +27,9 @@ public class MeasurementRepository
     private static MeasurementRepository instance;
 
     private MutableLiveData<ArrayList<Measurement>> latestMeasurementsFromApi = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Measurement>> measurementsInDateRangeFromApi = new MutableLiveData<>();
     private ArrayList<Measurement> latestMeasurementsArrList = new ArrayList<>();
-    private ArrayList<Measurement> measurementsInDateRange = new ArrayList<>();
-    private ArrayList<Temperature> temperaturesInDateRange = new ArrayList<>();
-    private ArrayList<Humidity> humidityInDateRange = new ArrayList<>();
-    private ArrayList<Co2> co2InDateRange = new ArrayList<>();
+    private ArrayList<Measurement> measurementsInDateRangeArrList = new ArrayList<>();
 
     private Runnable fetchDataFromApiRunnable;
     private Handler fetchDataFromApiHandler = new Handler();
@@ -89,7 +90,6 @@ public class MeasurementRepository
                     public void onFailure(@NonNull Call<ArrayList<Measurement>> call, @NonNull Throwable t)
                     {
                         Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
-                        //Handle no connection to API
                     }
                 });
 
@@ -103,97 +103,113 @@ public class MeasurementRepository
         return this.latestMeasurementsFromApi;
     }
 
-    public ArrayList<Measurement> getMeasurementsInDateRange(String dateTimeFrom, String dateTimeTo)
+    public LiveData<ArrayList<Measurement>> getMeasurementsInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
     {
         String iso8601dateTimeFrom = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeFrom);
         String iso8601dateTimeTo = DateTimeConverterHelper.convertDateTimeStringToISO8601String(dateTimeTo);
 
-        //Call retrofit and pass the formatted timestamps as args
+        final GemsApi gemsApi = GemsApiClient.getRetrofitClient().create(GemsApi.class);
 
-        return this.measurementsInDateRange;
+        Call<ArrayList<Measurement>> call = gemsApi.getMeasurementsInDateRange(greenhouseId,iso8601dateTimeFrom,iso8601dateTimeTo);
+
+        call.enqueue(new Callback<ArrayList<Measurement>>()
+        {
+            @Override
+            public void onResponse(Call<ArrayList<Measurement>> call, Response<ArrayList<Measurement>> response)
+            {
+                response.body();
+
+                if(response.isSuccessful())
+                {
+                    Log.d("OnSuccess", "onResponse: " + response.toString());
+                    assert response.body() != null;
+
+                    measurementsInDateRangeArrList.clear();
+                    measurementsInDateRangeArrList = response.body();
+
+                    measurementsInDateRangeFromApi.postValue(measurementsInDateRangeArrList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Measurement>> call, Throwable t)
+            {
+                Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+            }
+        });
+
+        return this.measurementsInDateRangeFromApi;
     }
 
-    public ArrayList<Temperature> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo)
+    public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
     {
-        //getMeasurementsInDateRange(dateTimeFrom,dateTimeTo);
+        ArrayList<Temperature> latestTemperaturesArrList;
 
-        temperaturesInDateRange.clear();
-
-        Date dateFrom = DateTimeConverterHelper.convertDateTimeStringToDate(dateTimeFrom);
-        Date dateTo = DateTimeConverterHelper.convertDateTimeStringToDate(dateTimeTo);
-
-        //Replace later with measurementsInDateRange;
-
-        for(int i = 0; i < latestMeasurementsArrList.size(); i++)
+        if(!measurements.isEmpty())
         {
-            Date measurementDate = DateTimeConverterHelper.convertTimestampISO8601StringToDate(latestMeasurementsArrList.get(i).getTimeStamp());
+            latestTemperaturesArrList = new ArrayList<>();
 
-            if(measurementDate.compareTo(dateFrom) >= 0 && measurementDate.compareTo(dateTo) <= 0)
+            for (int i = 0; i < measurements.size(); i++)
             {
-                Temperature temperature = new Temperature(String.valueOf(latestMeasurementsArrList.get(i).getTemperature()));
-                temperature.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(latestMeasurementsArrList.get(i).getTimeStamp()));
-                temperature.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(latestMeasurementsArrList.get(i).getTimeStamp()));
+                Temperature temperature = new Temperature(String.valueOf(measurements.get(i).getTemperature()));
+                temperature.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
+                temperature.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
 
-                temperaturesInDateRange.add(temperature);
+                latestTemperaturesArrList.add(temperature);
             }
         }
-
-        return this.temperaturesInDateRange;
+        else
+        {
+            latestTemperaturesArrList = new ArrayList<>();
+        }
+        return latestTemperaturesArrList;
     }
 
-    public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo)
+    public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements)
     {
-        //getMeasurementsInDateRange(dateTimeFrom,dateTimeTo);
+        ArrayList<Humidity> latestHumidityArrList;
 
-        humidityInDateRange.clear();
-
-        Date dateFrom = DateTimeConverterHelper.convertDateTimeStringToDate(dateTimeFrom);
-        Date dateTo = DateTimeConverterHelper.convertDateTimeStringToDate(dateTimeTo);
-
-        //Replace later with measurementsInDateRange;
-
-        for(int i = 0; i < latestMeasurementsArrList.size(); i++)
+        if(!measurements.isEmpty())
         {
-            Date measurementDate = DateTimeConverterHelper.convertTimestampISO8601StringToDate(latestMeasurementsArrList.get(i).getTimeStamp());
+            latestHumidityArrList = new ArrayList<>();
 
-            if(measurementDate.compareTo(dateFrom) >= 0 && measurementDate.compareTo(dateTo) <= 0)
+            for (int i = 0; i < measurements.size(); i++)
             {
-                Humidity humidity = new Humidity(String.valueOf(latestMeasurementsArrList.get(i).getHumidity()));
-                humidity.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(latestMeasurementsArrList.get(i).getTimeStamp()));
-                humidity.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(latestMeasurementsArrList.get(i).getTimeStamp()));
+                Humidity humidity = new Humidity(String.valueOf(measurements.get(i).getHumidity()));
+                humidity.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
+                humidity.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
 
-                humidityInDateRange.add(humidity);
+                latestHumidityArrList.add(humidity);
             }
         }
-
-        return this.humidityInDateRange;
+        else
+        {
+            latestHumidityArrList = new ArrayList<>();
+        }
+        return latestHumidityArrList;
     }
 
-    public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo)
+    public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements)
     {
-        //getMeasurementsInDateRange(dateTimeFrom,dateTimeTo);
+        ArrayList<Co2> latestCo2ArrList;
 
-        co2InDateRange.clear();
-
-        Date dateFrom = DateTimeConverterHelper.convertDateTimeStringToDate(dateTimeFrom);
-        Date dateTo = DateTimeConverterHelper.convertDateTimeStringToDate(dateTimeTo);
-
-        //Replace later with measurementsInDateRange;
-
-        for(int i = 0; i < latestMeasurementsArrList.size(); i++)
+        if(!measurements.isEmpty())
         {
-            Date measurementDate = DateTimeConverterHelper.convertTimestampISO8601StringToDate(latestMeasurementsArrList.get(i).getTimeStamp());
+            latestCo2ArrList = new ArrayList<>();
 
-            if(measurementDate.compareTo(dateFrom) >= 0 && measurementDate.compareTo(dateTo) <= 0)
+            for (int i = 0; i < measurements.size(); i++)
             {
-                Co2 co2 = new Co2(String.valueOf(latestMeasurementsArrList.get(i).getcO2()));
-                co2.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(latestMeasurementsArrList.get(i).getTimeStamp()));
-                co2.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(latestMeasurementsArrList.get(i).getTimeStamp()));
+                Co2 co2 = new Co2(String.format(Locale.ENGLISH,"%.0f",measurements.get(i).getcO2()));
+                co2.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
+                co2.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
 
-                co2InDateRange.add(co2);
+                latestCo2ArrList.add(co2);
             }
         }
-
-        return this.co2InDateRange;
+        else
+        {
+            latestCo2ArrList = new ArrayList<>();
+        }
+        return latestCo2ArrList;
     }
 }

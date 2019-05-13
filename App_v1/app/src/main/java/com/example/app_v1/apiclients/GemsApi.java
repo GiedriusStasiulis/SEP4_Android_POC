@@ -28,9 +28,9 @@ public interface GemsApi
     Call<ArrayList<Measurement>> getMeasurement(@Query("greenhouseId") int greenhouseId);
 
     @GET("Measurements")
-    Call<List<Measurement>> getMeasurementInterval(
-            @Field("greenhouseId") int greenhouseId,
-            @Field("from") String dateTimeFrom,
-            @Field("to") String dateTimeTo
+    Call<ArrayList<Measurement>> getMeasurementsInDateRange(
+            @Query("greenhouseId") int greenhouseId,
+            @Query("from") String dateTimeFrom,
+            @Query("to") String dateTimeTo
     );
 }

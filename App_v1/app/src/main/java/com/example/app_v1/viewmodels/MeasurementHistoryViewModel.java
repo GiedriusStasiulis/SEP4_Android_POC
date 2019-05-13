@@ -59,26 +59,26 @@ public class MeasurementHistoryViewModel extends ViewModel
 
     public MutableLiveData<ArrayList<Temperature>> getTemperaturesInDateRange(String dateTimeFrom, String dateTimeTo)
     {
-        temperaturesInDateRange.clear();
+        /*temperaturesInDateRange.clear();
         temperaturesInDateRange = repo.getTemperaturesInDateRange(dateTimeFrom,dateTimeTo);
 
-        temperaturesInRangeMld.setValue(temperaturesInDateRange);
+        temperaturesInRangeMld.setValue(temperaturesInDateRange);*/
 
         return this.temperaturesInRangeMld;
     }
 
     public ArrayList<Humidity> getHumidityInDateRange(String dateTimeFrom, String dateTimeTo)
     {
-        humidityInDateRange.clear();
-        humidityInDateRange = repo.getHumidityInDateRange(dateTimeFrom,dateTimeTo);
+       /* humidityInDateRange.clear();
+        humidityInDateRange = repo.getHumidityInDateRange(dateTimeFrom,dateTimeTo);*/
 
         return this.humidityInDateRange;
     }
 
     public ArrayList<Co2> getCo2InDateRange(String dateTimeFrom, String dateTimeTo)
-    {
+    {/*
         co2InDateRange.clear();
-        co2InDateRange = repo.getCo2InDateRange(dateTimeFrom,dateTimeTo);
+        co2InDateRange = repo.getCo2InDateRange(dateTimeFrom,dateTimeTo);*/
 
         return this.co2InDateRange;
     }

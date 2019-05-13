@@ -52,76 +52,22 @@ public class DashboardActivityViewModel extends ViewModel
         return this.latestMeasurementsFromRepo;
     }
 
-    public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements) throws ParseException
+    public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
     {
-        ArrayList<Temperature> latestTemperaturesArrList;
-
-        if(!measurements.isEmpty())
-        {
-            latestTemperaturesArrList = new ArrayList<>();
-
-            for (int i = 0; i < measurements.size(); i++)
-            {
-                Temperature temperature = new Temperature(String.valueOf(measurements.get(i).getTemperature()));
-                temperature.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
-                temperature.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
-
-                latestTemperaturesArrList.add(temperature);
-            }
-        }
-        else
-        {
-            latestTemperaturesArrList = new ArrayList<>();
-        }
-        return latestTemperaturesArrList;
+        repo = MeasurementRepository.getInstance();
+        return repo.extractLatestTemperaturesFromMeasurements(measurements);
     }
 
-    public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements) throws ParseException
+    public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements)
     {
-        ArrayList<Humidity> latestHumidityArrList;
-
-        if(!measurements.isEmpty())
-        {
-            latestHumidityArrList = new ArrayList<>();
-
-            for (int i = 0; i < measurements.size(); i++)
-            {
-                Humidity humidity = new Humidity(String.valueOf(measurements.get(i).getHumidity()));
-                humidity.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
-                humidity.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
-
-                latestHumidityArrList.add(humidity);
-            }
-        }
-        else
-        {
-            latestHumidityArrList = new ArrayList<>();
-        }
-        return latestHumidityArrList;
+        repo = MeasurementRepository.getInstance();
+        return repo.extractLatestHumidityFromMeasurements(measurements);
     }
 
-    public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements) throws ParseException
+    public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements)
     {
-        ArrayList<Co2> latestCo2ArrList;
-
-        if(!measurements.isEmpty())
-        {
-            latestCo2ArrList = new ArrayList<>();
-
-            for (int i = 0; i < measurements.size(); i++)
-            {
-                Co2 co2 = new Co2(String.format(Locale.ENGLISH,"%.0f",measurements.get(i).getcO2()));
-                co2.setTime(DateTimeConverterHelper.convertTimestampISO8601ToTimeString(measurements.get(i).getTimeStamp()));
-                co2.setDate(DateTimeConverterHelper.convertTimestampISO8601ToDateString(measurements.get(i).getTimeStamp()));
-
-                latestCo2ArrList.add(co2);
-            }
-        }
-        else
-        {
-            latestCo2ArrList = new ArrayList<>();
-        }
-        return latestCo2ArrList;
+        repo = MeasurementRepository.getInstance();
+        return repo.extractLatestCo2FromMeasurements(measurements);
     }
 
     public void setSelectedTabIndex(Integer index)
