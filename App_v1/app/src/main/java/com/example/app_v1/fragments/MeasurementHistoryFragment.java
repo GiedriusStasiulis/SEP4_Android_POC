@@ -208,8 +208,11 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                                 else
                                 {
+                                    temperaturesInDateRange.clear();
+
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
+
 
                                     measurementHistoryViewModel.getTemperaturesInDateRange(selectedGreenhouseId,dateTimeFrom,dateTimeTo).observe(MeasurementHistoryFragment.this, new Observer<ArrayList<Temperature>>() {
                                         @Override
@@ -344,9 +347,22 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                 btnOpenCalendarDialog.setText(getResources().getString(R.string.title_select));
                 btnSelectTimeFrom.setText(getResources().getString(R.string.title_select));
                 btnSelectTimeTo.setText(getResources().getString(R.string.title_select));
-                initTemperatureHistoryRView();
-                initHumidityHistoryRView();
-                initCo2HistoryRView();
+
+                if(temperaturesInDateRange.size() > 0 || humidityInDateRange.size() > 0 || co2InDateRange.size() > 0)
+                {
+                    temperaturesInDateRange.clear();
+                    humidityInDateRange.clear();
+                    co2InDateRange.clear();
+
+                    temperatureRVAdapter.clearItems();
+                    temperatureRVAdapter.setItems(temperaturesInDateRange);
+
+                    humidityRVAdapter.clearItems();
+                    humidityRVAdapter.setItems(humidityInDateRange);
+
+                    co2RVAdapter.clearItems();
+                    co2RVAdapter.setItems(co2InDateRange);
+                }
             }
         });
 

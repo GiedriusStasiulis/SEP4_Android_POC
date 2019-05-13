@@ -33,6 +33,7 @@
         </activity>
         <activity
             android:name=".activities.MeasurementHistoryActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".activities.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
