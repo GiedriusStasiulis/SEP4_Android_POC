@@ -38,6 +38,7 @@ public class DashboardActivityViewModel extends ViewModel
         context = _context;
         thresholdRepository = new ThresholdRepository(context);
     }
+
     public LiveData<List<Threshold>> getAllThresholds() {
         return thresholdRepository.getAllThresholds();
     }

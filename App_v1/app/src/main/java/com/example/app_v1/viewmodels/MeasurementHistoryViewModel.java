@@ -18,6 +18,7 @@ public class MeasurementHistoryViewModel extends ViewModel
 
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
+
     private LiveData<ArrayList<Temperature>> temperaturesInDateRangeFromRepo;
     private LiveData<ArrayList<Humidity>> humidityInDateRangeFromRepo;
     private LiveData<ArrayList<Co2>> co2InDateRangeFromRepo;
@@ -60,10 +61,10 @@ public class MeasurementHistoryViewModel extends ViewModel
 
     public LiveData<ArrayList<Temperature>> getTemperaturesInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)
     {
-       repo = MeasurementRepository.getInstance();
-       temperaturesInDateRangeFromRepo = repo.getTemperaturesInDateRange(greenhouseId,dateTimeFrom,dateTimeTo);
+        repo = MeasurementRepository.getInstance();
+        temperaturesInDateRangeFromRepo = repo.getTemperaturesInDateRange(greenhouseId,dateTimeFrom,dateTimeTo);
 
-       return this.temperaturesInDateRangeFromRepo;
+        return this.temperaturesInDateRangeFromRepo;
     }
 
     public LiveData<ArrayList<Humidity>> getHumidityInDateRange(int greenhouseId, String dateTimeFrom, String dateTimeTo)

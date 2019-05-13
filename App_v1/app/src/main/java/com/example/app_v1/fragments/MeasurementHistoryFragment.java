@@ -192,9 +192,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                         initTemperatureHistoryRView();
 
-                        temperatureRVAdapter.clearItems();
-                        temperatureRVAdapter.setItems(temperaturesInDateRange);
-
                         titleMeasurementType.setText(getResources().getString(R.string.title_temperature));
 
                         btnSearchHistory.setOnClickListener(new View.OnClickListener()
@@ -211,8 +208,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                                 else
                                 {
-                                    temperaturesInDateRange.clear();
-
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
@@ -242,9 +237,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                     case 1:
 
                         initHumidityHistoryRView();
-
-                        humidityRVAdapter.clearItems();
-                        humidityRVAdapter.setItems(humidityInDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_humidity));
 
@@ -293,9 +285,6 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                     case 2:
 
                         initCo2HistoryRView();
-
-                        co2RVAdapter.clearItems();
-                        co2RVAdapter.setItems(co2InDateRange);
 
                         titleMeasurementType.setText(getResources().getString(R.string.title_co2));
 
@@ -355,6 +344,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                 btnOpenCalendarDialog.setText(getResources().getString(R.string.title_select));
                 btnSelectTimeFrom.setText(getResources().getString(R.string.title_select));
                 btnSelectTimeTo.setText(getResources().getString(R.string.title_select));
+                initTemperatureHistoryRView();
+                initHumidityHistoryRView();
+                initCo2HistoryRView();
             }
         });
 
@@ -386,6 +378,7 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
             dateTo = savedInstanceState.getString("dateTo_value");
             dateTimeFrom = savedInstanceState.getString("dateTimeFrom_value");
             dateTimeTo = savedInstanceState.getString("dateTimeTo_value");
+            selectedGreenhouseId = savedInstanceState.getInt("selectedGreenhouseId");
 
             btnOpenCalendarDialog.setText(dateFromToString);
             btnSelectTimeFrom.setText(timeFrom);
@@ -454,6 +447,12 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
         outState.putString("timeFrom_value",btnSelectTimeFrom.getText().toString());
         outState.putString("timeTo_value",btnSelectTimeTo.getText().toString());
         outState.putBoolean("toggleHistoryDisplayBtn_state", toggleBtnHistoryDisplay.isChecked());
+        outState.putInt("selectedGreenhouseId",selectedGreenhouseId);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
