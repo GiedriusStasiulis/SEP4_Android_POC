@@ -29,7 +29,7 @@ public class DateTimeConverterHelper
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat sdfOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.ENGLISH);
+        SimpleDateFormat sdfOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.ENGLISH);
         return sdfOut.format(date);
     }
 
@@ -37,7 +37,7 @@ public class DateTimeConverterHelper
     {
         Date date = null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH).parse(timestampISO8601);
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH).parse(timestampISO8601);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -100,10 +100,9 @@ public class DateTimeConverterHelper
 
     public static String convertTimestampISO8601ToDateString(final String timestampISO8601)
     {
-        String s = timestampISO8601.replace("Z","+02:00");
         Date date = null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH).parse(timestampISO8601);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -113,10 +112,9 @@ public class DateTimeConverterHelper
 
     public static String convertTimestampISO8601ToTimeString(final String timestampISO8601)
     {
-        String s = timestampISO8601.replace("Z","+02:00");
         Date date = null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH).parse(s);
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH).parse(timestampISO8601);
         } catch (ParseException e) {
             e.printStackTrace();
         }

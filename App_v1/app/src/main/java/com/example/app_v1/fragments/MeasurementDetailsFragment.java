@@ -90,7 +90,7 @@ public class MeasurementDetailsFragment extends Fragment
     private GraphView graphView;
     private LineGraphSeries<DataPoint> series;
 
-    private RecyclerView recentMeasurementRView;
+    private RecyclerView latestMeasurementRecyclerView;
     private TemperatureRVAdapter temperatureRVAdapter;
     private HumidityRVAdapter humidityRVAdapter;
     private Co2RVAdapter co2RVAdapter;
@@ -133,7 +133,7 @@ public class MeasurementDetailsFragment extends Fragment
         toggleBtnThresholdsDisplay = view.findViewById(R.id.toggleBtnThresholdsDisplay);
         radioBtnShowRecentList = view.findViewById(R.id.radioBtnShowRecentList);
         radioBtnShowRecentGraph = view.findViewById(R.id.radioBtnShowRecentGraph);
-        recentMeasurementRView = view.findViewById(R.id.recentMeasurementRView);
+        latestMeasurementRecyclerView = view.findViewById(R.id.recentMeasurementRView);
         graphView = view.findViewById(R.id.graphView);
 
         measurementOverviewDisplayContents = view.findViewById(R.id.measurementOverviewDisplayContents);
@@ -157,14 +157,14 @@ public class MeasurementDetailsFragment extends Fragment
         radioBtnShowRecentList.jumpDrawablesToCurrentState(); //bug fix for displaying partially checked radio button on last fragment
 
         graphView.setVisibility(View.GONE);
-        recentMeasurementRView.setVisibility(View.VISIBLE);
+        latestMeasurementRecyclerView.setVisibility(View.VISIBLE);
 
         View.OnClickListener radioBtnShowRecentList_listener = new View.OnClickListener(){
             public void onClick(View v)
             {
                 radioBtnShowRecentGraph.setChecked(false);
                 graphView.setVisibility(View.GONE);
-                recentMeasurementRView.setVisibility(View.VISIBLE);
+                latestMeasurementRecyclerView.setVisibility(View.VISIBLE);
             }
         };
 
@@ -173,7 +173,7 @@ public class MeasurementDetailsFragment extends Fragment
             {
                 radioBtnShowRecentList.setChecked(false);
                 graphView.setVisibility(View.VISIBLE);
-                recentMeasurementRView.setVisibility(View.GONE);
+                latestMeasurementRecyclerView.setVisibility(View.GONE);
             }
         };
 
@@ -214,7 +214,7 @@ public class MeasurementDetailsFragment extends Fragment
                 {
                     case 0:
 
-                        initRecentTemperatureRView();
+                        initLatestTemperatureRecyclerView();
                         graphView.removeAllSeries();
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
@@ -269,7 +269,7 @@ public class MeasurementDetailsFragment extends Fragment
 
                     case 1:
 
-                        initRecentHumidityRView();
+                        initLatestHumidityRecyclerView();
                         graphView.removeAllSeries();
 
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
@@ -320,7 +320,7 @@ public class MeasurementDetailsFragment extends Fragment
 
                     case 2:
 
-                        initRecentCO2RecyclerView();
+                        initLatestCO2RecyclerView();
                         graphView.removeAllSeries();
 
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
@@ -447,7 +447,7 @@ public class MeasurementDetailsFragment extends Fragment
     {
         measurementOverviewDisplayContents.setVisibility(View.GONE);
         recentMeasurementDisplayContent.setVisibility(View.GONE);
-        //thresholdDisplayContent.setVisibility(View.GONE);
+        thresholdDisplayContent.setVisibility(View.GONE);
     }
 
     private void showLayoutContentAfterLoading()
@@ -461,7 +461,7 @@ public class MeasurementDetailsFragment extends Fragment
     {
         measurementOverviewLoadingScreen.setVisibility(View.VISIBLE);
         latestMeasurementsLoadingScreen.setVisibility(View.VISIBLE);
-        //thresholdsLoadingScreen.setVisibility(View.VISIBLE);
+        thresholdsLoadingScreen.setVisibility(View.VISIBLE);
         progressBarMeasurementOverview.setVisibility(View.VISIBLE);
         progressBarLatestValues.setVisibility(View.VISIBLE);
         progressBarThresholds.setVisibility(View.VISIBLE);
@@ -491,34 +491,34 @@ public class MeasurementDetailsFragment extends Fragment
         noDataDisplay3.setVisibility(View.GONE);
     }
 
-    private void initRecentTemperatureRView()
+    private void initLatestTemperatureRecyclerView()
     {
         temperatureRVAdapter = new TemperatureRVAdapter(getActivity());
 
         temperatureRVAdapter.clearItems();
-        recentMeasurementRView.hasFixedSize();
-        recentMeasurementRView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recentMeasurementRView.setAdapter(temperatureRVAdapter);
+        latestMeasurementRecyclerView.hasFixedSize();
+        latestMeasurementRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        latestMeasurementRecyclerView.setAdapter(temperatureRVAdapter);
     }
 
-    private void initRecentHumidityRView()
+    private void initLatestHumidityRecyclerView()
     {
         humidityRVAdapter = new HumidityRVAdapter(getActivity());
 
         humidityRVAdapter.clearItems();
-        recentMeasurementRView.hasFixedSize();
-        recentMeasurementRView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recentMeasurementRView.setAdapter(humidityRVAdapter);
+        latestMeasurementRecyclerView.hasFixedSize();
+        latestMeasurementRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        latestMeasurementRecyclerView.setAdapter(humidityRVAdapter);
     }
 
-    private void initRecentCO2RecyclerView()
+    private void initLatestCO2RecyclerView()
     {
         co2RVAdapter = new Co2RVAdapter(getActivity());
 
         co2RVAdapter.clearItems();
-        recentMeasurementRView.hasFixedSize();
-        recentMeasurementRView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recentMeasurementRView.setAdapter(co2RVAdapter);
+        latestMeasurementRecyclerView.hasFixedSize();
+        latestMeasurementRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        latestMeasurementRecyclerView.setAdapter(co2RVAdapter);
     }
 
     private void initTemperatureGraphView(ArrayList<Temperature> temperatures)
