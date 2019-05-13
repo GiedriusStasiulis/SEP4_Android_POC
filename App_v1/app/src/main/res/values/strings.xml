@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
     <string name="msg_subscribed">Subscribed!</string>
+    <string name="msg_unsubscribed">Unsubscribed!</string>
     <string name="msg_subscribe_failed">Subscription failed</string>
 
     <!-- Miscellaneous -->

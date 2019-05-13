@@ -14,17 +14,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.app_v1.R;
 import com.example.app_v1.models.Threshold;
-import com.example.app_v1.room.ThresholdDAO;
-import com.example.app_v1.viewmodels.ThresholdViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.app_v1.viewmodels.ThresholdViewModel;
 
 public class ThresholdDialog extends DialogFragment {
     private static final String TAG = "ThresholdDialogFragment";
