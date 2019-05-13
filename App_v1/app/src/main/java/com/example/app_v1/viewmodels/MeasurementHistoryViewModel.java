@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
-import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.repositories.MeasurementRepository;
 

@@ -14,5 +14,4 @@
         android:title="@string/action_logout"
         android:icon="@drawable/icon_settings"
         app:showAsAction="never" />
-
 </menu>

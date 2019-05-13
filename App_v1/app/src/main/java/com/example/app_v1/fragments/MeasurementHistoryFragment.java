@@ -54,6 +54,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
     private TextView titleMeasurementType;
 
     private ConstraintLayout measurementHistoryDisplay;
+    private ConstraintLayout measurementHistoryLoadingScreen;
+    private ConstraintLayout noMeasurementHistoryDisplay;
+
 
     private Button btnOpenCalendarDialog;
     private Button btnSelectTimeFrom;
@@ -99,6 +102,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
         rvMeasurementHistory = view.findViewById(R.id.rvMeasurementHistory);
         toggleBtnHistoryDisplay = view.findViewById(R.id.toggleBtnHistoryDisplay);
         measurementHistoryDisplay = view.findViewById(R.id.measurementHistoryDisplay);
+        measurementHistoryLoadingScreen = view.findViewById(R.id.measurementHistoryLoadingScreen);
+        noMeasurementHistoryDisplay = view.findViewById(R.id.noMeasurementHistoryDisplay);
+
         toggleBtnHistoryDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
 
         btnOpenCalendarDialog.setOnClickListener(new View.OnClickListener()
@@ -208,11 +214,15 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                                 else
                                 {
+                                    showLoadingScreen();
+
                                     temperaturesInDateRange.clear();
+
+                                    temperatureRVAdapter.clearItems();
+                                    temperatureRVAdapter.setItems(temperaturesInDateRange);
 
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
-
 
                                     measurementHistoryViewModel.getTemperaturesInDateRange(selectedGreenhouseId,dateTimeFrom,dateTimeTo).observe(MeasurementHistoryFragment.this, new Observer<ArrayList<Temperature>>() {
                                         @Override
@@ -220,6 +230,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                         {
                                             if(temperatures.size() > 0)
                                             {
+                                                hideLoadingScreen();
+                                                hideNoDataDisplay();
+
                                                 temperaturesInDateRange.clear();
                                                 temperaturesInDateRange.addAll(temperatures);
                                                 temperatureRVAdapter.clearItems();
@@ -228,6 +241,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                             else
                                             {
+                                                hideLoadingScreen();
+                                                showNoDataDisplay();
+
                                                 temperatureRVAdapter.clearItems();
                                             }
                                         }
@@ -235,6 +251,24 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                             }
                         });
+
+                        btnClearSearchParams.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                btnOpenCalendarDialog.setText(getResources().getString(R.string.title_select));
+                                btnSelectTimeFrom.setText(getResources().getString(R.string.title_select));
+                                btnSelectTimeTo.setText(getResources().getString(R.string.title_select));
+
+                                if(temperaturesInDateRange.size() > 0)
+                                {
+                                    temperaturesInDateRange = new ArrayList<>();
+                                    temperatureRVAdapter.clearItems();
+                                }
+                            }
+                        });
+
                         break;
 
                     case 1:
@@ -259,6 +293,8 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 {
                                     humidityInDateRange.clear();
 
+                                    showLoadingScreen();
+
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
@@ -268,6 +304,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                         {
                                             if(humidity.size() > 0)
                                             {
+                                                hideLoadingScreen();
+                                                hideNoDataDisplay();
+
                                                 humidityInDateRange.clear();
                                                 humidityInDateRange.addAll(humidity);
                                                 humidityRVAdapter.clearItems();
@@ -276,6 +315,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                             else
                                             {
+                                                hideLoadingScreen();
+                                                showNoDataDisplay();
+
                                                 humidityRVAdapter.clearItems();
                                             }
                                         }
@@ -283,6 +325,24 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                             }
                         });
+
+                        btnClearSearchParams.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                btnOpenCalendarDialog.setText(getResources().getString(R.string.title_select));
+                                btnSelectTimeFrom.setText(getResources().getString(R.string.title_select));
+                                btnSelectTimeTo.setText(getResources().getString(R.string.title_select));
+
+                                if(humidityInDateRange.size() > 0)
+                                {
+                                    humidityInDateRange = new ArrayList<>();
+                                    humidityRVAdapter.clearItems();
+                                }
+                            }
+                        });
+
                         break;
 
                     case 2:
@@ -307,6 +367,8 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 {
                                     co2InDateRange.clear();
 
+                                    showLoadingScreen();
+
                                     dateTimeFrom = String.format(Locale.ENGLISH,"%s %s",dateFrom,timeFrom);
                                     dateTimeTo = String.format(Locale.ENGLISH,"%s %s",dateTo,timeTo);
 
@@ -316,6 +378,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                         {
                                             if(co2.size() > 0)
                                             {
+                                                hideLoadingScreen();
+                                                hideNoDataDisplay();
+
                                                 co2InDateRange.clear();
                                                 co2InDateRange.addAll(co2);
                                                 co2RVAdapter.clearItems();
@@ -324,6 +389,9 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
 
                                             else
                                             {
+                                                hideLoadingScreen();
+                                                showNoDataDisplay();
+
                                                 co2RVAdapter.clearItems();
                                             }
                                         }
@@ -331,6 +399,24 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
                                 }
                             }
                         });
+
+                        btnClearSearchParams.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                btnOpenCalendarDialog.setText(getResources().getString(R.string.title_select));
+                                btnSelectTimeFrom.setText(getResources().getString(R.string.title_select));
+                                btnSelectTimeTo.setText(getResources().getString(R.string.title_select));
+
+                                if(co2InDateRange.size() > 0)
+                                {
+                                    co2InDateRange = new ArrayList<>();
+                                    co2RVAdapter.clearItems();
+                                }
+                            }
+                        });
+
                         break;
 
                         default:
@@ -339,32 +425,7 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
             }
         });
 
-        btnClearSearchParams.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                btnOpenCalendarDialog.setText(getResources().getString(R.string.title_select));
-                btnSelectTimeFrom.setText(getResources().getString(R.string.title_select));
-                btnSelectTimeTo.setText(getResources().getString(R.string.title_select));
 
-                if(temperaturesInDateRange.size() > 0 || humidityInDateRange.size() > 0 || co2InDateRange.size() > 0)
-                {
-                    temperaturesInDateRange.clear();
-                    humidityInDateRange.clear();
-                    co2InDateRange.clear();
-
-                    temperatureRVAdapter.clearItems();
-                    temperatureRVAdapter.setItems(temperaturesInDateRange);
-
-                    humidityRVAdapter.clearItems();
-                    humidityRVAdapter.setItems(humidityInDateRange);
-
-                    co2RVAdapter.clearItems();
-                    co2RVAdapter.setItems(co2InDateRange);
-                }
-            }
-        });
 
         toggleBtnHistoryDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -452,6 +513,28 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
         rvMeasurementHistory.setAdapter(co2RVAdapter);
     }
 
+    private void showLoadingScreen()
+    {
+        rvMeasurementHistory.setVisibility(View.GONE);
+        measurementHistoryLoadingScreen.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingScreen()
+    {
+        rvMeasurementHistory.setVisibility(View.VISIBLE);
+        measurementHistoryLoadingScreen.setVisibility(View.GONE);
+    }
+
+    private void showNoDataDisplay()
+    {
+        noMeasurementHistoryDisplay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideNoDataDisplay()
+    {
+        noMeasurementHistoryDisplay.setVisibility(View.GONE);
+    }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
@@ -468,7 +551,21 @@ public class MeasurementHistoryFragment extends Fragment implements DateRangePic
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
+        if(temperaturesInDateRange != null)
+        {
+            temperatureRVAdapter.clearItems();
+            temperatureRVAdapter.setItems(temperaturesInDateRange);
+        }
+
+        else
+        {
+            temperaturesInDateRange = new ArrayList<>();
+            temperatureRVAdapter.clearItems();
+            temperatureRVAdapter.setItems(temperaturesInDateRange);
+        }
+
         super.onResume();
     }
 }

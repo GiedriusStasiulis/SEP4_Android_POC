@@ -59,7 +59,7 @@
     <string name="title_select_time_from">Time from:</string>
     <string name="title_select_time_to">Time to:</string>
     <string name="title_measurement_history">History:</string>
-    <string name="title_reset">R</string>
+    <string name="title_no_results_found">Oops, no results found.</string>
     <string name="title_button_show_history">Go</string>
 
     <!-- Greenhouse Select -->
