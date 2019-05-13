@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 
 import com.example.app_v1.models.Threshold;
+import com.example.app_v1.repositories.ThresholdRepository;
 import com.example.app_v1.viewmodels.DashboardActivityViewModel;
-import com.example.app_v1.viewmodels.ThresholdViewModel;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity
 
     private DashboardActivityViewModel dashboardActivityViewModel;
 
-    private ThresholdViewModel roomDbViewModel;
+    private ThresholdRepository roomRepo;
 
     final int[] tabIcons = new int[]{R.drawable.tab_icon_temperature,R.drawable.tab_icon_humidity,R.drawable.tab_icon_co2};
 
@@ -67,8 +67,8 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
 
         //Thresholds
-        roomDbViewModel = ViewModelProviders.of(this).get(ThresholdViewModel.class);
-        roomDbViewModel.getAllThresholds().observe(this, new Observer<List<Threshold>>() {
+        roomRepo = new ThresholdRepository(DashboardActivity.this);
+        roomRepo.getAllThresholds().observe(this, new Observer<List<Threshold>>() {
             @Override
             public void onChanged(List<Threshold> thresholds) {
                 TextView tempMinText =findViewById(R.id.thresholdTempMin);
@@ -114,7 +114,7 @@ public class DashboardActivity extends AppCompatActivity
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("-");
 
         dashboardActivityViewModel = ViewModelProviders.of(this).get(DashboardActivityViewModel.class);
-        dashboardActivityViewModel.initViewModel(selectedGreenhouseId);
+        dashboardActivityViewModel.initViewModel(selectedGreenhouseId,DashboardActivity.this);
 
         dashboardActivityViewModel.setSelectedGreenhouseId(selectedGreenhouseId);
 
