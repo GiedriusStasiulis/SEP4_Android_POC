@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.app_v1.R;
+import com.example.app_v1.viewmodels.LogInViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,7 +36,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
 
-    private FirebaseAuth mAuth;
+    private LogInViewModel logInViewModel;
 
     private EditText mEmail;
     private EditText mPassword;
@@ -44,7 +47,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        mAuth = FirebaseAuth.getInstance();
+
+        logInViewModel = ViewModelProviders.of(this).get(LogInViewModel.class);
+        logInViewModel.init();
 
         // Views
         mEmail = findViewById(R.id.email);
@@ -52,12 +57,13 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         //Buttons and CheckBox
         mCheckBox = findViewById(R.id.check_box);
-        buttonLogIn =findViewById(R.id.log_in_button);
+        buttonLogIn = findViewById(R.id.log_in_button);
+
         buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //save the checkbox preference
-                if(mCheckBox.isChecked()){
+                if (mCheckBox.isChecked()) {
                     //set a checkbox when the application starts
                     mEditor.putString(getString(R.string.check_box), "True");
                     mEditor.commit();
@@ -66,7 +72,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     String email = mEmail.getText().toString();
                     mEditor.putString(getString(R.string.email), email);
                     mEditor.commit();
-                }else{
+                } else {
                     //set a checkbox when the application starts
                     mEditor.putString(getString(R.string.check_box), "False");
                     mEditor.commit();
@@ -75,29 +81,26 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     mEditor.putString(getString(R.string.email), "");
                     mEditor.commit();
                 }
-
                 logIn();
             }
         });
 
         //Objects
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor=mPreferences.edit();
+        mEditor = mPreferences.edit();
 
         checkSharedPreferences();
     }
 
-    private void checkSharedPreferences()
-    {
+    private void checkSharedPreferences() {
         String checkbox = mPreferences.getString(getString(R.string.check_box), "false");
-        String email= mPreferences.getString(getString(R.string.email), "");
+        String email = mPreferences.getString(getString(R.string.email), "");
 
         mEmail.setText(email);
 
-        if(checkbox.equals("True")){
+        if (checkbox.equals("True")) {
             mCheckBox.setChecked(true);
-        }
-        else{
+        } else {
             mCheckBox.setChecked(false);
         }
     }
@@ -107,24 +110,36 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         if (!validateForm()) {
             return;
         }
+//        // checks to see if the input field is empty
+//        if (logInViewModel.checkEmptyTextField(mEmail)) {
+//            Toast.makeText(this, "Please enter a user name", Toast.LENGTH_SHORT).show();
+//            //stops the function from executing further
+//            return;
+//        }
+//        // checks to see if the input field is empty
+//        if (logInViewModel.checkEmptyTextField(mPassword)) {
+//            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-
-                            goToGreenhouseSelection();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LogInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        // uses fire base sign in method verification
+        logInViewModel.getMFireBaseModel().getMFirebaseAuth()
+                .signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                // if authentication is completed successfully than it will move to the next page
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "signInWithEmail:success");
+                    goToGreenhouseSelection();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                    Toast.makeText(LogInActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private boolean validateForm() {
@@ -153,17 +168,17 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.log_in_button) {
-            signIn(mEmail.getText().toString(), mPassword.getText().toString());
+            signIn(logInViewModel.geStringFromTextView(mEmail), logInViewModel.geStringFromTextView(mPassword));
         }
     }
 
     public void logIn()
     {
-        signIn(mEmail.getText().toString(), mPassword.getText().toString());
+        signIn(logInViewModel.geStringFromTextView(mEmail), logInViewModel.geStringFromTextView(mPassword));
     }
 
     public void goToGreenhouseSelection(){
-        Intent intent = new Intent(this, GreenhouseSelectActivity.class);
-        startActivity(intent);
+        Intent Login = new Intent(LogInActivity.this, GreenhouseSelectActivity.class);
+        startActivity(Login);
     }
 }
