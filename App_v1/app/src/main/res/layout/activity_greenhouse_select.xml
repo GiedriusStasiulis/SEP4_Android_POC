@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context="com.example.app_v1.activities.GreenhouseSelectActivity" >
+    tools:context="com.example.app_v1.activities.GreenhouseSelectActivity"
+    >
 
     <RelativeLayout
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
@@ -23,10 +25,36 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="128dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:id="@+id/loading_screen"
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBarLatestValues"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="54dp"
+                android:indeterminate="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingLeft="48dp"
             android:paddingTop="?attr/actionBarSize"
             android:paddingRight="48dp"
-            android:paddingBottom="48dp">
+            android:paddingBottom="48dp"
+            android:id="@+id/content"
+            android:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_herb"

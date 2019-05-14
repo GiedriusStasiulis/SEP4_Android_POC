@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.example.app_v1.R;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static android.view.View.GONE;
+
 public class GreenhouseSelectActivity extends AppCompatActivity {
     private static final String TAG = "GhSelectActivity";
 
@@ -35,6 +38,8 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
     private List<Integer> greenhouses = new ArrayList<>();
     private int selectedGreenhouseId;
     private ArrayAdapter<Integer> adapter;
+    private RelativeLayout content;
+    private RelativeLayout loadingScreen;
 
     private GreenhouseSelectActivityViewModel viewModel;
 
@@ -47,6 +52,9 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
         selectGreenhouse = findViewById(R.id.spinner_select_greenhouse);
         buttonGo = findViewById(R.id.button_go);
         toolbar2 = findViewById(R.id.toolbar2);
+
+        loadingScreen = findViewById(R.id.loading_screen);
+        content = findViewById(R.id.content);
 
         setSupportActionBar(toolbar2);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Greenhouse Management System");
@@ -74,7 +82,7 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                buttonGo.setVisibility(View.GONE);
+                buttonGo.setVisibility(GONE);
             }
         });
 
@@ -88,6 +96,10 @@ public class GreenhouseSelectActivity extends AppCompatActivity {
                 ArrayAdapter<Integer> adapter = new ArrayAdapter<>(GreenhouseSelectActivity.this, android.R.layout.simple_spinner_item, greenhouses);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 selectGreenhouse.setAdapter(adapter);
+
+                loadingScreen.setVisibility(View.GONE);
+                content.setVisibility(View.VISIBLE);
+
 
             }
         });
