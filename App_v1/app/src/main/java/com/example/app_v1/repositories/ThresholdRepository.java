@@ -1,16 +1,29 @@
 package com.example.app_v1.repositories;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 
+import com.example.app_v1.apiclients.GemsApi;
+import com.example.app_v1.apiclients.GemsApiClient;
 import com.example.app_v1.models.Threshold;
+import com.example.app_v1.models.ThresholdInterval;
 import com.example.app_v1.room.ThresholdDAO;
 import com.example.app_v1.room.ThresholdDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ThresholdRepository {
     private ThresholdDAO thresholdDAO;
@@ -99,4 +112,28 @@ public class ThresholdRepository {
             return null;
         }
     }
+    public void sendThresholdToApi(int id, String measurement, ThresholdInterval thresholdInterval) {
+        Retrofit retrofit = GemsApiClient.getRetrofitClient();
+        GemsApi api = retrofit.create(GemsApi.class);
+                Call call = api.setThreshold(id,measurement,thresholdInterval);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        response.body();
+                        if (response.isSuccessful()){
+                            Log.d("OnSuccess", "onResponse: " + response.toString());
+                            assert response.body() != null;
+                    }
+
+                }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
+                    }
+
+
+                });
+    }
+
 }

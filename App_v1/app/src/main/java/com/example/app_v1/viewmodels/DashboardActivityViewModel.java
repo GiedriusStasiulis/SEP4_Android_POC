@@ -1,40 +1,69 @@
 package com.example.app_v1.viewmodels;
 
-import android.content.Context;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.models.Threshold;
+import com.example.app_v1.models.ThresholdInterval;
 import com.example.app_v1.repositories.MeasurementRepository;
 import com.example.app_v1.repositories.ThresholdRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardActivityViewModel extends ViewModel
+
+public class DashboardActivityViewModel extends AndroidViewModel
 {
     private MeasurementRepository repo;
-    private ThresholdRepository thresholdRepository;
-
-    private Context context;
 
     private LiveData<ArrayList<Measurement>> latestMeasurementsFromRepo;
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
 
-    public void initViewModel(int greenhouseId, Context _context)
+    private LiveData<List<Threshold>> allThresholds;
+    private ThresholdRepository thresholdRepository;
+
+
+    public DashboardActivityViewModel(@NonNull Application application) {
+        super(application);
+        thresholdRepository = new ThresholdRepository(application);
+        allThresholds = thresholdRepository.getAllThresholds();
+    }
+
+    public void initViewModel(int greenhouseId)
     {
         repo = MeasurementRepository.getInstance();
         selectedTabIndex.setValue(0);
         repo.startFetchingDataFromApi(greenhouseId);
-        context = _context;
-        thresholdRepository = new ThresholdRepository(context);
+
+    }
+    public void sendThresholdToApi(int id, String measurement, ThresholdInterval thresholdInterval){thresholdRepository.sendThresholdToApi(id,measurement,thresholdInterval);}
+    public LiveData<List<Threshold>> getAllThresholds() {
+        return allThresholds;
+    }
+
+    public void update(Threshold threshold){
+        thresholdRepository.update(threshold);
+    }
+
+    public void insert(Threshold threshold){
+        thresholdRepository.insert(threshold);
+    }
+
+    public void delete(Threshold threshold){
+        thresholdRepository.delete(threshold);
+    }
+
+    public void deleteAllThresholds(){
+        thresholdRepository.deleteAllThresholds();
     }
 
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromRepo()
@@ -45,26 +74,6 @@ public class DashboardActivityViewModel extends ViewModel
             latestMeasurementsFromRepo = repo.getLatestMeasurementsFromApi();
         }
         return this.latestMeasurementsFromRepo;
-    }
-
-    public void setSelectedTabIndex(Integer index)
-    {
-        selectedTabIndex.setValue(index);
-    }
-
-    public LiveData<Integer> getSelectedTabIndex()
-    {
-        return selectedTabIndex;
-    }
-
-    public void setSelectedGreenhouseId(Integer id)
-    {
-        selectedGreenhouseId.setValue(id);
-    }
-
-    public LiveData<Integer> getSelectedGreenhouseId()
-    {
-        return this.selectedGreenhouseId;
     }
 
     public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
@@ -85,8 +94,24 @@ public class DashboardActivityViewModel extends ViewModel
         return repo.extractCo2FromMeasurements(measurements);
     }
 
-    public LiveData<List<Threshold>> getAllThresholds() {
-        return thresholdRepository.getAllThresholds();
+    public void setSelectedTabIndex(Integer index)
+    {
+        selectedTabIndex.setValue(index);
+    }
+
+    public LiveData<Integer> getSelectedTabIndex()
+    {
+        return selectedTabIndex;
+    }
+
+    public void setSelectedGreenhouseId(Integer id)
+    {
+        selectedGreenhouseId.setValue(id);
+    }
+
+    public LiveData<Integer> getSelectedGreenhouseId()
+    {
+        return this.selectedGreenhouseId;
     }
 
     public void stopRepoRunnable()

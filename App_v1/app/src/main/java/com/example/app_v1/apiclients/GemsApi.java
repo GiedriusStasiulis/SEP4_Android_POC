@@ -9,6 +9,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -48,8 +49,8 @@ public interface GemsApi
     Call<ResponseBody> setThreshold(
             @Path("greenhouse") int id,
             @Path("measurement") String measurement,
-            @Query("min") int minValue,
-            @Query("max") int maxValue
+            @Body ThresholdInterval thresholdInterval
+
     );
 
 }

@@ -45,7 +45,7 @@ public abstract class ThresholdDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             thresholdDAO.insert(new Threshold("temperature","10.5","40.8"));
-            thresholdDAO.insert(new Threshold("humidity","200","400"));
+            thresholdDAO.insert(new Threshold("humidity","70","96"));
             thresholdDAO.insert(new Threshold("co2","400","800"));
             return null;
         }

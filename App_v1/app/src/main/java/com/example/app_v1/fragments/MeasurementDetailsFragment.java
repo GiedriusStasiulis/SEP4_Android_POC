@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,10 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.example.app_v1.R;
+
 import com.example.app_v1.activities.MeasurementHistoryActivity;
 import com.example.app_v1.adapters.Co2RVAdapter;
 import com.example.app_v1.adapters.HumidityRVAdapter;
@@ -35,13 +33,15 @@ import com.example.app_v1.models.Co2;
 import com.example.app_v1.models.Humidity;
 import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
+import com.example.app_v1.models.Threshold;
 import com.example.app_v1.viewmodels.DashboardActivityViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import java.text.ParseException;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class MeasurementDetailsFragment extends Fragment
 {
@@ -57,6 +57,11 @@ public class MeasurementDetailsFragment extends Fragment
 
     private TextView temperatureMinValue;
     private TextView temperatureMaxValue;
+
+    private TextView thresholdsUnitMinValueText;
+    private TextView thresholdsUnitMaxValueText;
+    private TextView thresholdMinText;
+    private TextView thresholdMaxText;
 
     private ConstraintLayout measurementOverviewDisplay;
     private ConstraintLayout recentMeasurementDisplay;
@@ -95,11 +100,15 @@ public class MeasurementDetailsFragment extends Fragment
     private HumidityRVAdapter humidityRVAdapter;
     private Co2RVAdapter co2RVAdapter;
 
+    private ThresholdDialog thresholdDialog;
+
     private ArrayList<Temperature> latestTemperatures = new ArrayList<>();
     private ArrayList<Humidity> latestHumidity = new ArrayList<>();
     private ArrayList<Co2> latestCo2 = new ArrayList<>();
 
     private DashboardActivityViewModel dashboardActivityViewModel;
+
+    private int tab;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -119,8 +128,8 @@ public class MeasurementDetailsFragment extends Fragment
         valueMeasurementTime = view.findViewById(R.id.valueMeasurementTime);
         valueMeasurementDate = view.findViewById(R.id.valueMeasurementDate);
 
-        temperatureMinValue = view.findViewById(R.id.thresholdTempMin);
-        temperatureMaxValue = view.findViewById(R.id.thresholdTempMax);
+        temperatureMinValue = view.findViewById(R.id.thresholdMin);
+        temperatureMaxValue = view.findViewById(R.id.thresholdMax);
 
         symbolMeasurementValue = view.findViewById(R.id.symbolMeasurementValue);
         measurementOverviewDisplay = view.findViewById(R.id.measurementOverviewDisplay);
@@ -148,6 +157,11 @@ public class MeasurementDetailsFragment extends Fragment
         progressBarMeasurementOverview = view.findViewById(R.id.progressBarMeasurementOverview);
         progressBarLatestValues = view.findViewById(R.id.progressBarLatestValues);
         progressBarThresholds = view.findViewById(R.id.progressBarThresholds);
+
+        thresholdsUnitMinValueText = view.findViewById(R.id.textView6);
+        thresholdsUnitMaxValueText = view.findViewById(R.id.textView8);
+        thresholdMinText =view.findViewById(R.id.thresholdMin);
+        thresholdMaxText =view.findViewById(R.id.thresholdMax);
 
         toggleBtnMeasurementOverviewDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
         toggleBtnRecentMeasurementDisplay.setBackgroundResource(R.drawable.icon_arrow_up);
@@ -182,10 +196,10 @@ public class MeasurementDetailsFragment extends Fragment
 
         btnOpenThresholdsSettings.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                ThresholdDialog thresholdDialog = new ThresholdDialog(temperatureMinValue, temperatureMaxValue);
-                thresholdDialog.show(getFragmentManager(), "ThresholdDialogFragment");
+            public void onClick(View view) {
+                                thresholdDialog = new ThresholdDialog(temperatureMinValue, temperatureMaxValue,tab);
+                                thresholdDialog.show(getFragmentManager(), "ThresholdDialogFragment");
+
             }
         });
 
@@ -216,6 +230,20 @@ public class MeasurementDetailsFragment extends Fragment
 
                         initLatestTemperatureRecyclerView();
                         graphView.removeAllSeries();
+
+                        thresholdsUnitMinValueText.setText(getResources().getString(R.string.symbol_temperature));
+                        thresholdsUnitMaxValueText.setText(getResources().getString(R.string.symbol_temperature));
+                        tab=0;
+
+                        dashboardActivityViewModel.getAllThresholds().observe(getViewLifecycleOwner(), new Observer<List<Threshold>>() {
+                            @Override
+                            public void onChanged(List<Threshold> thresholds) {
+                                thresholdMinText.setText(thresholds.get(0).getMinValue());
+                                thresholdMaxText.setText(thresholds.get(0).getMaxValue());
+
+
+                            }
+                        });
 
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
@@ -269,6 +297,19 @@ public class MeasurementDetailsFragment extends Fragment
                         initLatestHumidityRecyclerView();
                         graphView.removeAllSeries();
 
+                        thresholdsUnitMinValueText.setText(getResources().getString(R.string.symbol_humidity));
+                        thresholdsUnitMaxValueText.setText(getResources().getString(R.string.symbol_humidity));
+                        tab=1;
+                        dashboardActivityViewModel.getAllThresholds().observe(getViewLifecycleOwner(), new Observer<List<Threshold>>() {
+                            @Override
+                            public void onChanged(List<Threshold> thresholds) {
+                                thresholdMinText.setText(thresholds.get(1).getMinValue());
+                                thresholdMaxText.setText(thresholds.get(1).getMaxValue());
+
+
+                            }
+                        });
+
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
                             @Override
@@ -317,6 +358,18 @@ public class MeasurementDetailsFragment extends Fragment
                         initLatestCO2RecyclerView();
                         graphView.removeAllSeries();
 
+                        thresholdsUnitMinValueText.setText(getResources().getString(R.string.symbol_co2));
+                        thresholdsUnitMaxValueText.setText(getResources().getString(R.string.symbol_co2));
+                        tab=2;
+                        dashboardActivityViewModel.getAllThresholds().observe(getViewLifecycleOwner(), new Observer<List<Threshold>>() {
+                            @Override
+                            public void onChanged(List<Threshold> thresholds) {
+                                thresholdMinText.setText(thresholds.get(2).getMinValue());
+                                thresholdMaxText.setText(thresholds.get(2).getMaxValue());
+
+
+                            }
+                        });
                         dashboardActivityViewModel.getLatestMeasurementsFromRepo().observe(getActivity(), new Observer<ArrayList<Measurement>>()
                         {
                             @Override

@@ -1,27 +1,27 @@
 package com.example.app_v1.models;
 
 public class ThresholdInterval {
-    private int minValue;
-    private int maxValue;
+    private float min;
+    private float max;
 
-    public ThresholdInterval(int minValue, int maxValue) {
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+    public ThresholdInterval(float min, float max) {
+        this.min = min;
+        this.max = max;
     }
 
-    public int getMinValue() {
-        return minValue;
+    public float getMin() {
+        return min;
     }
 
-    public void setMinValue(int minValue) {
-        this.minValue = minValue;
+    public void setMin(int minValue) {
+        this.min = min;
     }
 
-    public int getMaxValue() {
-        return maxValue;
+    public float getMax() {
+        return max;
     }
 
-    public void setMaxValue(int maxValue) {
-        this.maxValue = maxValue;
+    public void setMax(int max) {
+        this.max = max;
     }
 }
