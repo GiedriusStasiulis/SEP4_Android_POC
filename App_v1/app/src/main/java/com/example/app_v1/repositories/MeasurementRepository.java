@@ -2,7 +2,6 @@ package com.example.app_v1.repositories;
 
 import android.os.Handler;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -16,8 +15,6 @@ import com.example.app_v1.models.Measurement;
 import com.example.app_v1.models.Temperature;
 import com.example.app_v1.utils.DateTimeConverterHelper;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -55,7 +52,7 @@ public class MeasurementRepository
     public void startFetchingDataFromApi(int greenhouseId)
     {
         fetchDataFromApiRunnable = getFetchDataFromApiRunnable(greenhouseId);
-        fetchDataFromApiRunnable.run();
+        fetchDataFromApiHandler.post(fetchDataFromApiRunnable);
     }
 
     public void stopFetchingDataFromApi()
@@ -68,40 +65,33 @@ public class MeasurementRepository
     private Runnable getFetchDataFromApiRunnable(final int greenhouseId)
     {
         final GemsApi gemsApi = GemsApiClient.getRetrofitClient().create(GemsApi.class);
-
         return new Runnable()
         {
             @Override
             public void run()
             {
                 Call<ArrayList<Measurement>> call = gemsApi.getMeasurement(greenhouseId);
-
                 call.enqueue(new Callback<ArrayList<Measurement>>()
                 {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Measurement>> call, @NonNull Response<ArrayList<Measurement>> response)
                     {
                         response.body();
-
                         if (response.isSuccessful())
                         {
                             Log.d("OnSuccess", "onResponse: " + response.toString());
                             assert response.body() != null;
-
                             latestMeasurementsArrList.clear();
                             latestMeasurementsArrList = response.body();
-
                             latestMeasurementsFromApi.postValue(latestMeasurementsArrList);
                         }
                     }
-
                     @Override
                     public void onFailure(@NonNull Call<ArrayList<Measurement>> call, @NonNull Throwable t)
                     {
                         Log.e("OnFailure", "Failure: " + t.getMessage() + " , StackTrace: " + t.getLocalizedMessage());
                     }
                 });
-
                 fetchDataFromApiHandler.postDelayed(this,60000);
             }
         };

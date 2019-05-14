@@ -8,18 +8,6 @@ import java.util.Locale;
 
 public class DateTimeConverterHelper
 {
-    public static Date convertDateTimeStringToDate(final String dateTimeString)
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
-        Date date = null;
-        try {
-            date = sdf.parse(dateTimeString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
     public static String convertDateTimeStringToISO8601String(final String dateTime)
     {
         SimpleDateFormat sdfIn = new SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ENGLISH);
@@ -33,7 +21,7 @@ public class DateTimeConverterHelper
         return sdfOut.format(date);
     }
 
-    public static Date convertTimestampISO8601StringToDate(final String timestampISO8601)
+    public static String convertTimestampISO8601ToDateString(final String timestampISO8601)
     {
         Date date = null;
         try {
@@ -41,7 +29,20 @@ public class DateTimeConverterHelper
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date;
+        DateFormat df = new SimpleDateFormat("dd-MMM-yy",Locale.ENGLISH);
+        return df.format(date);
+    }
+
+    public static String convertTimestampISO8601ToTimeString(final String timestampISO8601)
+    {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH).parse(timestampISO8601);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DateFormat df = new SimpleDateFormat("HH:mm",Locale.ENGLISH);
+        return df.format(date);
     }
 
     public static String convertTimePickerValuesToString(int hourOfDay, int minute)
@@ -98,27 +99,4 @@ public class DateTimeConverterHelper
         return formattedDate;
     }
 
-    public static String convertTimestampISO8601ToDateString(final String timestampISO8601)
-    {
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH).parse(timestampISO8601);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        DateFormat df = new SimpleDateFormat("dd-MMM-yy",Locale.ENGLISH);
-        return df.format(date);
-    }
-
-    public static String convertTimestampISO8601ToTimeString(final String timestampISO8601)
-    {
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH).parse(timestampISO8601);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        DateFormat df = new SimpleDateFormat("HH:mm",Locale.ENGLISH);
-        return df.format(date);
-    }
 }

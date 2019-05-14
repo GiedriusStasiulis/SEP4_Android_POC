@@ -13,22 +13,20 @@ import com.example.app_v1.models.Temperature;
 import com.example.app_v1.models.Threshold;
 import com.example.app_v1.repositories.MeasurementRepository;
 import com.example.app_v1.repositories.ThresholdRepository;
-import com.example.app_v1.utils.DateTimeConverterHelper;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class DashboardActivityViewModel extends ViewModel
 {
     private MeasurementRepository repo;
+    private ThresholdRepository thresholdRepository;
+
+    private Context context;
 
     private LiveData<ArrayList<Measurement>> latestMeasurementsFromRepo;
     private MutableLiveData<Integer> selectedTabIndex = new MutableLiveData<>();
     private MutableLiveData<Integer> selectedGreenhouseId = new MutableLiveData<>();
-    private ThresholdRepository thresholdRepository;
-    private Context context;
 
     public void initViewModel(int greenhouseId, Context _context)
     {
@@ -39,10 +37,6 @@ public class DashboardActivityViewModel extends ViewModel
         thresholdRepository = new ThresholdRepository(context);
     }
 
-    public LiveData<List<Threshold>> getAllThresholds() {
-        return thresholdRepository.getAllThresholds();
-    }
-
     public LiveData<ArrayList<Measurement>> getLatestMeasurementsFromRepo()
     {
         if(latestMeasurementsFromRepo == null)
@@ -51,24 +45,6 @@ public class DashboardActivityViewModel extends ViewModel
             latestMeasurementsFromRepo = repo.getLatestMeasurementsFromApi();
         }
         return this.latestMeasurementsFromRepo;
-    }
-
-    public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
-    {
-        repo = MeasurementRepository.getInstance();
-        return repo.extractTemperaturesFromMeasurements(measurements);
-    }
-
-    public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements)
-    {
-        repo = MeasurementRepository.getInstance();
-        return repo.extractHumidityFromMeasurements(measurements);
-    }
-
-    public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements)
-    {
-        repo = MeasurementRepository.getInstance();
-        return repo.extractCo2FromMeasurements(measurements);
     }
 
     public void setSelectedTabIndex(Integer index)
@@ -89,6 +65,28 @@ public class DashboardActivityViewModel extends ViewModel
     public LiveData<Integer> getSelectedGreenhouseId()
     {
         return this.selectedGreenhouseId;
+    }
+
+    public ArrayList<Temperature> extractLatestTemperaturesFromMeasurements(ArrayList<Measurement> measurements)
+    {
+        repo = MeasurementRepository.getInstance();
+        return repo.extractTemperaturesFromMeasurements(measurements);
+    }
+
+    public ArrayList<Humidity> extractLatestHumidityFromMeasurements(ArrayList<Measurement> measurements)
+    {
+        repo = MeasurementRepository.getInstance();
+        return repo.extractHumidityFromMeasurements(measurements);
+    }
+
+    public ArrayList<Co2> extractLatestCo2FromMeasurements(ArrayList<Measurement> measurements)
+    {
+        repo = MeasurementRepository.getInstance();
+        return repo.extractCo2FromMeasurements(measurements);
+    }
+
+    public LiveData<List<Threshold>> getAllThresholds() {
+        return thresholdRepository.getAllThresholds();
     }
 
     public void stopRepoRunnable()
