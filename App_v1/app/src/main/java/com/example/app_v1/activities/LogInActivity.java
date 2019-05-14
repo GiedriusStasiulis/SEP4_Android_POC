@@ -110,19 +110,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         if (!validateForm()) {
             return;
         }
-//        // checks to see if the input field is empty
-//        if (logInViewModel.checkEmptyTextField(mEmail)) {
-//            Toast.makeText(this, "Please enter a user name", Toast.LENGTH_SHORT).show();
-//            //stops the function from executing further
-//            return;
-//        }
-//        // checks to see if the input field is empty
-//        if (logInViewModel.checkEmptyTextField(mPassword)) {
-//            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
 
-        // uses fire base sign in method verification
+        // uses Firebase sign in method verification
         logInViewModel.getMFireBaseModel().getMFirebaseAuth()
                 .signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
